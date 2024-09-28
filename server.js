@@ -12,7 +12,9 @@ const {createPerson,getPerson,deletePerson,updatePerson} = require('./emergencyP
 const { createDependent, getDependents, deleteDependent, updateDependent } = require('./employeeDependents');
 const { createLeaveAudit, getLeaveAudits, deleteLeaveAudit, updateLeaveAudit } = require('./leaveAudit');
 const { createLeaveCount, getLeaveCounts, getLeaveCountById, updateLeaveCount, deleteLeaveCount } = require('./leaveCount');
-
+const { createBranch, getAllBranches, getBranchById, updateBranch, deleteBranch } = require('./branch');
+const { createPayGrade, getAllPayGrades, getPayGradeById, updatePayGrade, deletePayGrade} = require('./paygrade');
+const { createEmployeeContact, getAllEmployeeContacts, getEmployeeContactById, updateEmployeeContact, deleteEmployeeContact } = require('./employeeContact');
 
 
 const app = express();
@@ -79,8 +81,26 @@ app.get('/leaveCount/:leave_count_id', getLeaveCountById);
 app.put('/leaveCount/:leave_count_id', updateLeaveCount);
 app.delete('/leaveCount/:leave_count_id', deleteLeaveCount);
 
+//crud for branch table
+app.post('/branch', createBranch);
+app.get('/branch', getAllBranches);
+app.get('/branch/:id', getBranchById);
+app.put('/branch/:id', updateBranch);
+app.delete('/branch/:id', deleteBranch);
 
+//crud for pay grade table
+app.post('/paygrade', createPayGrade);
+app.get('/paygrade', getAllPayGrades);
+app.get('/paygrade/:id', getPayGradeById);
+app.put('/paygrade/:id', updatePayGrade);
+app.delete('/paygrade/:id', deletePayGrade);
 
+//crud for employee contact table
+app.post('/contact', createEmployeeContact);  
+app.get('/contact', getAllEmployeeContacts);   
+app.get('/contact/:id', getEmployeeContactById);   
+app.put('/contact/:id', updateEmployeeContact);   
+app.delete('/contact/:id', deleteEmployeeContact);
 
 
 app.listen(port, () => {
