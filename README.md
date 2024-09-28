@@ -1,94 +1,36 @@
-## Database Structure
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-The HRMS database consists of the following tables:
+## Getting Started
 
-- **Organization**: Stores information about organizations.
-- **Department**: Stores information about various departments within an organization.
-- **JobTitle**: Stores job titles available within the organization.
-- **PayGrade**: Stores pay grades for different job titles.
-- **EmploymentStatus**: Tracks the employment status of employees.
-- **Employee**: Contains details of all employees.
-- **User**: Manages user authentication and roles.
-- **LeaveType**: Defines types of leave available to employees.
-- **Leaves**: Tracks leave records for employees.
-- **CustomField**: Allows for additional custom fields to be added to employee records.
-- **EmployeeCustomField**: Stores values for custom fields associated with employees.
+First, run the development server:
 
-## Access Control by Table
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-### Department
-- **Create (C):** Admin, HR Manager
-- **Update (U):** Admin, HR Manager
-- **Read (R):** All (Admin, HR Manager, Employee, Supervisor)
-- **Delete (D):** Admin, HR Manager
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Job Title
-- **Create (C):** Admin, HR Manager
-- **Update (U):** Admin, HR Manager
-- **Read (R):** All (Admin, HR Manager, Employee, Supervisor)
-- **Delete (D):** Admin, HR Manager
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-### Pay Grade
-- **Create (C):** Admin, HR Manager
-- **Update (U):** Admin, HR Manager
-- **Read (R):** All (Admin, HR Manager, Employee, Supervisor)
-- **Delete (D):** Admin, HR Manager
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-### Employment Status
-- **Create (C):** Admin, HR Manager
-- **Update (U):** Admin, HR Manager
-- **Read (R):** All (Admin, HR Manager, Employee, Supervisor)
-- **Delete (D):** Admin, HR Manager
+## Learn More
 
-### Employee
-- **Create (C):** Admin, HR Manager
-- **Update (U):** Admin, HR Manager
-- **Read (R):** All (Admin, HR Manager, Employee, Supervisor)
-- **Delete (D):** Admin, HR Manager
+To learn more about Next.js, take a look at the following resources:
 
-### Dependent
-- **Create (C):** Admin, HR Manager
-- **Update (U):** Admin, HR Manager
-- **Read (R):** All (Admin, HR Manager, Employee, Supervisor)
-- **Delete (D):** Admin, HR Manager
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-### User
-- **Create (C):** Admin
-- **Update (U):** Admin
-- **Read (R):** Admin, HR Manager
-- **Delete (D):** Admin
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-### Leave Type
-- **Create (C):** Admin, HR Manager
-- **Update (U):** Admin, HR Manager
-- **Read (R):** All (Admin, HR Manager, Employee, Supervisor)
-- **Delete (D):** Admin, HR Manager
+## Deploy on Vercel
 
-### Leaves
-- **Create (C):** Admin, HR Manager
-- **Update (U):** Admin, HR Manager
-- **Read (R):** All (Admin, HR Manager, Employee, Supervisor)
-- **Delete (D):** Admin, HR Manager
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-### Custom Field
-- **Create (C):** Admin, HR Manager
-- **Update (U):** Admin, HR Manager
-- **Read (R):** All (Admin, HR Manager, Employee, Supervisor)
-- **Delete (D):** Admin, HR Manager
-
-### Employee Custom Field
-- **Create (C):** Admin, HR Manager
-- **Update (U):** Admin, HR Manager
-- **Read (R):** All (Admin, HR Manager, Employee, Supervisor)
-- **Delete (D):** Admin, HR Manager
-
-## Organization Table
-- **Create (C):** N/A (Read-Only)
-- **Update (U):** N/A (Read-Only)
-- **Read (R):** All (Admin, HR Manager, Employee, Supervisor)
-- **Delete (D):** N/A (Read-Only)
-
-## Security Considerations
-- Implement role-based access control (RBAC) to enforce the authorization rules.
-- Sanitize input to prevent SQL injection attacks.
-- Ensure secure password handling with hashing for the `User` table.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
