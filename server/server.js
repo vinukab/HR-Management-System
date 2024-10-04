@@ -6,7 +6,7 @@ const multer = require('multer');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
-const { login,signup,getUsers,deleteUser,updateUser } = require('./user');
+const { login,signup,getUserDetails,deleteUser,updateUser, logout } = require('./user');
 const { getJobTitles,getPayGrades,getSupervisors,getDepartments,getBranches } = require('./jobInfo');
 const {createEmployee } = require('./CreateEmployee');
 const { getTodoList,addTodo, deleteTodo, } = require('./todolist');
@@ -38,8 +38,9 @@ const upload = multer({ storage });
 app.post('/createEmployee', upload.single('profilePic'), createEmployee);
 
 app.post('/login',login)
+app.post('/logout',logout)
 app.post('/signup',signup)
-app.get('/user',getUsers)
+app.get('/user',getUserDetails)
 app.delete('/user',deleteUser)
 app.put('/user',updateUser)
 

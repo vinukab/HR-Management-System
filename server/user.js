@@ -20,6 +20,10 @@ const login = async (req, res) => {
     res.status(500).json({ error: 'Database query failed' });
   }
 }
+const logout = (req, res) => {
+  res.clearCookie('user', { httpOnly: true});
+  res.status(200).json({ message: 'Signed out successfully' });
+}
 
 const signup = async (req, res) => {
   try {
@@ -46,12 +50,8 @@ const signup = async (req, res) => {
   }
 };
 
-
-const getUsers = (req, res) => {
-  auth.authenticateToken(req, res, ['HR Manager','Admin'], async () => {
-     const verified = jwt.verify(req.cookies['user'],secretKey);
-     res.json({	username: verified.username, role: verified.role, employee_id: verified.employee_id});
-  });
+const getUserDetails = async (req, res) => {const verified = jwt.verify(req.cookies['user'],secretKey);
+  res.json({	username: verified.username, role: verified.role, employee_id: verified.employee_id});
 };
 
 const deleteUser = async (req, res) => {
@@ -89,9 +89,10 @@ const updateUser = async (req, res) => {
 };
 
 module.exports = {
-  getUsers,
+  getUserDetails,
   login,
   signup,
   deleteUser,
-  updateUser
+  updateUser,
+  logout
 };

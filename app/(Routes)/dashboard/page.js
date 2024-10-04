@@ -1,23 +1,16 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import SideBar from '../../(Components)/(Layout)/Sidebar';
+import SideBar from '../../layouts/Sidebar';
 import classNames from 'classnames';
-import ContentPanel from './ContentPanel';
-
+import EmployeeDashboard from './EmployeeDashboard';
+import AdminDashboard from './AdminDashboard';
+import HRManagerDashboard from './HRManagerDashboard';
+import SupervisorDashboard from './SupervisorDashboard';
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
-  const [activePanel, setActivePanel] = useState(0);
-  /* 0: Dashboard
-     1: Employee Management
-     2: Attendence
-     3: Leave
-     4: Reports
-     5: Settings
-  */
 
   useEffect(() => {
     axios.get('http://localhost:5000/user', { withCredentials: true })
@@ -39,13 +32,29 @@ const Dashboard = () => {
     return <div className="text-red-500">{error}</div>;
   }
 
+  const renderDashboard = () => {
+    if (userData.role === 'Admin') {
+      return <AdminDashboard />;
+    }
+    else if (userData.role === 'HR Manager') {
+      return <HRManagerDashboard />;
+    }
+    else if (userData.role === 'Supervisor') {
+      return <SupervisorDashboard />;
+    }
+    else if (userData.role === 'Employee') {
+      return <EmployeeDashboard />;
+    }
+    else <div>No dashboard available for this role.</div>;
+  };
+
   return (
     <div className={classNames(loading ? "hidden" : "block")}>
       {userData && (
         <>
-          <SideBar activePanel= {activePanel} setActivePanel= {setActivePanel} />
-          <div className="flex flex-col ml-56">
-            <ContentPanel activePanel={activePanel}/>
+          <SideBar activePanel={0} />
+          <div className="flex flex-col lg:ml-56 ">
+            {renderDashboard()}
           </div>
         </>
       )}
