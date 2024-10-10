@@ -7,6 +7,7 @@ import EmployeeDashboard from './EmployeeDashboard';
 import AdminDashboard from './AdminDashboard';
 import HRManagerDashboard from './HRManagerDashboard';
 import SupervisorDashboard from './SupervisorDashboard';
+
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -52,7 +53,7 @@ const Dashboard = () => {
     <div className={classNames(loading ? "hidden" : "block")}>
       {userData && (
         <>
-          <SideBar activePanel={0} />
+          <SideBar activePanel={0} role = {userData.role} />
           <div className="flex flex-col lg:ml-56 ">
             {renderDashboard()}
           </div>
