@@ -1,8 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import employeeprofile from "./employeeprofile";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card"; 
 
-
-const profile = () => {
+const employeeprofile = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="container mx-auto">
@@ -92,4 +90,4 @@ const profile = () => {
   );
 }
 
-export default profile;
+export default employeeprofile;
