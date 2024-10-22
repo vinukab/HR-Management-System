@@ -1,8 +1,5 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -11,59 +8,138 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 
-export const description = "A multiple bar chart categorized by department";
-
+// Sample chart data with nationalities, blood groups, and hobbies
 const chartData = [
-  { department: "HR", nationality: 12, blood_group: 5, hobbies: 8 },
-  { department: "Engineering", nationality: 35, blood_group: 18, hobbies: 20 },
-  { department: "Sales", nationality: 22, blood_group: 9, hobbies: 14 },
-  { department: "Marketing", nationality: 18, blood_group: 7, hobbies: 12 },
-  { department: "Finance", nationality: 10, blood_group: 4, hobbies: 6 },
+  {
+    department: "HR",
+    A_Positive: 10,
+    A_Negative: 5,
+    B_Positive: 3,
+    B_Negative: 2,
+    O_Positive: 6,
+    O_Negative: 4,
+    Nationality_Indian: 8,
+    Nationality_SriLankan: 7,
+    Nationality_Bangladeshi: 5,
+    Hobbies_Sports: 6,
+    Hobbies_Reading: 4,
+    Hobbies_Traveling: 8,
+  },
+  {
+    department: "IT",
+    A_Positive: 12,
+    A_Negative: 7,
+    B_Positive: 4,
+    B_Negative: 1,
+    O_Positive: 3,
+    O_Negative: 2,
+    Nationality_Indian: 9,
+    Nationality_SriLankan: 5,
+    Nationality_Bangladeshi: 3,
+    Hobbies_Sports: 5,
+    Hobbies_Reading: 3,
+    Hobbies_Traveling: 4,
+  },
+  {
+    department: "Sales",
+    A_Positive: 5,
+    A_Negative: 3,
+    B_Positive: 2,
+    B_Negative: 1,
+    O_Positive: 4,
+    O_Negative: 2,
+    Nationality_Indian: 4,
+    Nationality_SriLankan: 3,
+    Nationality_Bangladeshi: 2,
+    Hobbies_Sports: 4,
+    Hobbies_Reading: 2,
+    Hobbies_Traveling: 3,
+  },
+  {
+    department: "Marketing",
+    A_Positive: 8,
+    A_Negative: 4,
+    B_Positive: 3,
+    B_Negative: 2,
+    O_Positive: 5,
+    O_Negative: 3,
+    Nationality_Indian: 7,
+    Nationality_SriLankan: 4,
+    Nationality_Bangladeshi: 3,
+    Hobbies_Sports: 7,
+    Hobbies_Reading: 5,
+    Hobbies_Traveling: 4,
+  },
+  {
+    department: "Finance",
+    A_Positive: 11,
+    A_Negative: 6,
+    B_Positive: 5,
+    B_Negative: 3,
+    O_Positive: 7,
+    O_Negative: 4,
+    Nationality_Indian: 8,
+    Nationality_SriLankan: 5,
+    Nationality_Bangladeshi: 2,
+    Hobbies_Sports: 9,
+    Hobbies_Reading: 4,
+    Hobbies_Traveling: 7,
+  },
 ];
-
-const chartConfig = {
-  nationality: {
-    label: "Nationality",
-    color: "hsl(var(--chart-1))",
-  },
-  blood_group: {
-    label: "Blood Group",
-    color: "hsl(var(--chart-2))",
-  },
-  hobbies: {
-    label: "Hobbies",
-    color: "hsl(var(--chart-3))",
-  },
-} ;
 
 export default function CustomReportsField() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bar Chart - Multiple Categories</CardTitle>
-        <CardDescription>Department-wise details of Nationality, Blood Group, and Hobbies</CardDescription>
+        <CardTitle>Department-wise Details</CardTitle>
+        <CardDescription>Details of nationalities, blood groups, and hobbies by department</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="department" tickLine={false} axisLine={false} tickMargin={10} />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="nationality" fill="var(--color-nationality)" radius={4} />
-            <Bar dataKey="blood_group" fill="var(--color-blood_group)" radius={4} />
-            <Bar dataKey="hobbies" fill="var(--color-hobbies)" radius={4} />
-          </BarChart>
-        </ChartContainer>
+        <div style={{ overflowX: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                <th>Department</th>
+                <th>A+</th>
+                <th>A-</th>
+                <th>B+</th>
+                <th>B-</th>
+                <th>O+</th>
+                <th>O-</th>
+                <th>Indian</th>
+                <th>Sri Lankan</th>
+                <th>Bangladeshi</th>
+                <th>Sports</th>
+                <th>Reading</th>
+                <th>Traveling</th>
+              </tr>
+            </thead>
+            <tbody>
+              {chartData.map((row, index) => (
+                <tr key={index}>
+                  <td>{row.department}</td>
+                  <td>{row.A_Positive}</td>
+                  <td>{row.A_Negative}</td>
+                  <td>{row.B_Positive}</td>
+                  <td>{row.B_Negative}</td>
+                  <td>{row.O_Positive}</td>
+                  <td>{row.O_Negative}</td>
+                  <td>{row.Nationality_Indian}</td>
+                  <td>{row.Nationality_SriLankan}</td>
+                  <td>{row.Nationality_Bangladeshi}</td>
+                  <td>{row.Hobbies_Sports}</td>
+                  <td>{row.Hobbies_Reading}</td>
+                  <td>{row.Hobbies_Traveling}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </CardContent>
+      <CardFooter>
+        {/* Additional footer content can go here if needed */}
+      </CardFooter>
     </Card>
   );
 }

@@ -20,7 +20,6 @@ const SideBar = ({ activePanel, role }) => {
         else if (panel === 4) router.push('/reports');
         else if (panel === 5) router.push('/settings');
     }
-    console.log(role)
     return (
         <div className="flex-col h-screen fixed left-0 bg-black w-56 items-center gap-4 rounded-r-xl hidden lg:flex">
             <img src="logo.png" className="w-full p-5 pt-5" alt="Logo" />
