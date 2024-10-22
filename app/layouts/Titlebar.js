@@ -4,21 +4,18 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import User from "../models/userModel";
 
 const Title = (userDetails) => {
 
   const router = useRouter();
   const signOut = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/logout', {}, { withCredentials: true });
-  
-      if (response.status === 200) {
+      User.logout();
         console.log('Signed out successfully');
-        router.push('/login');
-      } else {
-        console.error('Sign out failed');
-      }
-    } catch (error) {
+        router.push('/');
+      
+      }catch (error) {
       console.error('Error during sign out:', error);
     }
   };
@@ -40,7 +37,7 @@ const Title = (userDetails) => {
             <PopoverTrigger>
               <div className="flex flex-row items-center space-x-2">
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage src="http://localhost:5000/uploads/Gaming_5000x3125.jpg" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col text-xs">

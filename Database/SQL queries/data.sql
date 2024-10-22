@@ -6,16 +6,11 @@ VALUES
 
 INSERT INTO paygrade (pay_grade_id, grade)
 VALUES 
-('PG001', 'Junior'),
-('PG002', 'Mid'),
-('PG003', 'Senior'),
-('PG004', 'Lead'),
-('PG005', 'Junior'),
-('PG006', 'Mid'),
-('PG007', 'Senior'),
-('PG008', 'Lead'),
-('PG009', 'Junior'),
-('PG010', 'Senior');
+('PG001', 'Level1'),
+('PG002', 'Level2'),
+('PG003', 'Level3'),
+('PG004', 'Level4');
+
 
 INSERT INTO jobtitle (job_title_id, job_title_name)
 VALUES
@@ -51,27 +46,31 @@ VALUES
 ('DPT009', 'Supply Chain', '001'),
 ('DPT010', 'Research and Development', '001');
 
-INSERT INTO leavetype (`leave_type_id`, `type_name`, `default_days`, `pay_grade_id`, `gender`) VALUES 
-('LT001', 'Sick Leave1', '10', 'PG001', null),
-('LT002', 'Sick Leave2', '12', 'PG002',null),
-('LT003', 'Sick Leave3', '14', 'PG003', null),
-('LT004', 'Sick Leave4', '14', 'PG004', null),
-('LT005', 'Casual Leave1', '12', 'PG001', null),
-('LT006', 'Casual Leave2', '14', 'PG002', null),
-('LT007', 'Casual Leave3', '16', 'PG003', null),
-('LT008', 'Casual Leave4', '18', 'PG004', null),
-('LT009', 'Maternity Leave1', '90', 'PG001', 'female'),
-('LT010', 'Maternity Leave2', '90', 'PG002', 'female'),
-('LT011', 'Maternity Leave3', '100', 'PG003', 'female'),
-('LT012', 'Maternity Leave4', '100', 'PG004', 'female');
+INSERT INTO leavetype (leave_type_id, type_name, default_days, pay_grade_id) VALUES 
+('LT001', 'Casual Leave', 12, 'PG001'),
+('LT002', 'Casual Leave', 14, 'PG002'),
+('LT003', 'Casual Leave', 16, 'PG003'),
+('LT004', 'Casual Leave', 18, 'PG004'),
+('LT005', 'Annual Leave', 20, 'PG001'),
+('LT006', 'Annual Leave', 22, 'PG002'),
+('LT007', 'Annual Leave', 24, 'PG003'),
+('LT008', 'Annual Leave', 26, 'PG004'),
+('LT009', 'Maternity Leave', 90, 'PG001'),
+('LT010', 'Maternity Leave', 90, 'PG002'),
+('LT011', 'Maternity Leave', 100, 'PG003'),
+('LT012', 'Maternity Leave', 100, 'PG004'),
+('LT013', 'No Pay', 50, NULL);
 
 INSERT INTO employee (employee_id, first_name, last_name, birth_date, marital_status, NIC_number, address, status, job_title_id, pay_grade_id, supervisor_id, department_id, profile_pic, branch_id, gender)
 VALUES
-('EMP001', 'John', 'Perera', '1985-08-15', 'Married', 'NIC001', 'No. 25, Union Place, Colombo', 'Active', 'JT001', 'PG003', NULL, 'DPT001', 'profile_john.jpg', 'BR001', 'male'),
-('EMP002', 'Amaya', 'Fernando', '1990-05-21', 'Single', 'NIC002', 'No. 18, Galle Road, Mount Lavinia', 'Active', 'JT002', 'PG002', 'EMP001', 'DPT002', 'profile_amaya.jpg', 'BR001', 'female'),
-('EMP003', 'Nuwan', 'Wijesinghe', '1988-12-10', 'Married', 'NIC003', 'No. 12, Kandy Road, Kandy', 'Active', 'JT003', 'PG003', 'EMP001', 'DPT003', 'profile_nuwan.jpg', 'BR001', 'male'),
-('EMP004', 'Kumari', 'De Silva', '1992-04-12', 'Single', 'NIC004', 'No. 78, Negombo Road, Negombo', 'Active', 'JT004', 'PG002', 'EMP001', 'DPT007', 'profile_kumari.jpg', 'BR001', 'female'),
-('EMP005', 'Saman', 'Ratnayake', '1987-11-05', 'Married', 'NIC005', 'No. 33, Highlevel Road, Maharagama', 'Active', 'JT005', 'PG003', 'EMP001', 'DPT004', 'profile_saman.jpg', 'BR001', 'male');
+('EMP001', 'John', 'Perera', '1985-08-15', 'Married', 'NIC001', 'No. 25, Union Place, Colombo', 'Permanent', 'JT001', 'PG003', NULL, 'DPT001', 'profile_john.jpg', 'BR001', 'male'),
+('EMP002', 'Amaya', 'Fernando', '1990-05-21', 'Single', 'NIC002', 'No. 18, Galle Road, Mount Lavinia', 'Permanent', 'JT002', 'PG002', 'EMP001', 'DPT002', 'profile_amaya.jpg', 'BR001', 'female'),
+('EMP003', 'Nuwan', 'Wijesinghe', '1988-12-10', 'Married', 'NIC003', 'No. 12, Kandy Road, Kandy', 'Permanent', 'JT003', 'PG003', 'EMP001', 'DPT003', 'profile_nuwan.jpg', 'BR001', 'male'),
+('EMP004', 'Kumari', 'De Silva', '1992-04-12', 'Single', 'NIC004', 'No. 78, Negombo Road, Negombo', 'Contract parttime', 'JT004', 'PG003', 'EMP001', 'DPT007', 'profile_kumari.jpg', 'BR001', 'female' ),
+('EMP005', 'Saman', 'Ratnayake', '1987-11-05', 'Married', 'NIC005', 'No. 33, Highlevel Road, Maharagama', 'Permanent', 'JT005', 'PG003', 'EMP001', 'DPT004', 'profile_saman.jpg', 'BR001', 'male'),
+('EMP006', 'Tharusha', 'Galappaththi', '1985-12-07', 'Married', 'NIC006', 'No. 77/1, Anandarama Road, Maharagama', 'Intern fultime', 'JT003', 'PG002', 'EMP001', 'DPT003', 'profile_tharusha.jpg', 'BR001', 'male'),
+('EMP007', 'Kasun', 'Kumaranayake', '1990-08-17', 'Single', 'NIC007', 'No. 563, Yatiyana Road, Matara', 'Permanent', 'JT005', 'PG002', 'EMP001', 'DPT002', 'profile_kasun.jpg', 'BR001', 'male' ),
+('EMP008', 'Sajitha', 'Gallage', '1992-10-12', 'Married', 'NIC008', 'No. 28/C, Galle Road, Ambepitiya', 'Freelance', 'JT004', 'PG003', 'EMP001', 'DPT004', 'profile_sajitha.jpg', 'BR001', 'male') ;
 
 INSERT INTO customattribute (employee_id, key_1, value_1, key_2, value_2, key_3, value_3)
 VALUES

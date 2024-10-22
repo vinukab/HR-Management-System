@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 import Loader from './Loader';
+import User from '../../models/userModel';
 
 export default function Login() {
   
@@ -17,17 +18,8 @@ export default function Login() {
     setLoading(true);
     setError('');
     try {
-      const res = await axios.post('http://localhost:5000/login', {
-        username,
-        password,
-      },{ withCredentials: true });
-  
-      if (res.status === 200) {
-        console.log(res.data);
-        router.push('/dashboard'); // Redirect only if login is successful
-      } else {
-        setError('Login failed: unexpected status code');
-      }
+      await User.login(username, password);
+      router.push('/dashboard');
     } catch (err) {
       console.error('Login error:', err);
       setError('Login failed: ' + (err.response?.data?.message || 'Network or server issue'));
@@ -35,7 +27,6 @@ export default function Login() {
       setLoading(false);
     }
   }
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">

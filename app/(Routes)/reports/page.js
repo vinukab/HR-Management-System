@@ -1,15 +1,22 @@
+'use client'
 import EmployeeByDepartment from "./chartcomponent/EmployeeByDepartment";
 import EmployeesGrouped from "./chartcomponent/EmployeesGrouped";
 import CustomFieldsReport from "./chartcomponent/CustomReportsField";
 import TotalLeavesByDepartment from "./chartcomponent/TotalLeavesByDepartment";
+import SideBar from "../../layouts/Sidebar";
+import User from "@/app/models/userModel";
+import Title from "@/app/layouts/Titlebar";
 //import Sidebar from "./chartcomponent/sidebar";
 
 const ReportPage = () => {
   return (
-    <div style={{ backgroundColor: "#121212", display: "flex" }}>
-      {/* <Sidebar /> Sticky sidebar */}
-      
-      <div style={{ marginLeft: '220px', padding: '20px', width: '80%' }}> {/* Main content */}
+    <>
+    <SideBar activePanel={0} role = {User.getRole} />
+    <div className="ml-56"> 
+
+      <Title/>
+      <div className="">
+        {/* Main content */}
         <section id="employee-by-department">
           <EmployeeByDepartment />
         </section>
@@ -27,6 +34,7 @@ const ReportPage = () => {
         </section>
       </div>
     </div>
+    </>
   );
 };
 

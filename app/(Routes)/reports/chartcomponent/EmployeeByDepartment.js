@@ -33,7 +33,7 @@ export default function EmployeeByDepartment() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/a/emp-report', {
+        const response = await fetch('http://localhost:5000/report/emp-report', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'

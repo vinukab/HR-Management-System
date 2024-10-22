@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TrendingUp } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts";
 
 import {
@@ -21,13 +20,17 @@ import {
 
 export const description = "A stacked area chart for total leaves by department";
 
+// Month names array to format the X-axis labels
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// Update chartConfig to match your departments
 const chartConfig = {
-  HR: {
-    label: "HR",
+  Finance: {
+    label: "Finance",
     color: "#5B99C2",
   },
-  Engineering: {
-    label: "Engineering",
+  "Information Technology": {
+    label: "Information Technology",
     color: "#E1D7B7",
   },
   Sales: {
@@ -43,16 +46,15 @@ export default function TotalLeavesByDepartment() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/b/department-leaves");
-        //const data = await response.json(); 
-        const data = [
-          { department_name: 'HR', employee_count: 12 },
-          { department_name: 'Engineering', employee_count: 35 },
-          { department_name: 'Sales', employee_count: 22 },
-          { department_name: 'Marketing', employee_count: 18 },
-          { department_name: 'Finance', employee_count: 10 }
-        ];
-      
+        const response = await fetch("http://localhost:5000/report/department-leaves", {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+        
+        const data = await response.json(); 
+        console.log(data)
         setChartData(data);
       } catch (error) {
         console.error("Error fetching chart data:", error);
@@ -82,11 +84,11 @@ export default function TotalLeavesByDepartment() {
               >
                 <CartesianGrid vertical={false} />
                 <XAxis
-                  dataKey="month"
+                  dataKey="month"  // Assuming month is represented as a number (1-12)
                   tickLine={false}
                   axisLine={false}
                   tickMargin={8}
-                  tickFormatter={(value) => value.slice(0, 3)}
+                  tickFormatter={(value) => monthNames[value - 1]}  // Convert month number to abbreviation
                 />
                 <YAxis />
                 <ChartTooltip
@@ -94,27 +96,24 @@ export default function TotalLeavesByDepartment() {
                   content={<ChartTooltipContent indicator="dot" />}
                 />
                 <Area
-                  dataKey="HR"
+                  dataKey="Finance"
                   type="natural"
-                  fill="#5B99C2"
-                  //fillOpacity={0.4}
-                  stroke="#5B99C2"
+                  fill={chartConfig.Finance.color}
+                  stroke={chartConfig.Finance.color}
                   stackId="a"
                 />
                 <Area
-                  dataKey="Engineering"
+                  dataKey="Information Technology"
                   type="natural"
-                  fill="#E1D7B7"
-                  //fillOpacity={1}
-                  stroke="#E1D7B7"
+                  fill={chartConfig["Information Technology"].color}
+                  stroke={chartConfig["Information Technology"].color}
                   stackId="a"
                 />
                 <Area
                   dataKey="Sales"
                   type="natural"
-                  fill="#982B1C"
-                  //fillOpacity={0.4}
-                  stroke="#982B1C"
+                  fill={chartConfig.Sales.color}
+                  stroke={chartConfig.Sales.color}
                   stackId="a"
                 />
               </AreaChart>
@@ -125,12 +124,7 @@ export default function TotalLeavesByDepartment() {
       <CardFooter>
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
-            {/* <div className="flex items-center gap-2 font-medium leading-none">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div> */}
-            {/* <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - June 2024
-            </div> */}
+            {/* Additional footer content can be added here */}
           </div>
         </div>
       </CardFooter>

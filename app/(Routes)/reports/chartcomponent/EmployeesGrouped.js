@@ -43,7 +43,7 @@ export default function EmployeesGrouped() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/c/employees-grouped");
+        const response = await fetch("http://localhost:5000/report/employees-grouped");
         const data = await response.json(); 
 
         setChartData(data); // Use fetched data or sample data

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('./dbConfig');  // Assuming dbConfigure.js manages the connection pool
+const db = require('./dbConfig');  
 
 // API route to fetch employee count by department
 router.get('/emp-report', async (req, res) => {

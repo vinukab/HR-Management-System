@@ -1,28 +1,24 @@
-'use client'
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+'use client';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  const router = useRouter();
+    const router = useRouter();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await axios.get('http://localhost:5000/auth', { withCredentials: true });
-        if (res.data.auth) {
-          router.push('/dashboard');
-        } else {
-          router.push('/login');
-        }
-      } catch (error) {
-        console.error("Authentication check failed:", error);
-        router.push('/login');
-      }
-    };
+    useEffect(() => {
+        const checkAuth = () => {
+            const cookies = document.cookie.split('; ');
+            const hasToken = cookies.some(cookie => cookie.startsWith('user='));
 
-    checkAuth();
-  }, [router]);
+            if (!hasToken) {
+                router.push('/login'); 
+            } else {
+                router.push('/dashboard'); 
+            }
+        };
 
-  return <div>Redirecting...</div>;
+        checkAuth();
+    }, [router]);
+
+    return <div>Redirecting...</div>;
 }

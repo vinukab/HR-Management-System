@@ -14,13 +14,12 @@ const SideBar = ({ activePanel, role }) => {
     */
     const changePanel = (panel) => {
         if (panel === 0) router.push('/dashboard');
-        else if (panel === 1) router.push('/employeemanagement');
+        else if (panel === 1) router.push('/createemployee');
         else if (panel === 2) router.push('/profile');
         else if (panel === 3) router.push('/leave');
         else if (panel === 4) router.push('/reports');
         else if (panel === 5) router.push('/settings');
     }
-    console.log(role)
     return (
         <div className="flex-col h-screen fixed left-0 bg-black w-56 items-center gap-4 rounded-r-xl hidden lg:flex">
             <img src="logo.png" className="w-full p-5 pt-5" alt="Logo" />
@@ -38,7 +37,7 @@ const SideBar = ({ activePanel, role }) => {
                 <div onClick={() => changePanel(1)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 1), 'bg-rose-700': (activePanel === 1) })}>
                     <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                         <User2Icon className="mr-1" />
-                        Employee Management
+                        Create Employee
                     </button>
                 </div>
             )}

@@ -9,7 +9,7 @@ const LeaveRequestPanel = () => {
     const [leaveData, setLeaveData] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/leaverequest', { withCredentials: true })
+        axios.get('http://localhost:5000/leave/user', { withCredentials: true })
             .then(response => {
                 const leaverequests = response.data;
                 console.log(leaverequests);
@@ -22,7 +22,7 @@ const LeaveRequestPanel = () => {
 
     return (
         <Card className='m-1' style={{ height: '500px' }}>
-            <CardHeader>
+            <CardHeader >
                 <CardTitle>Employee Leave</CardTitle>
             </CardHeader>
             <CardContent>
