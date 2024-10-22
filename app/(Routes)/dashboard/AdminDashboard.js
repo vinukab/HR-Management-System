@@ -12,15 +12,14 @@ const AdminDashboard = () => {
                 <div className="flex flex-row">
                     <div className="flex-grow">
                         <SupervisorClock/>
-                        <CreatLeaveRequest />
+                        <EmployeeToDOList />
                     </div>
                     <CreatLeaveRequest />
                 </div>
                 <div className="flex flex-row w-full">
-                    <EmployeeToDOList />
+                    <SupervisorLeavePanel/>
                     <RemLeaveCounts />
                 </div>
-                <SupervisorLeavePanel/>
             </div>
      );
 }

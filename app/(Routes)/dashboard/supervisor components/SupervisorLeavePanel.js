@@ -6,7 +6,7 @@ const SupervisorLeavePanel = () => {
     const [leaveRequests, setLeaveRequests] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/leaves', { withCredentials: true }).then(res => {
+        axios.get('http://localhost:5000/leave', { withCredentials: true }).then(res => {
             console.log(res.data);
             const leaveRequests = res.data;
             setLeaveRequests(leaveRequests);
@@ -19,7 +19,7 @@ const SupervisorLeavePanel = () => {
             const updatedRequests = prevRequests.map(request =>
                 request.leave_id === leave_id ? { ...request, request_status: 'Approved' } : request
             );
-            axios.put('http://localhost:5000/leaves', { leave_id:leave_id, status: 'Approved' }, { withCredentials: true }).catch(err => console.error(err));
+            axios.put('http://localhost:5000/leave/update', { leave_id:leave_id, status: 'Approved' }, { withCredentials: true }).catch(err => console.error(err));
             return updatedRequests;
         });
     };
@@ -29,7 +29,7 @@ const SupervisorLeavePanel = () => {
             const updatedRequests = prevRequests.map(request =>
                 request.leave_id === leave_id ? { ...request, request_status: 'Rejected' } : request
             );
-            axios.put('http://localhost:5000/leaves', { leave_id:leave_id, status: 'Rejected' }, { withCredentials: true }).catch(err => console.error(err));
+            axios.put('http://localhost:5000/leave/update', { leave_id:leave_id, status: 'Rejected' }, { withCredentials: true }).catch(err => console.error(err));
             return updatedRequests;
         });
     };
@@ -40,11 +40,11 @@ const SupervisorLeavePanel = () => {
                 request.leave_id === leave_id ? { ...request, request_status: 'Pending' } : request
             )
         );
-        axios.put('http://localhost:5000/leaves', { leave_id: leave_id, status: 'Pending' }, { withCredentials: true }).catch(err => console.error(err));
+        axios.put('http://localhost:5000/leave/update', { leave_id: leave_id, status: 'Pending' }, { withCredentials: true }).catch(err => console.error(err));
     };
 
     return (
-        <div className="m-1 p-4 bg-white shadow-md rounded-lg">
+        <div className="m-1 p-4 bg-white shadow-md rounded-lg flex-grow">
             <table className="w-full table-auto border-collapse">
                 <caption className="text-left font-sans font-semibold text-base mb-4">Employee Leave Requests</caption>
                 <thead>

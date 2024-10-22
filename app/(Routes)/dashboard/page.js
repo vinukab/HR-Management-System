@@ -7,21 +7,38 @@ import EmployeeDashboard from './EmployeeDashboard';
 import AdminDashboard from './AdminDashboard';
 import HRManagerDashboard from './HRManagerDashboard';
 import SupervisorDashboard from './SupervisorDashboard';
+import User from '@/app/models/userModel';
+import { useRouter } from 'next/navigation';
 const Dashboard = () => {
-  const [userData, setUserData] = useState(null);
+  const [username, setUsername] = useState(null);
+  const [role, setRole] = useState(null);
+  const [employeeId, setEmployeeId] = useState(null);
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const router = useRouter();
 
+  if(!User.isLoggedin()){
+    router.push('/login');
+  }
+  
   useEffect(() => {
-    axios.get('http://localhost:5000/user', { withCredentials: true })
-      .then(response => {
-        setUserData(response.data);
+    const fetchUserData = async () => {
+      try {
+        const tempUsername = await User.getUsername();
+        const tempRole = await User.getRole();
+        const tempEmployeeId = await User.getEmployeeId();
+    
+        setUsername(tempUsername);
+        setRole(tempRole);  
+        setEmployeeId(tempEmployeeId);
         setLoading(false);
-      })
-      .catch(err => {
-        setError(err.response?.data?.message || 'Network or server issue');
-        setLoading(false);
-      });
+
+      } catch (err) {
+        setError(err);
+      }
+    };
+    fetchUserData();
   }, []);
 
   if (loading) {
@@ -33,16 +50,16 @@ const Dashboard = () => {
   }
 
   const renderDashboard = () => {
-    if (userData.role === 'Admin') {
+    if (role === 'Admin') {
       return <AdminDashboard />;
     }
-    else if (userData.role === 'HR Manager') {
+    else if (role === 'HR Manager') {
       return <HRManagerDashboard />;
     }
-    else if (userData.role === 'Supervisor') {
+    else if (role === 'Supervisor') {
       return <SupervisorDashboard />;
     }
-    else if (userData.role === 'Employee') {
+    else if (role === 'Employee') {
       return <EmployeeDashboard />;
     }
     else <div>No dashboard available for this role.</div>;
@@ -50,9 +67,9 @@ const Dashboard = () => {
 
   return (
     <div className={classNames(loading ? "hidden" : "block")}>
-      {userData && (
+      {username && (
         <>
-          <SideBar activePanel={0} />
+          <SideBar activePanel={0} role = {role} />
           <div className="flex flex-col lg:ml-56 ">
             {renderDashboard()}
           </div>

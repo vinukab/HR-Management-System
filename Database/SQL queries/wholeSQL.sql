@@ -1,4 +1,5 @@
 drop database hrms;
+-- ################################################ table creation queries ################################################
 create database hrms;
 use hrms;
 CREATE TABLE organization (
@@ -12,7 +13,7 @@ CREATE TABLE organization (
 
 CREATE TABLE paygrade (
     pay_grade_id VARCHAR(50) PRIMARY KEY,
-    grade ENUM('Junior', 'Mid', 'Senior', 'Lead')
+    grade ENUM('Level1', 'Level2', 'Level3', 'Level4')
 );
 
 CREATE TABLE jobtitle (
@@ -33,6 +34,7 @@ CREATE TABLE department (
     FOREIGN KEY (organization_id) REFERENCES organization(organization_id)
 );
 
+
 CREATE TABLE employee (
     employee_id VARCHAR(50) PRIMARY KEY,
     first_name VARCHAR(50),
@@ -41,7 +43,7 @@ CREATE TABLE employee (
     marital_status VARCHAR(50),
     NIC_number VARCHAR(50),
     address VARCHAR(50),
-    status ENUM('Active', 'Inactive'),
+    status ENUM('Intern parttime','Intern fultime','Contract parttime','Contract fultime','Permanent','Freelance'),
     job_title_id VARCHAR(50),
     pay_grade_id VARCHAR(50),
     supervisor_id VARCHAR(50),
@@ -108,10 +110,9 @@ CREATE TABLE attendance (
 
 CREATE TABLE leavetype (
     leave_type_id VARCHAR(50) PRIMARY KEY,
-    type_name VARCHAR(50),
+    type_name ENUM('Casual Leave', 'Annual Leave', 'Maternity Leave', 'No Pay'),
     default_days INT,
     pay_grade_id VARCHAR(50),
-    gender ENUM('male', 'female'),
     FOREIGN KEY (pay_grade_id) REFERENCES paygrade(pay_grade_id)
 );
 
@@ -162,9 +163,182 @@ CREATE TABLE todolist (
     FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
 
--------------funtions and triggers----------------
+-- ############################################ view creation queries ############################################
+create view EmployeeDetails as
+select e.first_name, e.last_name, j.job_title_name, d.department_name, b.branch_name 
+from employee e join jobtitle j on e.job_title_id = j.job_title_id
+	        join department d on e.department_id = d.department_id
+                join branch b on e.branch_id = b.branch_id;
+
+
+create view rem_leave_count as
+select e.first_name, e.last_name, lt.type_name, lc.rem_leave_count
+from employee e join leavecount lc on e.employee_id = lc.employee_id
+	        join leavetype lt on lc.leave_type_id = lt.leave_type_id;
+
+create view user_info as
+select 
+    u.user_id,
+    u.username,
+    u.role,
+    e.first_name,
+    e.last_name,
+    e.nic_number,
+    e.birth_date,
+    e.marital_status,
+    e.address as employee_address,
+    e.status as employment_status,
+    e.gender,
+    j.job_title_name,
+    d.department_name,
+    b.branch_name
+from 
+    user u
+join 
+    employee e on u.employee_id = e.employee_id
+join 
+    jobtitle j on e.job_title_id = j.job_title_id
+join 
+    department d on e.department_id = d.department_id
+join 
+    branch b on e.branch_id = b.branch_id;
+
+
+create view leave_requests_info as
+select 
+    lr.leave_id,
+    e.first_name,
+    e.last_name,
+    lt.type_name,
+    lr.start_date,
+    lr.end_date,
+    lr.description,
+    lr.request_status as leave_status
+from 
+    leaverequest lr
+join 
+    employee e on lr.employee_id = e.employee_id
+join 
+    leavetype lt on lr.leave_type_id = lt.leave_type_id;
+
+
+
+create view department_employee_count as
+select 
+    d.department_name,
+    count(e.employee_id) as employee_count
+from 
+    department d
+left join 
+    employee e on d.department_id = e.department_id
+group by 
+    d.department_name;
+
+
+create view employee_emergency_contact as
+select 
+    e.employee_id,
+    e.first_name,
+    e.last_name,
+    ep.person_name,
+    epc.phone_num,
+    ep.relationship
+from 
+    employee e
+join 
+    emergencyperson ep on e.employee_id = ep.employee_id
+join 
+    emergencypersoncontact epc on ep.person_id = epc.person_id;
+
+-- ################################################## function creation queries ##################################################
+
+DELIMITER $$
+CREATE FUNCTION get_annual_lc(emply_id VARCHAR(50)) 
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE rem_leave_count INT;
+    
+    SELECT lc.rem_leave_count 
+    INTO rem_leave_count
+    FROM leavecount lc JOIN leavetype lt ON lc.leave_type_id=lt.leave_type_id
+    WHERE lc.employee_id = emply_id 
+    AND lt.type_name = 'Annual Leave';
+    
+    RETURN rem_leave_count;
+    END $$
+
+
 DELIMITER $$
 
+CREATE FUNCTION get_casual_lc(emply_id VARCHAR(50)) 
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE rem_leave_count INT;
+    
+    SELECT lc.rem_leave_count 
+    INTO rem_leave_count
+    FROM leavecount lc JOIN leavetype lt ON lc.leave_type_id=lt.leave_type_id
+    WHERE lc.employee_id = emply_id 
+    AND lt.type_name = 'Casual Leave';
+    
+    RETURN rem_leave_count;
+END $$
+
+DELIMITER $$
+
+CREATE FUNCTION get_maternity_lc(emply_id VARCHAR(50)) 
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE rem_leave_count INT;
+    
+    SELECT lc.rem_leave_count 
+    INTO rem_leave_count
+    FROM leavecount lc JOIN leavetype lt ON lc.leave_type_id=lt.leave_type_id
+    WHERE lc.employee_id = emply_id 
+    AND lt.type_name = 'Maternity Leave';
+    
+    RETURN rem_leave_count;
+END $$
+
+DELIMITER $$
+
+CREATE FUNCTION get_nopay_lc(emply_id VARCHAR(50)) 
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE rem_leave_count INT;
+    
+    SELECT lc.rem_leave_count 
+    INTO rem_leave_count
+    FROM leavecount lc JOIN leavetype lt ON lc.leave_type_id=lt.leave_type_id
+    WHERE lc.employee_id = emply_id 
+    AND lt.type_name = 'No Pay';
+    
+    RETURN rem_leave_count;
+END $$
+
+DELIMITER $$
+
+CREATE FUNCTION get_attendance_count(p_start_date DATE, p_end_date DATE, p_employee_id VARCHAR(50)) 
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE present_days INT;
+    SELECT COUNT(*) INTO present_days
+    FROM attendance 
+    WHERE p_employee_id = employee_id 
+    AND date BETWEEN p_start_date AND p_end_date 
+    AND status = 'Present';
+    
+    RETURN present_days;
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
 CREATE FUNCTION is_allowed_leave_type(
     employee_pay_grade_id VARCHAR(50),
     employee_gender ENUM('male', 'female'),
@@ -178,8 +352,7 @@ BEGIN
     FROM leavetype 
     WHERE leave_type_id = in_leave_type_id
     AND (pay_grade_id = employee_pay_grade_id OR pay_grade_id IS NULL)
-    AND (gender = employee_gender OR gender IS NULL); 
-
+    AND ((type_name = 'Maternity Leave' AND employee_gender = 'female') OR type_name != 'Maternity Leave');
     IF constraint_count > 0 THEN
         RETURN 1;
     ELSE
@@ -187,8 +360,132 @@ BEGIN
     END IF;
 END$$
 
+-- ###################################################### procedure creation queries ######################################################
 DELIMITER $$
 
+CREATE PROCEDURE record_leave_request(
+	p_leave_id VARCHAR(50),
+    p_employee_id VARCHAR(50),
+    p_leave_type_id VARCHAR(50),
+    p_start_date DATE,
+    p_end_date DATE,
+    p_description VARCHAR(255)
+)
+BEGIN
+    INSERT INTO leaverequest (leave_id,employee_id, leave_type_id, start_date, end_date, description, request_status)
+    VALUES (p_leave_id,p_employee_id, p_leave_type_id, p_start_date, p_end_date, p_description, 'Pending');
+    
+    COMMIT;
+END$$
+
+DELIMITER $$
+
+CREATE PROCEDURE assign_task(
+	p_todo_id VARCHAR(50),
+    p_user_id VARCHAR(50),
+    p_task VARCHAR(255),
+    p_due_date DATE
+)
+BEGIN
+    INSERT INTO todolist (todo_id,user_id, task, due_date, status)
+    VALUES (p_todo_id, p_user_id, p_task, p_due_date, 0);
+    
+    COMMIT;
+END$$
+
+DELIMITER $$
+
+CREATE PROCEDURE get_leave_count_details (
+    IN emply_id VARCHAR(50)
+)
+BEGIN
+    SELECT
+        get_annual_lc(emply_id) AS annual_leave_count,
+        get_casual_lc(emply_id) AS casual_leave_count,
+        get_maternity_lc(emply_id) AS maternity_leave_count,
+        get_nopay_lc(emply_id) AS nopay_leave_count;
+END$$
+
+DELIMITER $$
+
+CREATE PROCEDURE employees_count_by_department()
+BEGIN
+    SELECT d.department_name, COUNT(e.employee_id) AS employee_count
+    FROM department d 
+    LEFT JOIN employee e ON e.department_id = d.department_id
+    GROUP BY d.department_name;
+END$$
+
+DELIMITER $$
+
+CREATE PROCEDURE total_leaves_by_department_in_period (
+    IN p_start_date DATE,
+    IN p_end_date DATE
+)
+BEGIN
+    SELECT d.department_name, SUM(DATEDIFF(lr.end_date, lr.start_date) + 1) AS total_leave_days
+    FROM department d 
+    LEFT JOIN employee e ON d.department_id = e.department_id
+    LEFT JOIN leaverequest lr ON e.employee_id = lr.employee_id
+    WHERE 
+        (lr.start_date BETWEEN p_start_date AND p_end_date 
+        OR lr.end_date BETWEEN p_start_date AND p_end_date)
+        AND lr.request_status = 'Approved'
+    GROUP BY d.department_name;
+END$$
+
+DELIMITER $$
+
+CREATE PROCEDURE get_attendance_count_by_department (
+    p_date DATE, 
+    p_department_name VARCHAR(50)
+)
+BEGIN
+    SELECT COUNT(*) AS attendance_count
+    FROM department d 
+    LEFT JOIN employee e ON e.department_id = d.department_id
+    LEFT JOIN attendance a ON a.employee_id = e.employee_id
+    WHERE d.department_name = p_department_name 
+    AND a.date = p_date 
+    AND a.status = 'Present';
+END$$
+
+
+create procedure get_employee_details(
+    p_employee_id VARCHAR(50)
+)
+begin
+    select 
+        e.employee_id,
+        e.first_name,
+        e.last_name,
+        e.gender,
+        e.nic_number,
+        e.birth_date,
+        e.marital_status,
+        e.address,
+        e.status,
+        jt.job_title_name,
+        d.department_name,
+        b.branch_name,
+        pg.grade
+    from 
+        employee e
+    inner join 
+        jobtitle jt on e.job_title_id = jt.job_title_id
+    inner join 
+        department d on e.department_id = d.department_id
+    inner join 
+        branch b on e.branch_id = b.branch_id
+    inner join 
+        paygrade pg on e.pay_grade_id = pg.pay_grade_id
+    where 
+        e.employee_id = p_employee_id;
+end $$
+
+DELIMITER ;
+
+-- ####################################################### trigger creation queries #######################################################
 DELIMITER $$
 
 CREATE TRIGGER haddle_new_employee
@@ -202,9 +499,7 @@ BEGIN
     DECLARE leave_type_cursor CURSOR FOR 
         SELECT leave_type_id, default_days FROM leavetype;
 
-    
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
-
 
     OPEN leave_type_cursor;
 
@@ -216,8 +511,7 @@ BEGIN
         END IF;
 
         IF is_allowed_leave_type(NEW.pay_grade_id, NEW.gender, current_leave_type_id) = 1 THEN
-
-            INSERT INTO leavecount (employee_id, leave_type_id,rem_leave_count) 
+            INSERT INTO leavecount (employee_id, leave_type_id, rem_leave_count) 
             VALUES (NEW.employee_id, current_leave_type_id, current_default_days);
         END IF;
     END LOOP;
@@ -225,8 +519,23 @@ BEGIN
     CLOSE leave_type_cursor;
 END$$
 
+DELIMITER $$
+
+CREATE TRIGGER update_leave_count
+AFTER UPDATE ON leaverequest
+FOR EACH ROW
+BEGIN
+    IF NEW.request_status = 'Approved' THEN
+        UPDATE leavecount
+        SET rem_leave_count = rem_leave_count - (DATEDIFF(NEW.end_date, NEW.start_date) + 1)
+        WHERE employee_id = NEW.employee_id 
+        AND leave_type_id = NEW.leave_type_id;
+    END IF;
+END$$
+
 DELIMITER ;
 
+-- ####################################################### data insertion queries #######################################################
 INSERT INTO organization (organization_id, organization_name, address, registration_number, latitude, longitude)
 VALUES 
 ('001', 'Jupiter Apparels', 'No. 123, Galle Road, Colombo, Sri Lanka', 'BR123456789', 6.927079, 79.861244);
@@ -234,16 +543,11 @@ VALUES
 
 INSERT INTO paygrade (pay_grade_id, grade)
 VALUES 
-('PG001', 'Junior'),
-('PG002', 'Mid'),
-('PG003', 'Senior'),
-('PG004', 'Lead'),
-('PG005', 'Junior'),
-('PG006', 'Mid'),
-('PG007', 'Senior'),
-('PG008', 'Lead'),
-('PG009', 'Junior'),
-('PG010', 'Senior');
+('PG001', 'Level1'),
+('PG002', 'Level2'),
+('PG003', 'Level3'),
+('PG004', 'Level4');
+
 
 INSERT INTO jobtitle (job_title_id, job_title_name)
 VALUES
@@ -279,27 +583,31 @@ VALUES
 ('DPT009', 'Supply Chain', '001'),
 ('DPT010', 'Research and Development', '001');
 
-INSERT INTO leavetype (`leave_type_id`, `type_name`, `default_days`, `pay_grade_id`, `gender`) VALUES 
-('LT001', 'Sick Leave1', '10', 'PG001', null),
-('LT002', 'Sick Leave2', '12', 'PG002',null),
-('LT003', 'Sick Leave3', '14', 'PG003', null),
-('LT004', 'Sick Leave4', '14', 'PG004', null),
-('LT005', 'Casual Leave1', '12', 'PG001', null),
-('LT006', 'Casual Leave2', '14', 'PG002', null),
-('LT007', 'Casual Leave3', '16', 'PG003', null),
-('LT008', 'Casual Leave4', '18', 'PG004', null),
-('LT009', 'Maternity Leave1', '90', 'PG001', 'female'),
-('LT010', 'Maternity Leave2', '90', 'PG002', 'female'),
-('LT011', 'Maternity Leave3', '100', 'PG003', 'female'),
-('LT012', 'Maternity Leave4', '100', 'PG004', 'female');
+INSERT INTO leavetype (leave_type_id, type_name, default_days, pay_grade_id) VALUES 
+('LT001', 'Casual Leave', 12, 'PG001'),
+('LT002', 'Casual Leave', 14, 'PG002'),
+('LT003', 'Casual Leave', 16, 'PG003'),
+('LT004', 'Casual Leave', 18, 'PG004'),
+('LT005', 'Annual Leave', 20, 'PG001'),
+('LT006', 'Annual Leave', 22, 'PG002'),
+('LT007', 'Annual Leave', 24, 'PG003'),
+('LT008', 'Annual Leave', 26, 'PG004'),
+('LT009', 'Maternity Leave', 90, 'PG001'),
+('LT010', 'Maternity Leave', 90, 'PG002'),
+('LT011', 'Maternity Leave', 100, 'PG003'),
+('LT012', 'Maternity Leave', 100, 'PG004'),
+('LT013', 'No Pay', 50, NULL);
 
 INSERT INTO employee (employee_id, first_name, last_name, birth_date, marital_status, NIC_number, address, status, job_title_id, pay_grade_id, supervisor_id, department_id, profile_pic, branch_id, gender)
 VALUES
-('EMP001', 'John', 'Perera', '1985-08-15', 'Married', 'NIC001', 'No. 25, Union Place, Colombo', 'Active', 'JT001', 'PG003', NULL, 'DPT001', 'profile_john.jpg', 'BR001', 'male'),
-('EMP002', 'Amaya', 'Fernando', '1990-05-21', 'Single', 'NIC002', 'No. 18, Galle Road, Mount Lavinia', 'Active', 'JT002', 'PG002', 'EMP001', 'DPT002', 'profile_amaya.jpg', 'BR001', 'female'),
-('EMP003', 'Nuwan', 'Wijesinghe', '1988-12-10', 'Married', 'NIC003', 'No. 12, Kandy Road, Kandy', 'Active', 'JT003', 'PG003', 'EMP001', 'DPT003', 'profile_nuwan.jpg', 'BR001', 'male'),
-('EMP004', 'Kumari', 'De Silva', '1992-04-12', 'Single', 'NIC004', 'No. 78, Negombo Road, Negombo', 'Active', 'JT004', 'PG002', 'EMP001', 'DPT007', 'profile_kumari.jpg', 'BR001', 'female'),
-('EMP005', 'Saman', 'Ratnayake', '1987-11-05', 'Married', 'NIC005', 'No. 33, Highlevel Road, Maharagama', 'Active', 'JT005', 'PG003', 'EMP001', 'DPT004', 'profile_saman.jpg', 'BR001', 'male');
+('EMP001', 'John', 'Perera', '1985-08-15', 'Married', 'NIC001', 'No. 25, Union Place, Colombo', 'Permanent', 'JT001', 'PG003', NULL, 'DPT001', 'profile_john.jpg', 'BR001', 'male'),
+('EMP002', 'Amaya', 'Fernando', '1990-05-21', 'Single', 'NIC002', 'No. 18, Galle Road, Mount Lavinia', 'Permanent', 'JT002', 'PG002', 'EMP001', 'DPT002', 'profile_amaya.jpg', 'BR001', 'female'),
+('EMP003', 'Nuwan', 'Wijesinghe', '1988-12-10', 'Married', 'NIC003', 'No. 12, Kandy Road, Kandy', 'Permanent', 'JT003', 'PG003', 'EMP001', 'DPT003', 'profile_nuwan.jpg', 'BR001', 'male'),
+('EMP004', 'Kumari', 'De Silva', '1992-04-12', 'Single', 'NIC004', 'No. 78, Negombo Road, Negombo', 'Contract parttime', 'JT004', 'PG003', 'EMP001', 'DPT007', 'profile_kumari.jpg', 'BR001', 'female' ),
+('EMP005', 'Saman', 'Ratnayake', '1987-11-05', 'Married', 'NIC005', 'No. 33, Highlevel Road, Maharagama', 'Permanent', 'JT005', 'PG003', 'EMP001', 'DPT004', 'profile_saman.jpg', 'BR001', 'male'),
+('EMP006', 'Tharusha', 'Galappaththi', '1985-12-07', 'Married', 'NIC006', 'No. 77/1, Anandarama Road, Maharagama', 'Intern fultime', 'JT003', 'PG002', 'EMP001', 'DPT003', 'profile_tharusha.jpg', 'BR001', 'male'),
+('EMP007', 'Kasun', 'Kumaranayake', '1990-08-17', 'Single', 'NIC007', 'No. 563, Yatiyana Road, Matara', 'Permanent', 'JT005', 'PG002', 'EMP001', 'DPT002', 'profile_kasun.jpg', 'BR001', 'male' ),
+('EMP008', 'Sajitha', 'Gallage', '1992-10-12', 'Married', 'NIC008', 'No. 28/C, Galle Road, Ambepitiya', 'Freelance', 'JT004', 'PG003', 'EMP001', 'DPT004', 'profile_sajitha.jpg', 'BR001', 'male') ;
 
 INSERT INTO customattribute (employee_id, key_1, value_1, key_2, value_2, key_3, value_3)
 VALUES

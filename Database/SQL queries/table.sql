@@ -1,3 +1,5 @@
+drop database hrms;
+-- table creation queries
 create database hrms;
 use hrms;
 CREATE TABLE organization (
@@ -11,7 +13,7 @@ CREATE TABLE organization (
 
 CREATE TABLE paygrade (
     pay_grade_id VARCHAR(50) PRIMARY KEY,
-    grade ENUM('Junior', 'Mid', 'Senior', 'Lead')
+    grade ENUM('Level1', 'Level2', 'Level3', 'Level4')
 );
 
 CREATE TABLE jobtitle (
@@ -32,6 +34,7 @@ CREATE TABLE department (
     FOREIGN KEY (organization_id) REFERENCES organization(organization_id)
 );
 
+
 CREATE TABLE employee (
     employee_id VARCHAR(50) PRIMARY KEY,
     first_name VARCHAR(50),
@@ -40,7 +43,7 @@ CREATE TABLE employee (
     marital_status VARCHAR(50),
     NIC_number VARCHAR(50),
     address VARCHAR(50),
-    status ENUM('Active', 'Inactive'),
+    status ENUM('Intern parttime','Intern fultime','Contract parttime','Contract fultime','Permanent','Freelance'),
     job_title_id VARCHAR(50),
     pay_grade_id VARCHAR(50),
     supervisor_id VARCHAR(50),
@@ -107,10 +110,9 @@ CREATE TABLE attendance (
 
 CREATE TABLE leavetype (
     leave_type_id VARCHAR(50) PRIMARY KEY,
-    type_name VARCHAR(50),
+    type_name ENUM('Casual Leave', 'Annual Leave', 'Maternity Leave', 'No Pay'),
     default_days INT,
     pay_grade_id VARCHAR(50),
-    gender ENUM('male', 'female'),
     FOREIGN KEY (pay_grade_id) REFERENCES paygrade(pay_grade_id)
 );
 

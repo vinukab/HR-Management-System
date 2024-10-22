@@ -14,7 +14,7 @@ const SideBar = ({ activePanel, role }) => {
     */
     const changePanel = (panel) => {
         if (panel === 0) router.push('/dashboard');
-        else if (panel === 1) router.push('/employeemanagement');
+        else if (panel === 1) router.push('/createemployee');
         else if (panel === 2) router.push('/profile');
         else if (panel === 3) router.push('/leave');
         else if (panel === 4) router.push('/reports');
@@ -34,11 +34,11 @@ const SideBar = ({ activePanel, role }) => {
             </div>
 
             {/* Employee Management (Admin Only) */}
-            {role === 'admin' && (
+            {role === 'Admin' && (
                 <div onClick={() => changePanel(1)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 1), 'bg-rose-700': (activePanel === 1) })}>
                     <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                         <User2Icon className="mr-1" />
-                        Employee Management
+                        Create Employee
                     </button>
                 </div>
             )}
@@ -52,7 +52,7 @@ const SideBar = ({ activePanel, role }) => {
             </div>
 
             {/* Leave Management (Admin Only) */}
-            {role === 'admin' && (
+            {role === 'Admin' && (
                 <div onClick={() => changePanel(3)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 3), 'bg-rose-700': (activePanel === 3) })}>
                     <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                         <Leaf className="mr-1" />
@@ -62,7 +62,7 @@ const SideBar = ({ activePanel, role }) => {
             )}
 
             {/* Reports (Admin Only) */}
-            {role === 'admin' && (
+            {role === 'Admin' && (
                 <div onClick={() => changePanel(4)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 4), 'bg-rose-700': (activePanel === 4) })}>
                     <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                         <ClipboardMinus className="mr-1" />
