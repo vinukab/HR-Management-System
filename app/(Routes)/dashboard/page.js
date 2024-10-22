@@ -7,12 +7,8 @@ import EmployeeDashboard from './EmployeeDashboard';
 import AdminDashboard from './AdminDashboard';
 import HRManagerDashboard from './HRManagerDashboard';
 import SupervisorDashboard from './SupervisorDashboard';
-<<<<<<< HEAD
 import User from '@/app/models/userModel';
 import { useRouter } from 'next/navigation';
-=======
-
->>>>>>> e22797854196b4b1d7647aa0a18e51e7b7ebe663
 const Dashboard = () => {
   const [username, setUsername] = useState(null);
   const [role, setRole] = useState(null);
@@ -73,11 +69,7 @@ const Dashboard = () => {
     <div className={classNames(loading ? "hidden" : "block")}>
       {username && (
         <>
-<<<<<<< HEAD
           <SideBar activePanel={0} role = {role} />
-=======
-          <SideBar activePanel={0} role = {userData.role} />
->>>>>>> e22797854196b4b1d7647aa0a18e51e7b7ebe663
           <div className="flex flex-col lg:ml-56 ">
             {renderDashboard()}
           </div>
