@@ -61,3 +61,28 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+create procedure ProcessLeaveCount (
+	in p_leave_id VARCHAR(50),
+    in p_new_status ENUM('Pending', 'Approved', 'Rejected')
+)
+begin
+	update leaverequest
+    set request_status = p_new_status
+    where leave_id = p_leave_id;
+    
+    if p_new_status = 'Approved' then
+		declare leave_days int
+		set leave_days = datediff(
+		    (select end_date from leaverequest where leave_id = p_leave_id),
+		    (select start_date from leaverequest where leave_id = p_leave_id)
+		) + 1;
+		update leavecount
+		set rem_leave_count = rem_leave_count - leave_days
+		where employee_id = (select employee_id from leaverequest where leave_id = p_leave_id)
+			  and leave_type_id = (select leave_type_id from leaverequest where leave_id = p_leave_id);
+    end if;
+end;
+

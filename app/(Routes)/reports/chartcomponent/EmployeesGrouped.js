@@ -43,16 +43,8 @@ export default function EmployeesGrouped() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/employees-grouped");
-        // const data = await response.json(); // Uncomment in production
-
-        const data = [
-          { label: "HR", job_title: 15, department: 12, pay_grade: 5 },
-          { label: "Engineering", job_title: 40, department: 35, pay_grade: 10 },
-          { label: "Sales", job_title: 25, department: 22, pay_grade: 12 },
-          { label: "Marketing", job_title: 20, department: 18, pay_grade: 8 },
-          { label: "Finance", job_title: 12, department: 10, pay_grade: 4 },
-        ];
+        const response = await fetch("http://localhost:5000/c/employees-grouped");
+        const data = await response.json(); 
 
         setChartData(data); // Use fetched data or sample data
       } catch (error) {

@@ -43,17 +43,16 @@ export default function TotalLeavesByDepartment() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/leaves-by-department");
-        // const data = await response.json(); // Uncomment for real data
+        const response = await fetch("http://localhost:5000/b/department-leaves");
+        //const data = await response.json(); 
         const data = [
-          { month: "January", HR: 12, Engineering: 30, Sales: 25 },
-          { month: "February", HR: 10, Engineering: 40, Sales: 20 },
-          { month: "March", HR: 8, Engineering: 35, Sales: 30 },
-          { month: "April", HR: 15, Engineering: 25, Sales: 22 },
-          { month: "May", HR: 18, Engineering: 28, Sales: 35 },
-          { month: "June", HR: 20, Engineering: 32, Sales: 27 },
+          { department_name: 'HR', employee_count: 12 },
+          { department_name: 'Engineering', employee_count: 35 },
+          { department_name: 'Sales', employee_count: 22 },
+          { department_name: 'Marketing', employee_count: 18 },
+          { department_name: 'Finance', employee_count: 10 }
         ];
-
+      
         setChartData(data);
       } catch (error) {
         console.error("Error fetching chart data:", error);

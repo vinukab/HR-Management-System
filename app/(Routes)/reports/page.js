@@ -2,32 +2,30 @@ import EmployeeByDepartment from "./chartcomponent/EmployeeByDepartment";
 import EmployeesGrouped from "./chartcomponent/EmployeesGrouped";
 import CustomFieldsReport from "./chartcomponent/CustomReportsField";
 import TotalLeavesByDepartment from "./chartcomponent/TotalLeavesByDepartment";
+//import Sidebar from "./chartcomponent/sidebar";
 
 const ReportPage = () => {
   return (
-    <div>
-      <table border="1" cellPadding="1" cellSpacing="0" style={{ width: "100%", tableLayout: "fixed" }}>
-        <tbody>
+    <div style={{ backgroundColor: "#121212", display: "flex" }}>
+      {/* <Sidebar /> Sticky sidebar */}
+      
+      <div style={{ marginLeft: '220px', padding: '20px', width: '80%' }}> {/* Main content */}
+        <section id="employee-by-department">
+          <EmployeeByDepartment />
+        </section>
 
-          <tr>
-            <td style={{ height: "400px", verticalAlign: "top" }}>
-              <EmployeeByDepartment />
-            </td>
-            <td style={{ height: "400px", verticalAlign: "top" }}>
-                <TotalLeavesByDepartment />
-            </td>
-          </tr>
+        <section id="total-leaves">
+          <TotalLeavesByDepartment />
+        </section>
 
-          <tr>
-            <td style={{ height: "100%", verticalAlign: "top" }}>
-                <EmployeesGrouped />
-            </td>
-            <td style={{ height: "100%", verticalAlign: "top" }}>
-                <CustomFieldsReport />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <section id="employees-grouped">
+          <EmployeesGrouped />
+        </section>
+
+        <section id="custom-fields">
+          <CustomFieldsReport />
+        </section>
+      </div>
     </div>
   );
 };

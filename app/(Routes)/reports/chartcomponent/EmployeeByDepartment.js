@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TrendingUp } from "lucide-react";
 import { ResponsiveContainer, Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell } from "recharts";
 
 import {
@@ -13,7 +12,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -35,18 +33,14 @@ export default function EmployeeByDepartment() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/employees-by-department');
-        //const data = await response.json(); // Uncomment in production
-
-        const data = [
-          { department_name: 'HR', employee_count: 12 },
-          { department_name: 'Engineering', employee_count: 35 },
-          { department_name: 'Sales', employee_count: 22 },
-          { department_name: 'Marketing', employee_count: 18 },
-          { department_name: 'Finance', employee_count: 10 }
-        ];
-        
-        setChartData(data); // Use fetched data or sample data
+        const response = await fetch('http://localhost:5000/a/emp-report', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+        const data = await response.json();
+        setChartData(data);
       } catch (error) {
         console.error('Error fetching chart data:', error);
       }
@@ -62,34 +56,57 @@ export default function EmployeeByDepartment() {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <div style={{ width: '80%', height: '100%', margin: '0 auto' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="department_name"
-                  tickLine={false}
-                  tickMargin={10}
-                  axisLine={false}
-                />
-                <YAxis />
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent indicator="dashed" />}
-                />
-                <Bar dataKey="employee_count" radius={4}>
-                  {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={['#243642', '#387478', '#629584', '#E2F1E7', '#ECDFCC'][index % 5]} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', margin: '0 auto' }}>
+            <div style={{ width: '35%', height: '900px', overflow: 'auto' }}>
+              <h3 className="text-center text-xl font-semibold mb-4">Employee Distribution Table</h3>
+              <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border border-gray-200 py-2 px-4 text-left">Department</th>
+                    <th className="border border-gray-200 py-2 px-4 text-left">Number of Employees</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {chartData.map((department, index) => (
+                    <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                      <td className="border border-gray-200 py-2 px-4">{department.department_name}</td>
+                      <td className="border border-gray-200 py-2 px-4">{department.employee_count}</td>
+                    </tr>
                   ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+                </tbody>
+              </table>
+            </div>
+            <div style={{ width: '60%', height: '600px' }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="department_name"
+                    tickLine={false}
+                    tickMargin={10}
+                    axisLine={false}
+                    angle={-90}
+                    textAnchor="end"
+                    height={150}
+                  />
+                  <YAxis />
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent indicator="dashed" />}
+                    
+                  />
+                  <Bar dataKey="employee_count" radius={4}>
+                    {chartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={['#243642', '#387478', '#629584', '#E2F1E7', '#ECDFCC'][index % 5]} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        {/* Additional footer content can be added here */}
-      </CardFooter>
+      <CardFooter className="flex-col items-start gap-2 text-sm"></CardFooter>
     </Card>
   );
 }

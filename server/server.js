@@ -13,6 +13,10 @@ const { getTodoList,addTodo, deleteTodo, } = require('./todolist');
 const { getEmployeeLeaves, updateLeaveStatus, addLeaveRequest, getLeaveTypes, getLeaveRequestofUser } = require('./leaverequests');
 const { auth } = require('./authToken');
 
+const empReport =require('./employeeByDepartment');
+const leaveReport =require('./totalLeavesByDepartment');
+const groupedReport =require('./employeesGrouped');
+
 const app = express();
 const port = 5000;
 
@@ -61,6 +65,10 @@ app.get('/leavetypes', getLeaveTypes);
 app.get('/leaverequest', getLeaveRequestofUser);
 
 app.get('/auth', auth);
+
+app.use('/a', empReport);
+app.use('/b',leaveReport);
+app.use('/c',groupedReport);
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
