@@ -611,11 +611,11 @@ VALUES
 
 INSERT INTO customattribute (employee_id, key_1, value_1, key_2, value_2, key_3, value_3)
 VALUES
-('EMP001', 'Blood Group', 'O+', 'Hobbies', 'Photography', 'Language Skills', 'English, Sinhala'),
-('EMP002', 'Blood Group', 'A-', 'Hobbies', 'Reading', 'Language Skills', 'English, Sinhala'),
-('EMP003', 'Blood Group', 'B+', 'Hobbies', 'Cycling', 'Language Skills', 'English, Sinhala, Tamil'),
-('EMP004', 'Blood Group', 'AB+', 'Hobbies', 'Cooking', 'Language Skills', 'English, Sinhala'),
-('EMP005', 'Blood Group', 'O-', 'Hobbies', 'Travelling', 'Language Skills', 'English, Sinhala');
+('EMP001', 'Blood Group', 'O+', 'Hobbies', 'Photography', 'Nationality', 'Sri Lankan'),
+('EMP002', 'Blood Group', 'A-', 'Hobbies', 'Reading', 'Nationality', 'Pakistani'),
+('EMP003', 'Blood Group', 'B+', 'Hobbies', 'Cycling', 'Nationality', 'Sri Lankan'),
+('EMP004', 'Blood Group', 'A+', 'Hobbies', 'Cooking', 'Nationality', 'Bangladeshi'),
+('EMP005', 'Blood Group', 'O-', 'Hobbies', 'Travelling', 'Nationality', 'Pakistani');
 
 INSERT INTO emergencyperson (person_id, person_name, relationship, address, employee_id)
 VALUES
