@@ -118,7 +118,29 @@ const leaveController = {
             console.error(err);
             res.status(400).json({ error: 'Error fetching leave requests' });
         }
+    },
+
+    getLeaveCountDetails: async (req, res) => {
+        try {
+            const token = req.cookies['user'].token;
+            if (!token) return res.status(401).json({ message: 'No token found' });
+
+            const verified = jwt.verify(token, secretKey);
+            const employee_id = verified.employee_id;
+          
+            const leaveCountDetails = await leaveModel.getLeaveCountDetails(employee_id);
+            console.log(leaveCountDetails);
+            // Send the leave count details in the response
+            res.status(200).json(leaveCountDetails);
+        } catch (err) {
+            console.error(err);
+            res.status(400).json({ error: 'Error fetching leave count details' });
+        }
     }
+
+    
+    
+
 };
 
 module.exports = leaveController;

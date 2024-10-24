@@ -36,6 +36,27 @@ const leaveModel = {
             WHERE employee_id = ?`;
         const [leaveRequests] = await pool.query(query, [employee_id]);
         return leaveRequests;
+    },
+
+    getLeaveCountDetails: async (employee_id) => {
+        const query = `CALL get_leave_count_details(?);`;
+        try {
+            const [result] = await pool.query(query, [employee_id]);
+            if (!result || result.length === 0) {
+                throw new Error('No leave count details found.');
+            }
+            
+            // Return the leave count details from the first row
+            return {
+                annual_leave_count: result[0][0].annual_leave_count,
+                casual_leave_count: result[0][0].casual_leave_count,
+                maternity_leave_count: result[0][0].maternity_leave_count,
+                nopay_leave_count: result[0][0].nopay_leave_count
+            };
+        } catch (err) {
+            console.error('Error fetching leave count details:', err);
+            throw err;  // Optionally propagate the error
+        }
     }
 };
 
