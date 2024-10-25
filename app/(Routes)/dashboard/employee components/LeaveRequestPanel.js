@@ -21,7 +21,7 @@ const LeaveRequestPanel = () => {
     }, []);
 
     return (
-        <Card className='m-1' style={{ height: '500px' }}>
+        <Card className='m-1' style={{ height: '600px' }}>
             <CardHeader >
                 <CardTitle>Employee Leave</CardTitle>
             </CardHeader>

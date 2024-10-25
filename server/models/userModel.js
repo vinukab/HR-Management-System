@@ -42,24 +42,30 @@ const User = {
                     employee_id: userData.employee_id
                 },
                 secretKey,
-                { expiresIn: '1h' }
+                { expiresIn: '10h' }
             );
-            console.log(User)
-            return User.create(
-                userData.user_id,
-                userData.username,
-                Role[userData.role],
-                userData.employee_id,
-                token
-            );
+            
+            return token;
         } catch (error) { 
             console.error('Error during login:', error);
             return undefined;
         }
     },
+
     async getUserDetails(token) {
         const verified = jwt.verify(token, secretKey);
         return {username: verified.username, role: verified.role, employee_id: verified.employee_id};
+    },
+
+    async getUserProfile(user_id) {
+        try{
+            const query = 'SELECT profile_pic FROM employee WHERE employee_id = ?;';
+            const [rows] = await pool.query(query, [user_id]);
+            return 'http://localhost:5000' + rows[0].profile_pic ;
+        }catch(error){
+            console.error('Error during get user profile:', error);
+            return undefined;
+        }
     }
 };
 

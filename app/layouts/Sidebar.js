@@ -1,8 +1,11 @@
+'use client';
 import classNames from "classnames";
 import { ClipboardMinus, Clock, LayoutDashboard, Leaf, Settings, User2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import User from "../models/userModel";
 
-const SideBar = ({ activePanel, role }) => {
+const SideBar = ({ activePanel }) => {
     const router = useRouter();
 
     /*  0: Dashboard
@@ -12,6 +15,22 @@ const SideBar = ({ activePanel, role }) => {
         4: Reports
         5: Settings
     */
+
+    const [role, setRole] = useState('');
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const tempRole = await User.getRole();
+                console.log(tempRole);
+                setRole(tempRole);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchUserData();
+    }, []);
+
     const changePanel = (panel) => {
         if (panel === 0) router.push('/dashboard');
         else if (panel === 1) router.push('/createemployee');
@@ -20,6 +39,7 @@ const SideBar = ({ activePanel, role }) => {
         else if (panel === 4) router.push('/reports');
         else if (panel === 5) router.push('/settings');
     }
+
     return (
         <div className="flex-col h-screen fixed left-0 bg-black w-56 items-center gap-4 rounded-r-xl hidden lg:flex">
             <img src="logo.png" className="w-full p-5 pt-5" alt="Logo" />
@@ -32,8 +52,8 @@ const SideBar = ({ activePanel, role }) => {
                 </button>
             </div>
 
-            {/* Employee Management (Admin Only) */}
-            {role === 'Admin' && (
+            {/* Employee Management (Admin and HR Manager Only) */}
+            {(role === "Admin" || role === "HR Manager") && (
                 <div onClick={() => changePanel(1)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 1), 'bg-rose-700': (activePanel === 1) })}>
                     <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                         <User2Icon className="mr-1" />
@@ -50,8 +70,8 @@ const SideBar = ({ activePanel, role }) => {
                 </button>
             </div>
 
-            {/* Leave Management (Admin Only) */}
-            {role === 'Admin' && (
+            {/* Leave Management (Admin, Supervisor, HR Manager Only) */}
+            {(role === "Admin" || role === "Supervisor" || role === "HR Manager") && (
                 <div onClick={() => changePanel(3)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 3), 'bg-rose-700': (activePanel === 3) })}>
                     <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                         <Leaf className="mr-1" />
@@ -60,8 +80,8 @@ const SideBar = ({ activePanel, role }) => {
                 </div>
             )}
 
-            {/* Reports (Admin Only) */}
-            {role === 'Admin' && (
+            {/* Reports (Admin, Supervisor, HR Manager Only) */}
+            {(role === "Admin" || role === "Supervisor" || role === "HR Manager") && (
                 <div onClick={() => changePanel(4)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 4), 'bg-rose-700': (activePanel === 4) })}>
                     <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                         <ClipboardMinus className="mr-1" />
@@ -70,13 +90,6 @@ const SideBar = ({ activePanel, role }) => {
                 </div>
             )}
 
-            {/* Settings */}
-            <div onClick={() => changePanel(5)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 5), 'bg-rose-700': (activePanel === 5) })}>
-                <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
-                    <Settings className="mr-1" />
-                    Settings
-                </button>
-            </div>
         </div>
     );
 }

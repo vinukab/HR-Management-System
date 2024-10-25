@@ -6,22 +6,19 @@ const insertEmployee = async (employeeData) => {
   const sql = `
     INSERT INTO Employee (
       employee_id, first_name, last_name, birth_date, marital_status, NIC_number,
-      address, status, job_title_id, pay_grade_id, supervisor_id, 
-      department_id, profile_pic, branch_id, gender
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? );
+      address,gender,profile_pic
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
   `;
-  
-  const { firstName, lastName, birthDate, maritalStatus, NIC, address, status, jobTitleId, payGradeId, supervisorId, departmentId, branchId, profilePic, gender } = employeeData;
+  const employee_id = uuidv4();
+  const { firstName, lastName, birthDate, maritalStatus, NIC, address, profilePic, gender} = employeeData;
   console.log(gender);
   const [result] = await pool.query(sql, [
-    uuidv4(), firstName, lastName, birthDate, maritalStatus, NIC,
-    address, status, jobTitleId, payGradeId, supervisorId, 
-    departmentId, profilePic, branchId, gender
+    employee_id, firstName, lastName, birthDate, maritalStatus, NIC,
+    address,gender,profilePic
   ]);
 
-  return result;
+  return employee_id;
 };
-
 
 const createEmployee = async (req, res) => {
   try {
@@ -32,12 +29,6 @@ const createEmployee = async (req, res) => {
       maritalStatus,
       NIC,
       address,
-      status,
-      jobTitleId,
-      payGradeId,
-      supervisorId,
-      departmentId,
-      branchId,
       gender
     } = req.body;
 
@@ -50,19 +41,13 @@ const createEmployee = async (req, res) => {
       maritalStatus,
       NIC,
       address,
-      status,
-      jobTitleId,
-      payGradeId,
-      supervisorId,
-      departmentId,
-      branchId,
-      profilePic,
-      gender
+      gender,
+      profilePic
     };
 
-    await insertEmployee(newEmployee);
+    const employee_id = await insertEmployee(newEmployee);
 
-    res.status(201).json({ message: 'Employee created successfully!' });
+    res.status(201).json({ employee_id });
 
   } catch (err) {
     console.log(err);
@@ -70,4 +55,32 @@ const createEmployee = async (req, res) => {
   }
 };
 
-module.exports = {createEmployee};
+const updateEmployeeDetails = async (req, res) => {
+
+  const { employeeId, jobTitleId, payGradeId, supervisorId, departmentId, branchId } = req.body;
+  console.log(employeeId, jobTitleId, payGradeId, supervisorId, departmentId, branchId);
+  try {
+      const result = await pool.query(`
+          UPDATE employee
+          SET job_title_id = ?, pay_grade_id = ?, supervisor_id = ?, department_id = ?, branch_id = ?
+          WHERE employee_id = ?
+      `, [jobTitleId, payGradeId, supervisorId, departmentId, branchId, employeeId]);
+
+      return res.status(200).json({ message: 'Employee details updated successfully' });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+module.exports = {
+  createEmployee,
+  updateEmployeeDetails
+};
+
+const addDependencies = async (req, res) => {
+  
+}
+
+const addcustomattributes = async (req, res) => {}
+
+const addContactDetails = async (req, res) => {}  

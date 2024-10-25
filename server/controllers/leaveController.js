@@ -6,7 +6,7 @@ const secretKey = '1234';
 const leaveController = {
     getEmployeeLeaves: async (req, res) => {
         try {
-            const token = req.cookies['user'].token;
+            const token = req.cookies['user'];
             if (!token) return res.status(401).json({ message: "No token found" });
 
             const verified = jwt.verify(token, secretKey);
@@ -17,7 +17,6 @@ const leaveController = {
             if (!employeeLeaves || employeeLeaves.length === 0) {
                 return res.status(404).json({ message: 'No leave records found' });
             }
-            console.log(employeeLeaves)
             const processedLeaves = employeeLeaves.map(leave => {
                 const startDate = new Date(leave.start_date);
                 const endDate = new Date(leave.end_date);
@@ -44,7 +43,7 @@ const leaveController = {
 
     updateLeaveStatus: async (req, res) => {
         try {
-            const token = req.cookies['user'].token;
+            const token = req.cookies['user'];
             if (!token) return res.status(401).json({ message: "No token found" });
 
             const verified = jwt.verify(token, secretKey);
@@ -62,7 +61,7 @@ const leaveController = {
 
     addLeaveRequest: async (req, res) => {
         try {
-            const token = req.cookies['user'].token;
+            const token = req.cookies['user'];
             if (!token) return res.status(401).json({ message: 'No token found' });
 
             const verified = jwt.verify(token, secretKey);
@@ -80,7 +79,8 @@ const leaveController = {
 
     getLeaveTypes: async (req, res) => {
         try {
-            const leaveTypes = await leaveModel.getLeaveTypes();
+            const token = req.cookies['user'];
+            const leaveTypes = await leaveModel.getLeaveTypes(token);
             res.status(200).json(leaveTypes);
         } catch (err) {
             console.error(err);
@@ -122,14 +122,13 @@ const leaveController = {
 
     getLeaveCountDetails: async (req, res) => {
         try {
-            const token = req.cookies['user'].token;
+            const token = req.cookies['user'];
             if (!token) return res.status(401).json({ message: 'No token found' });
 
             const verified = jwt.verify(token, secretKey);
             const employee_id = verified.employee_id;
           
             const leaveCountDetails = await leaveModel.getLeaveCountDetails(employee_id);
-            console.log(leaveCountDetails);
             // Send the leave count details in the response
             res.status(200).json(leaveCountDetails);
         } catch (err) {

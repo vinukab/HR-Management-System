@@ -11,28 +11,30 @@ import Title from "@/app/layouts/Titlebar";
 const ReportPage = () => {
   return (
     <>
-    <SideBar activePanel={0} role = {User.getRole} />
-    <div className="ml-56"> 
-
+    <SideBar activePanel={0}/>
+    <div className="ml-56 flex flex-col gap-1"> 
       <Title/>
-      <div className="">
-        {/* Main content */}
-        <section id="employee-by-department">
-          <EmployeeByDepartment />
-        </section>
+      <div className="flex gap-1">
+          <section className="w-1/2" id="employee-by-department">
+            <EmployeeByDepartment />
+          </section>
 
-        <section id="total-leaves">
-          <TotalLeavesByDepartment />
-        </section>
+          <section className="w-1/2" id="total-leaves">
+            <TotalLeavesByDepartment />
+          </section>
+        </div>
 
-        <section id="employees-grouped">
-          <EmployeesGrouped />
-        </section>
+        <div>
+          <section id="custom-fields">
+            <CustomFieldsReport />
+          </section>
+        </div>
 
-        <section id="custom-fields">
-          <CustomFieldsReport />
-        </section>
-      </div>
+        <div className="gap-1">
+          <section className="w-1/2" id="employees-grouped">
+            <EmployeesGrouped />
+          </section>
+        </div>
     </div>
     </>
   );

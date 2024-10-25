@@ -5,6 +5,7 @@ import SupervisorClock from "./supervisor components/SupervisorClock";
 import CreatLeaveRequest from "./employee components/CreateLeaveRequest";
 import EmployeeToDOList from "./employee components/EmployeeToDOList";
 import {LeaveStaticstics} from "./supervisor components/LeaveStaticstics";
+import LeaveRequestPanel from "./employee components/LeaveRequestPanel";
 
 const SupervisorDashboard = () => {
     
@@ -13,15 +14,15 @@ const SupervisorDashboard = () => {
             <Title />
             <div className="flex flex-row">
                 <div className="flex-grow">
-                    <SupervisorClock/>
                     <SupervisorLeavePanel/>
                 </div>
-                <LeaveStaticstics />
             </div>
             <div className="flex flex-row w-full">
-                <EmployeeToDOList />
+                <CreatLeaveRequest/>
+                <LeaveRequestPanel/>
                 <RemLeaveCounts />
             </div>
+            <EmployeeToDOList />
         </div>
     );
 }

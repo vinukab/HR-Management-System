@@ -1,3 +1,4 @@
+'use client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -48,8 +49,7 @@ const CreateLeaveRequest = () => {
     }
   });
 
-  const onSubmit = (data) => {
-    console.log('Submitting data:', data);
+  const onSubmit = async(data) => {
     const { start_date, end_date, leave_type, description } = data;
     const formattedData = {
       start_date: format(new Date(start_date), "yyyy-MM-dd"),
@@ -57,11 +57,10 @@ const CreateLeaveRequest = () => {
       leave_type,
       description
     };
-    console.log('Formatted data:', formattedData);
-
-    axios.post('http://localhost:5000/leave/add', formattedData, { withCredentials: true })
+    await axios.post('http://localhost:5000/leave/add', formattedData, { withCredentials: true })
       .then(res => console.log(res))
       .catch(err => console.error(err));
+    alert('Leave request submitted successfully');
   };
 
   const [leaveTypes, setLeaveTypes] = useState([]);

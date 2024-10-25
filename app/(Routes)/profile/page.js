@@ -61,102 +61,89 @@ const EmployeeDirectory = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      {/* Sidebar Component - Fixed on the left */}
-      <SideBar activePanel={0} role={'Admin'} />
+      <div className="container mx-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-semibold">User Profile</h1>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">Edit</button>
+        </div>
 
-      {/* Main Content Container with Margin for the Sidebar */}
-      <div className="lg:ml-60">
-        <div className="container mx-auto">
-          {/* Title Component - Navbar with Search */}
-          <div className="flex flex-col mb-8">
-            <div className="flex flex-row items-center justify-between h-20 rounded-xl px-4 bg-gradient-to-r m-1 from-indigo-500 via-purple-500 to-pink-500">
-              <div className="flex items-center space-x-2 bg-white p-2 rounded-xl w-5/12 h-10 max-w-96">
-                <LayoutDashboard />
-                {/* Search Bar */}
-                <textarea
-                  className="w-full h-full border-none focus:outline-none resize-none text-sm"
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)} // Update search term state
-                ></textarea>
-              </div>
-              <div className="flex space-x-4 text-gray-600">
-                <Bell />
-                <Mail />
-                <Popover>
-                  <PopoverTrigger>
-                    <div className="flex flex-row items-center space-x-2">
-                      <Avatar>
-                        <AvatarImage src="http://localhost:5000/uploads/Gaming_5000x3125.jpg" />
-                        <AvatarFallback>CN</AvatarFallback>
-                      </Avatar>
-                      <div className="flex flex-col text-xs">
-                        <div className="font-semibold">Thimira Sahan</div>
-                        <div className="text-xs">Admin</div>
-                      </div>
-                    </div>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-50 -ml-12">
-                    <div className="flex gap-2">
-                      <Avatar>
-                        <AvatarImage src="https://github.com/vercel.png" />
-                        <AvatarFallback>VC</AvatarFallback>
-                      </Avatar>
-                      <div className="">
-                        <h4 className="text-sm font-semibold">@Thimira Sahan</h4>
-                        <p className="text-sm">Admin</p>
-                        <div className="flex items-center pt-2">
-                          <Button onClick={signOut}>
-                            Logout
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </div>
+        <div className="flex space-x-8">
+          {/* Left Column - Profile Picture and General Information */}
+          <div className="w-1/3">
+            <Card className="bg-white p-6 rounded-lg shadow-md">
+              <CardContent>
+                <div className="flex flex-col items-center">
+                  <img
+                    src="/profile.jpg" // Replace with the profile image URL
+                    alt="User Profile"
+                    className="rounded-full w-32 h-32 object-cover mb-4"
+                  />
+                  <CardTitle className="text-xl font-semibold text-center mb-2">
+                    Khan Muhammad Nafiul Akbor
+                  </CardTitle>
+                  <p className="text-center text-gray-600 mb-4">Frontend Developer</p>
+
+                  {/* General Information */}
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <p><strong>Mobile:</strong> +880 123456789</p>
+                    <p><strong>Email:</strong> martin@gmail.com</p>
+                    <p><strong>Department:</strong> Tech</p>
+                    <p><strong>Branch:</strong> Barikoi HQ</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          <div className="flex space-x-8">
-            {/* Left Column - Employee Cards */}
-            <div className="w-full space-y-6">
-              {/* Render Employee Cards */}
-              {filteredEmployees.length > 0 ? (
-                filteredEmployees.map((employee) => (
-                  <Card key={employee.employee_id} className="bg-white p-6 rounded-lg shadow-md">
-                    <CardContent className="flex items-center">
-                      <img
-                        src={employee.profile_pic || '/default-profile.jpg'} // Use employee profile picture or default
-                        alt={`${employee.first_name} ${employee.last_name}`}
-                        className="rounded-full w-16 h-16 object-cover"
-                      />
-                      <div className="ml-6">
-                        <CardTitle className="text-xl font-semibold">
-                          {`${employee.first_name} ${employee.last_name}`}
-                        </CardTitle>
-                        <CardDescription>{employee.job_title}</CardDescription>
-                        <p className="text-gray-600">{employee.department}</p>
-                        <a href={`mailto:${employee.email}`} className="text-blue-600">{employee.email}</a>
-                      </div>
-                    </CardContent>
-                    <div className="p-4 flex space-x-2">
-                      <span className="inline-block bg-blue-100 text-blue-800 text-sm font-medium px-2 py-1 rounded">
-                        {employee.status}
-                      </span>
-                      {/* Add more badges if necessary */}
-                    </div>
-                  </Card>
-                ))
-              ) : (
-                <p className="text-gray-500">No employees found.</p> // Message if no employees match search
-              )}
-            </div>
+          {/* Right Column - Personal Information and Office Information */}
+          <div className="flex-1 space-y-8">
+            {/* Personal Information */}
+            <Card className="bg-white p-6 rounded-lg shadow-md">
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">Personal Information</CardTitle>
+              </CardHeader>
+              <CardContent className="grid grid-cols-2 gap-6 text-sm text-gray-600">
+                <div>
+                  <p><strong>NID No:</strong> 5432678910</p>
+                  <p><strong>Date of Birth:</strong> 04/11/1993</p>
+                  <p><strong>Last Working Place:</strong> Etech</p>
+                </div>
+                <div>
+                  <p><strong>TIN:</strong> 564738564738</p>
+                  <p><strong>Blood Group:</strong> B+</p>
+                  <p><strong>Gender:</strong> Male</p>
+                </div>
+                <div className="col-span-2">
+                  <p><strong>House Address:</strong> 374/A, Free School Street, Hatirpool, Dhaka-1205</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Office Information */}
+            <Card className="bg-white p-6 rounded-lg shadow-md">
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">Office Information</CardTitle>
+              </CardHeader>
+              <CardContent className="grid grid-cols-2 gap-6 text-sm text-gray-600">
+                <div>
+                  <p><strong>Office Email:</strong> martin@barikoi.com</p>
+                  <p><strong>Reporting Person:</strong> Sadman Sakib</p>
+                  <p><strong>Last Working Place:</strong> Etech Solution Ltd.</p>
+                </div>
+                <div>
+                  <p><strong>Office Phone No:</strong> +880 1738564738</p>
+                  <p><strong>Gross Salary:</strong> 30,000 BDT</p>
+                  <p><strong>Check-in Time:</strong> 10:00 AM</p>
+                </div>
+                <div className="col-span-2">
+                  <p><strong>Joining Date:</strong> 01/10/2021</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default EmployeeDirectory;
+}

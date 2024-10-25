@@ -11,7 +11,6 @@ const EmployeeDashboard = () => {
             <Title />
             <div className="flex flex-row">
                 <div className="flex-grow">
-                    <EmployeeClock />
                     <LeaveRequestPanel />
                 </div>
                 <CreatLeaveRequest />
