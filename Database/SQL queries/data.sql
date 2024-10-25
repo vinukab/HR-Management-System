@@ -1,8 +1,6 @@
-
 INSERT INTO organization (organization_id, organization_name, address, registration_number, latitude, longitude)
 VALUES 
 ('001', 'Jupiter Apparels', 'No. 123, Galle Road, Colombo, Sri Lanka', 'BR123456789', 6.927079, 79.861244);
-
 
 INSERT INTO paygrade (pay_grade_id, grade)
 VALUES 

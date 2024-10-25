@@ -1,15 +1,19 @@
 const pool = require('../config/dbConfig');
+const jwt = require('jsonwebtoken');
+const secretKey = '1234';
 
 const leaveModel = {
     getAllEmployeeLeaves: async () => {
-        const query = `
-            SELECT leave_id, start_date, end_date, request_status, first_name, last_name,job_title_name, type_name 
-            FROM leaverequest
-            JOIN employee ON employee.employee_id = leaverequest.employee_id
-            JOIN jobtitle ON employee.job_title_id = jobtitle.job_title_id
-            JOIN leavetype ON leaverequest.leave_type_id = leavetype.leave_type_id;
-        `;
-        
+    const query = `
+        SELECT leave_id, start_date, end_date, request_status, first_name, last_name, job_title_name, type_name 
+        FROM leaverequest
+        JOIN employee ON employee.employee_id = leaverequest.employee_id
+        JOIN jobtitle ON employee.job_title_id = jobtitle.job_title_id
+        JOIN leavetype ON leaverequest.leave_type_id = leavetype.leave_type_id
+        WHERE start_date > CURDATE()
+        ORDER BY start_date DESC;
+    `;
+
         const [employeeLeaves] = await pool.query(query);
         return employeeLeaves;
     },
@@ -20,20 +24,28 @@ const leaveModel = {
     },
 
     addLeaveRequest: async (employee_id, start_date, end_date, leave_type, description) => {
-        const query = "INSERT INTO leaverequest (leave_id, employee_id, start_date, end_date, leave_type_id, description) VALUES (UUID(), ?, ?, ?, ?, ?);";
-        await pool.query(query, [employee_id, start_date, end_date, leave_type, description]);
+        const query = "INSERT INTO leaverequest (leave_id, employee_id, start_date, end_date, leave_type_id, description,request_status) VALUES (UUID(), ?, ?, ?, ?, ?, ?);";
+        await pool.query(query, [employee_id, start_date, end_date, leave_type, description,"Pending"]);
     },
+    
 
-    getLeaveTypes: async () => {
-        const query = "SELECT * FROM leavetype";
-        const [leaveTypes] = await pool.query(query);
+    getLeaveTypes: async (token) => {
+        const valid = jwt.verify(token, secretKey);
+        const employee_id = valid.employee_id;
+        const query = `SELECT lt.*
+        FROM leavetype lt
+        JOIN employee e ON e.employee_id = ?
+        WHERE is_allowed_leave_type(e.pay_grade_id, e.gender, lt.leave_type_id) = 1;`;
+        const [leaveTypes] = await pool.query(query, [employee_id]);
         return leaveTypes;
     },
 
     getLeaveRequestsByEmployeeId: async (employee_id) => {
         const query = `SELECT * FROM leaverequest
-            JOIN leavetype ON leavetype.leave_type_id = leaverequest.leave_type_id 
-            WHERE employee_id = ?`;
+        JOIN leavetype ON leavetype.leave_type_id = leaverequest.leave_type_id 
+        WHERE employee_id = ? 
+        ORDER BY start_date DESC
+        LIMIT 10`;
         const [leaveRequests] = await pool.query(query, [employee_id]);
         return leaveRequests;
     },

@@ -9,33 +9,22 @@ import HRManagerDashboard from './HRManagerDashboard';
 import SupervisorDashboard from './SupervisorDashboard';
 import User from '@/app/models/userModel';
 import { useRouter } from 'next/navigation';
-<<<<<<< HEAD
-
-=======
->>>>>>> 08fdf044b9f2da1fa9c4baf21a804fbac93dfa85
 const Dashboard = () => {
   const [username, setUsername] = useState(null);
   const [role, setRole] = useState(null);
   const [employeeId, setEmployeeId] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const router = useRouter();
 
-  if(!User.isLoggedin()){
-    router.push('/login');
-  }
-  
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const tempUsername = await User.getUsername();
         const tempRole = await User.getRole();
-        const tempEmployeeId = await User.getEmployeeId();
-    
-        setUsername(tempUsername);
         setRole(tempRole);  
-        setEmployeeId(tempEmployeeId);
         setLoading(false);
 
       } catch (err) {
@@ -70,16 +59,12 @@ const Dashboard = () => {
   };
 
   return (
-    <div className={classNames(loading ? "hidden" : "block")}>
-      {username && (
         <>
-          <SideBar activePanel={0} role = {role} />
+          <SideBar activePanel={0}/>
           <div className="flex flex-col lg:ml-56 ">
             {renderDashboard()}
           </div>
         </>
-      )}
-    </div>
   );
 };
 

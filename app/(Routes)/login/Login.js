@@ -22,11 +22,12 @@ export default function Login() {
       router.push('/dashboard');
     } catch (err) {
       console.error('Login error:', err);
-      setError('Login failed: ' + (err.response?.data?.message || 'Network or server issue'));
+      setError('Login failed: ' + (err.message || 'Network or server issue'));
     } finally {
       setLoading(false);
     }
   }
+  
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">

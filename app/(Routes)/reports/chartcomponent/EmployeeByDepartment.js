@@ -56,38 +56,19 @@ export default function EmployeeByDepartment() {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', margin: '0 auto' }}>
-            <div style={{ width: '35%', height: '900px', overflow: 'auto' }}>
-              <h3 className="text-center text-xl font-semibold mb-4">Employee Distribution Table</h3>
-              <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="border border-gray-200 py-2 px-4 text-left">Department</th>
-                    <th className="border border-gray-200 py-2 px-4 text-left">Number of Employees</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {chartData.map((department, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
-                      <td className="border border-gray-200 py-2 px-4">{department.department_name}</td>
-                      <td className="border border-gray-200 py-2 px-4">{department.employee_count}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div style={{ display: 'flex', justifyContent: 'center', margin: '0 auto' }}>
             <div style={{ width: '60%', height: '600px' }}>
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="90%">
                 <BarChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
                     dataKey="department_name"
                     tickLine={false}
                     tickMargin={10}
-                    axisLine={false}
                     angle={-90}
+                    axisLine={false}
                     textAnchor="end"
-                    height={150}
+                    height={300}
                   />
                   <YAxis />
                   <ChartTooltip

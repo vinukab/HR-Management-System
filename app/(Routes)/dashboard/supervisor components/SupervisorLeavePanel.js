@@ -53,7 +53,6 @@ const SupervisorLeavePanel = () => {
                         <th className="p-3 border-b-2 font-normal">Application Type</th>
                         <th className="p-3 border-b-2 font-normal">Duration</th>
                         <th className="p-3 border-b-2 font-normal">Employee Name</th>
-                        <th className="p-3 border-b-2 font-normal">Job Title</th>
                         <th className="p-3 border-b-2 font-normal">Status</th>
                         <th className="p-3 border-b-2 font-normal">Action</th>
                     </tr>
@@ -61,11 +60,10 @@ const SupervisorLeavePanel = () => {
                 <tbody className="text-sm">
                     {leaveRequests.map(request => (
                         <tr key={request.id} className={request.request_status === 'Pending' ? 'bg-gray-100' : ''}>
-                            <td className="p-3 border-b">{request.start_date}</td>
+                            <td className="p-3 border-b">{new Date(request.start_date).toLocaleDateString()}</td>
                             <td className="p-3 border-b">{request.type_name}</td>
-                            <td className="p-3 border-b">{request.duration}</td>
-                            <td className="p-3 border-b">{request.type_name}</td>
-                            <td className="p-3 border-b">{request.job_title}</td>
+                            <td className="p-3 border-b">{parseInt(request.duration, 10) + 1}</td>
+                            <td className="p-3 border-b">{request.name}</td>
                             <td className="p-3 border-b">
                                 <span 
                                     className={`px-2 py-1 rounded-md text-xs ${request.request_status === 'Approved' ? 'text-blue-700 bg-blue-400' : request.request_status === 'Pending' ? 'text-yellow-700 bg-yellow-400' : 'text-red-700 bg-red-400'}`}

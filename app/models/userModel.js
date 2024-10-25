@@ -1,15 +1,22 @@
+'use client';
 import axios from "axios";
 
 class User {
   
-    static async reload() {
+    static async login(username, password) {
+        const res = await axios.post('http://localhost:5000/auth/login', {
+            username,
+            password
+        }, { withCredentials: true });
+        if (res.status != 200) {
+            throw new Error('Login failed: unexpected status code');
+        }
+    }
+
+    static async getUsername() { 
         try {
             const res = await axios.get('http://localhost:5000/auth/getdetails', { withCredentials: true });
             if (res.status === 200) {
-                console.log(res.data.username);
-                sessionStorage.setItem('username', res.data.username);
-                sessionStorage.setItem('role', res.data.role);
-                sessionStorage.setItem('employee_id', res.data.employee_id);
                 return res.data.username;
             } else {
                 throw new Error('Error in getting user details');
@@ -20,63 +27,61 @@ class User {
         }
     }
 
-    static async login(username, password) {
+    static async getRole() {
         try {
-            const res = await axios.post('http://localhost:5000/auth/login', {
-                username,
-                password
-            }, { withCredentials: true });
+            const res = await axios.get('http://localhost:5000/auth/getdetails', { withCredentials: true });
             if (res.status === 200) {
-                sessionStorage.setItem('isLoggedIn', 'true');
-                await User.reload();
+                return res.data.role;
             } else {
-                throw new Error('Login failed: unexpected status code');
+                throw new Error('Error in getting user details');
             }
         } catch (error) {
             console.error(error);
-            throw new Error('Login error');
-        }
-    }
-
-    static async getUsername() {
-        if (sessionStorage.getItem('username') !== null) {
-            return sessionStorage.getItem('username');
-        } else {
-            await User.reload();
-            console.log(sessionStorage.getItem('username'));
-            return await User.getUsername();
-        }
-    }
-
-    static async getRole() {
-        if (sessionStorage.getItem('role') !== null) {
-            return sessionStorage.getItem('role');
-        } else {
-            await User.reload();
-            return await User.getRole();
+            throw new Error('Error in reload');
         }
     }
 
     static async getEmployeeId() {
-        if (sessionStorage.getItem('employee_id') !== null) {
-            return sessionStorage.getItem('employee_id');
-        } else {
-            await User.reload();
-            return await User.getEmployeeId();
+        try {
+            const res = await axios.get('http://localhost:5000/auth/getdetails', { withCredentials: true });
+            if (res.status === 200) {
+                return res.data.employee_id;
+            } else {
+                throw new Error('Error in getting user details');
+            }
+        } catch (error) {
+            console.error(error);
+            throw new Error('Error in reload');
         }
     }
 
-    static isLoggedin() {
-        return sessionStorage.getItem('isLoggedIn') === 'true';
+    static  async getuserProfile() {
+        try{
+            const res = await axios.get('http://localhost:5000/auth/getprofile', { withCredentials: true });
+            if(res.status ===200){
+                return res.data.userProfile;
+            }
+        }catch(error){
+           console.error(error);
+           return null
+        }
     }
 
     static async logout() {
+        document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+
+    static async getuserProfile() {
         try {
-            sessionStorage.clear();
-            document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-            await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true });
+            const res = await axios.get('http://localhost:5000/auth/getprofile', { withCredentials: true });
+            if (res.status === 200) {
+                return res.data.userProfile;
+            } else {
+                throw new Error('Error in getting user profile');
+            }
         } catch (error) {
-            console.error('Error during logout:', error);
+            console.error(error);
+            throw new Error('Error in getuserProfile');
         }
     }
 }
