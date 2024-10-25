@@ -88,6 +88,29 @@ const leaveController = {
         }
     },
 
+    getAllLeaveTypes: async (req, res) => {
+        console.log('Controller: getAllLeaveTypes called'); // Debug log
+        try {
+          const leaveTypes = await leaveModel.getAllLeaveTypes();
+          console.log('Controller: Leave Types fetched:', leaveTypes); // Log fetched data
+          res.status(200).json(leaveTypes);
+        } catch (err) {
+          console.error('Controller: Error fetching leave types:', err);
+          res.status(400).json({ error: 'Error fetching leave types' });
+        }
+    },
+
+    editAllLeaveTypes: async (req, res) => {
+        try {
+          const updatedLeaveTypes = req.body; // Get updated leave types from request body
+          const result = await leaveModel.editAllLeaveTypes(updatedLeaveTypes); // Update the leave types
+          res.status(200).json(result); // Return success message
+        } catch (err) {
+          console.error('Error updating leave types:', err);
+          res.status(400).json({ error: 'Error updating leave types' }); // Return error if any issue occurs
+        }
+    },
+
     getLeaveRequestOfUser: async (req, res) => {
         try {
             const token = req.cookies['user'];
