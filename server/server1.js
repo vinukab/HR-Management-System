@@ -104,8 +104,8 @@ app.post('/createUser', async (req, res) => {
       }
     });
 
-app.get('/employee/:employeeId', async (req, res) => {
-      const { employeeId } = req.params;
+    app.get('/employee/:employeeId', async (req, res) => {
+      const employeeId = req.params.employeeId;
       const sqlQuery = `
         SELECT 
             e.employee_id,
@@ -147,10 +147,49 @@ app.get('/employee/:employeeId', async (req, res) => {
       `;
     
       try {
-        const [rows] = await db.execute(sqlQuery, [employeeId]);
+        const [rows] = await pool.query(sqlQuery, [employeeId]);
     
-        // Process the results as shown previously
-        // ...
+        // Process the results
+        if (rows.length === 0) {
+          return res.status(404).json({ error: "Employee not found" });
+        }
+    
+        const employee = {
+          ...rows[0], // Get the employee data from the first row
+          phone_numbers: [],
+          dependents: [],
+          emergency_contacts: [],
+        };
+    
+        // Loop through the rows to collect contacts, dependents, and emergency contacts
+        rows.forEach(row => {
+          // Collect phone numbers
+          if (row.phone_number) {
+            employee.phone_numbers.push(row.phone_number);
+          }
+    
+          // Collect dependents
+          if (row.dependent_name) {
+            employee.dependents.push({
+              name: row.dependent_name,
+              relationship: row.dependent_relationship,
+              gender: row.dependent_gender,
+              is_covered_by_insurance: row.is_covered_by_insurance,
+            });
+          }
+    
+          // Collect emergency contacts
+          if (row.emergency_contact_name) {
+            employee.emergency_contacts.push({
+              name: row.emergency_contact_name,
+              relationship: row.emergency_contact_relationship,
+              address: row.emergency_contact_address,
+              phone_number: row.emergency_phone_number,
+            });
+          }
+        });
+    
+        res.json(employee);
       } catch (error) {
         console.error("Error fetching employee data:", error);
         res.status(500).json({ error: "Internal Server Error" });
