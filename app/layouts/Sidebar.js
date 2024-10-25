@@ -14,6 +14,7 @@ const SideBar = ({ activePanel }) => {
         3: Leave
         4: Reports
         5: Settings
+        6: Employee Directory (New)
     */
 
     const [role, setRole] = useState('');
@@ -38,6 +39,7 @@ const SideBar = ({ activePanel }) => {
         else if (panel === 3) router.push('/leave');
         else if (panel === 4) router.push('/reports');
         else if (panel === 5) router.push('/settings');
+        else if (panel === 6) router.push('/employeemanagement'); // New route for Employee Directory
     }
 
     return (
@@ -90,6 +92,13 @@ const SideBar = ({ activePanel }) => {
                 </div>
             )}
 
+            {/* Employee Directory (New Panel) */}
+            <div onClick={() => changePanel(6)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 6), 'bg-rose-700': (activePanel === 6) })}>
+                <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
+                    <User2Icon className="mr-1" />
+                    Employee Directory
+                </button>
+            </div>
         </div>
     );
 }

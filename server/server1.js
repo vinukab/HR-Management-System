@@ -202,7 +202,7 @@ app.use('/todolist',toDoRouter)
 app.use('/leave',leaveRouter)
 app.use('/enum',enumRouter)
 app.use('/report',reportRouter)
-//app.use('/employee',employeeRouter)
+app.use('/employee',employeeRouter)
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
