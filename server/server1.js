@@ -11,8 +11,8 @@ const {createEmployee } = require('./Backup/CreateEmployee');
 const {userRouter} = require('./routes/userRoutes')
 const {toDoRouter} = require('./routes/todoRoutes')
 const {leaveRouter} = require('./routes/leaveRoutes')
-const {enumRouter} = require('./routes/enumRoutes');
-const reportRouter = require('./routes/reportRoutes');
+const {enumRouter} = require('./routes/enumRoutes')
+const {employeeRouter}=require('./routes/employeeRoutes')
 
 const app = express();
 const port = 5000;
@@ -44,7 +44,7 @@ app.use('/auth',userRouter)
 app.use('/todolist',toDoRouter)
 app.use('/leave',leaveRouter)
 app.use('/enum',enumRouter)
-app.use('/report',reportRouter)
+app.use('/employee',employeeRouter)
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
