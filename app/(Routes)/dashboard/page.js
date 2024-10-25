@@ -9,10 +9,6 @@ import HRManagerDashboard from './HRManagerDashboard';
 import SupervisorDashboard from './SupervisorDashboard';
 import User from '@/app/models/userModel';
 import { useRouter } from 'next/navigation';
-<<<<<<< HEAD
-
-=======
->>>>>>> 08fdf044b9f2da1fa9c4baf21a804fbac93dfa85
 const Dashboard = () => {
   const [username, setUsername] = useState(null);
   const [role, setRole] = useState(null);

@@ -1,117 +1,156 @@
-"use client";
-import { useEffect, useState } from "react";
-import axios from "axios";  // Don't forget to import axios
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import SideBar from "@/app/layouts/Sidebar";
-import Titlebar from "@/app/layouts/Titlebar";
+'use client'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
+import { Bell, LayoutDashboard, Mail } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import User from "../../models/userModel";
+import SideBar from '../../layouts/Sidebar'; // Import the SideBar component
 
-const Profile = () => {
-  const [employee, setEmployee] = useState(null); // State to hold employee data
+const EmployeeDirectory = () => {
+  const [employees, setEmployees] = useState([]); // State to store all employees
+  const [searchTerm, setSearchTerm] = useState(''); // State for search input
+  const [filteredEmployees, setFilteredEmployees] = useState([]); // State for filtered employees
+  const [defaultView, setDefaultView] = useState(true); // State to toggle between default and search view
+  const router = useRouter();
 
+  // Fetch all employees when component loads
   useEffect(() => {
-    fetchEmployee();
+    const fetchEmployees = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/employee'); // Fetch all employees
+        setEmployees(response.data); // Set employee data
+        setFilteredEmployees(response.data.slice(0, 3)); // Show only the first 3 by default
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+      }
+    };
+
+    fetchEmployees();
   }, []);
 
-  const fetchEmployee = async () => {
+  // Update filtered employees when search term changes
+  useEffect(() => {
+    if (searchTerm === '') {
+      setFilteredEmployees(employees.slice(0, 3)); // Reset to first 3 if search is empty
+      setDefaultView(true); // Toggle back to default view
+    } else {
+      const filtered = employees.filter((employee) =>
+        `${employee.first_name} ${employee.last_name}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
+      setFilteredEmployees(filtered); // Update with search results
+      setDefaultView(false); // Switch from default view to search view
+    }
+  }, [searchTerm, employees]);
+
+  // Sign out function
+  const signOut = async () => {
     try {
-      const employeeId = 'EMP001'; // Replace with the actual ID you want to fetch dynamically
-      const response = await axios.get(`http://localhost:5000/employee/${employeeId}`); // Replace with your actual API endpoint
-      console.log(response.data); // Log the full response data for debugging
-      setEmployee(response.data); // Directly set the employee data
+      User.logout();
+      console.log('Signed out successfully');
+      router.push('/');
     } catch (error) {
-      console.error("Error fetching employee data:", error);
+      console.error('Error during sign out:', error);
     }
   };
 
-  if (!employee) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div className="min-h-screen bg-gray-100 p-8 flex">
-      {/* Sidebar */}
-      <div className="w-1/4">
-        <SideBar />
-      </div>
+    <div className="min-h-screen bg-gray-100 p-8">
+      {/* Sidebar Component - Fixed on the left */}
+      <SideBar activePanel={0} role={'Admin'} />
 
-      {/* Main Profile Content */}
-      <div className="flex-1">
+      {/* Main Content Container with Margin for the Sidebar */}
+      <div className="lg:ml-60">
         <div className="container mx-auto">
-          {/* Title Bar */}
-          <Titlebar title="User Profile" />
-
-          {/* Header */}
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-semibold">User Profile</h1>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">Edit</button>
+          {/* Title Component - Navbar with Search */}
+          <div className="flex flex-col mb-8">
+            <div className="flex flex-row items-center justify-between h-20 rounded-xl px-4 bg-gradient-to-r m-1 from-indigo-500 via-purple-500 to-pink-500">
+              <div className="flex items-center space-x-2 bg-white p-2 rounded-xl w-5/12 h-10 max-w-96">
+                <LayoutDashboard />
+                {/* Search Bar */}
+                <textarea
+                  className="w-full h-full border-none focus:outline-none resize-none text-sm"
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)} // Update search term state
+                ></textarea>
+              </div>
+              <div className="flex space-x-4 text-gray-600">
+                <Bell />
+                <Mail />
+                <Popover>
+                  <PopoverTrigger>
+                    <div className="flex flex-row items-center space-x-2">
+                      <Avatar>
+                        <AvatarImage src="http://localhost:5000/uploads/Gaming_5000x3125.jpg" />
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col text-xs">
+                        <div className="font-semibold">Thimira Sahan</div>
+                        <div className="text-xs">Admin</div>
+                      </div>
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-50 -ml-12">
+                    <div className="flex gap-2">
+                      <Avatar>
+                        <AvatarImage src="https://github.com/vercel.png" />
+                        <AvatarFallback>VC</AvatarFallback>
+                      </Avatar>
+                      <div className="">
+                        <h4 className="text-sm font-semibold">@Thimira Sahan</h4>
+                        <p className="text-sm">Admin</p>
+                        <div className="flex items-center pt-2">
+                          <Button onClick={signOut}>
+                            Logout
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
           </div>
 
           <div className="flex space-x-8">
-            {/* Left Column - Profile Picture and General Information */}
-            <div className="w-1/3">
-              <Card className="bg-white p-6 rounded-lg shadow-md">
-                <CardContent>
-                  <div className="flex flex-col items-center">
-                    <img
-                      src={employee.profile_pic || "/default-profile.png"} // Profile picture or default if not available
-                      alt="User Profile"
-                      className="rounded-full w-32 h-32 object-cover mb-4"
-                    />
-                    <CardTitle className="text-xl font-semibold text-center mb-2">
-                      {`${employee.first_name} ${employee.last_name}`}
-                    </CardTitle>
-                    <p className="text-center text-gray-600 mb-4">{employee.job_title_id}</p>
-
-                    {/* General Information */}
-                    <div className="space-y-2 text-sm text-gray-600">
-                      <p><strong>Mobile:</strong> {employee.phone_number || "N/A"}</p> {/* Assuming you have a phone_number field */}
-                      <p><strong>Email:</strong> {employee.email || "N/A"}</p> {/* Replace with employee's actual email */}
-                      <p><strong>Department:</strong> {employee.department_id}</p>
-                      <p><strong>Branch:</strong> {employee.branch_id}</p>
+            {/* Left Column - Employee Cards */}
+            <div className="w-full space-y-6">
+              {/* Render Employee Cards */}
+              {filteredEmployees.length > 0 ? (
+                filteredEmployees.map((employee) => (
+                  <Card key={employee.employee_id} className="bg-white p-6 rounded-lg shadow-md">
+                    <CardContent className="flex items-center">
+                      <img
+                        src={employee.profile_pic || '/default-profile.jpg'} // Use employee profile picture or default
+                        alt={`${employee.first_name} ${employee.last_name}`}
+                        className="rounded-full w-16 h-16 object-cover"
+                      />
+                      <div className="ml-6">
+                        <CardTitle className="text-xl font-semibold">
+                          {`${employee.first_name} ${employee.last_name}`}
+                        </CardTitle>
+                        <CardDescription>{employee.job_title}</CardDescription>
+                        <p className="text-gray-600">{employee.department}</p>
+                        <a href={`mailto:${employee.email}`} className="text-blue-600">{employee.email}</a>
+                      </div>
+                    </CardContent>
+                    <div className="p-4 flex space-x-2">
+                      <span className="inline-block bg-blue-100 text-blue-800 text-sm font-medium px-2 py-1 rounded">
+                        {employee.status}
+                      </span>
+                      {/* Add more badges if necessary */}
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Right Column - Personal Information and Office Information */}
-            <div className="flex-1 space-y-8">
-              {/* Personal Information */}
-              <Card className="bg-white p-6 rounded-lg shadow-md">
-                <CardHeader>
-                  <CardTitle className="text-lg font-semibold">Personal Information</CardTitle>
-                </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-6 text-sm text-gray-600">
-                  <div>
-                    <p><strong>NIC Number:</strong> {employee.NIC_number}</p>
-                    <p><strong>Date of Birth:</strong> {employee.birth_date}</p>
-                    <p><strong>Marital Status:</strong> {employee.marital_status}</p>
-                  </div>
-                  <div>
-                    <p><strong>Gender:</strong> {employee.gender}</p>
-                    <p><strong>Address:</strong> {employee.address}</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Office Information */}
-              <Card className="bg-white p-6 rounded-lg shadow-md">
-                <CardHeader>
-                  <CardTitle className="text-lg font-semibold">Office Information</CardTitle>
-                </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-6 text-sm text-gray-600">
-                  <div>
-                    <p><strong>Job Title:</strong> {employee.job_title_id}</p>
-                    <p><strong>Pay Grade:</strong> {employee.pay_grade_id}</p>
-                    <p><strong>Status:</strong> {employee.status}</p>
-                  </div>
-                  <div>
-                    <p><strong>Supervisor:</strong> {employee.supervisor_id || "N/A"}</p> {/* Assuming supervisor_id links to another employee */}
-                    <p><strong>Department:</strong> {employee.department_id}</p>
-                    <p><strong>Branch:</strong> {employee.branch_id}</p>
-                  </div>
-                </CardContent>
-              </Card>
+                  </Card>
+                ))
+              ) : (
+                <p className="text-gray-500">No employees found.</p> // Message if no employees match search
+              )}
             </div>
           </div>
         </div>
@@ -120,4 +159,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default EmployeeDirectory;
