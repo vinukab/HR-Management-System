@@ -104,12 +104,66 @@ app.post('/createUser', async (req, res) => {
       }
     });
 
+app.get('/employee/:employeeId', async (req, res) => {
+      const { employeeId } = req.params;
+      const sqlQuery = `
+        SELECT 
+            e.employee_id,
+            e.first_name,
+            e.last_name,
+            e.birth_date,
+            e.marital_status,
+            e.NIC_number,
+            e.address,
+            e.status,
+            e.gender,
+            e.profile_pic,
+            e.supervisor_id,
+            e.job_title_id,
+            e.pay_grade_id,
+            e.department_id,
+            e.branch_id,
+            ep.phone_num AS phone_number,
+            dep.dependent_name AS dependent_name,
+            dep.relationship AS dependent_relationship,
+            dep.gender AS dependent_gender,
+            dep.is_covered_by_insurance,
+            emg.person_name AS emergency_contact_name,
+            emg.relationship AS emergency_contact_relationship,
+            emg.address AS emergency_contact_address,
+            ep_contact.phone_num AS emergency_phone_number
+        FROM 
+            employee e
+        LEFT JOIN 
+            employeecontact ep ON e.employee_id = ep.employee_id
+        LEFT JOIN 
+            employeedependents dep ON e.employee_id = dep.employee_id
+        LEFT JOIN 
+            emergencyperson emg ON e.employee_id = emg.employee_id
+        LEFT JOIN 
+            emergencypersoncontact ep_contact ON emg.person_id = ep_contact.person_id
+        WHERE 
+            e.employee_id = ?;
+      `;
+    
+      try {
+        const [rows] = await db.execute(sqlQuery, [employeeId]);
+    
+        // Process the results as shown previously
+        // ...
+      } catch (error) {
+        console.error("Error fetching employee data:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+      }
+    });
+    
+
 app.use('/auth',userRouter)
 app.use('/todolist',toDoRouter)
 app.use('/leave',leaveRouter)
 app.use('/enum',enumRouter)
 app.use('/report',reportRouter)
-app.use('/employee',employeeRouter)
+//app.use('/employee',employeeRouter)
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
