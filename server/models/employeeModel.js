@@ -1,8 +1,9 @@
 const db = require('../config/dbConfig');
 
 const employeeModel = {
-  getAllEmployees: (callback) => {
-    db.query('SELECT * FROM employees', callback);
+  getAllEmployees: async() => {
+    const [result] = await db.query('SELECT * FROM employee');
+    return result;
   },
 
   getEmployeeById: async (employeeId) => {
