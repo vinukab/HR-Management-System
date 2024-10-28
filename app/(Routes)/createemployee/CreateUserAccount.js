@@ -25,7 +25,8 @@ const CreateUser = ({ employee_id,onSuccess}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/employee/createUser', user);
+      await axios.post('http://localhost:5000/createUser', user, { withCredentials: true });
+      
       setUser({
         username: '',
         password: '',
