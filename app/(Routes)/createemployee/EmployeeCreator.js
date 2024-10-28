@@ -28,9 +28,17 @@ export default function EmployeeCreator({ onSuccess }) {
   const [address, setAddress] = useState("");
   const [gender, setGender] = useState("male");
   const [profilePic, setProfilePic] = useState(null);
-  
+
+  const [phoneNumbers, setPhoneNumbers] = useState([""]); // Array for phone numbers
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const [key1, setKey1] = useState("");
+  const [value1, setValue1] = useState("");
+  const [key2, setKey2] = useState("");
+  const [value2, setValue2] = useState("");
+  const [key3, setKey3] = useState("");
+  const [value3, setValue3] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,6 +50,16 @@ export default function EmployeeCreator({ onSuccess }) {
     formData.append("maritalStatus", maritalStatus);
     formData.append("NIC", NIC);
     formData.append("address", address);
+    formData.append("gender", gender);
+    phoneNumbers.forEach((number, index) => {
+      formData.append(`phoneNumbers[${index}]`, number); // Append each phone number
+    });
+    formData.append("key_1", key1);
+    formData.append("value_1", value1);
+    formData.append("key_2", key2);
+    formData.append("value_2", value2);
+    formData.append("key_3", key3);
+    formData.append("value_3", value3);
 
     if (document.getElementById("upload").files[0]) {
       formData.append("profilePic", document.getElementById("upload").files[0]);
@@ -57,17 +75,32 @@ export default function EmployeeCreator({ onSuccess }) {
           },
         }
       );
-      const employee_id = response.data.employee_id
+      const employee_id = response.data.employee_id;
       setSuccess("Employee created successfully!");
       setError("");
-      onSuccess(employee_id,2);
+      onSuccess(employee_id, 2);
     } catch (error) {
       setError(error.response?.data || "Error creating employee");
       setSuccess("");
     }
   };
 
-  if (error) return <p>Error: {error}</p>;
+  // Function to add a new phone number input
+  const addPhoneNumber = () => {
+    setPhoneNumbers([...phoneNumbers, ""]);
+  };
+
+  // Function to handle change in phone number input
+  const handlePhoneNumberChange = (index, value) => {
+    const newPhoneNumbers = [...phoneNumbers];
+    newPhoneNumbers[index] = value;
+    setPhoneNumbers(newPhoneNumbers);
+  };
+
+  // Function to remove a phone number input
+  const removePhoneNumber = (index) => {
+    setPhoneNumbers(phoneNumbers.filter((_, i) => i !== index));
+  };
 
   return (
     <>
@@ -124,7 +157,6 @@ export default function EmployeeCreator({ onSuccess }) {
                   </SelectContent>
                 </Select>
               </div>
-
               <div className="m-2">
                 <Label>NIC Number</Label>
                 <Input value={NIC} onChange={(e) => setNIC(e.target.value)} required />
@@ -142,11 +174,57 @@ export default function EmployeeCreator({ onSuccess }) {
                   </SelectContent>
                 </Select>
               </div>
-
               <div className="col-span-2 m-2">
                 <Label>Address</Label>
                 <Textarea value={address} onChange={(e) => setAddress(e.target.value)} required />
               </div>
+
+              {/* Phone Numbers */}
+              <div className="m-2">
+                <Label>Phone Numbers</Label>
+                {phoneNumbers.map((phoneNumber, index) => (
+                  <div key={index} className="flex items-center mb-2">
+                    <Input
+                      value={phoneNumber}
+                      onChange={(e) => handlePhoneNumberChange(index, e.target.value)}
+                      placeholder={`Phone Number ${index + 1}`}
+                      className="mr-2"
+                      required
+                    />
+                    <Button type="button" onClick={() => removePhoneNumber(index)}>Remove</Button>
+                  </div>
+                ))}
+                <Button type="button" onClick={addPhoneNumber} className="mt-2">Add Phone Number</Button>
+              </div>
+
+              {/* Custom Attributes */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div>
+                  <Label>Custom Attribute Key 1</Label>
+                  <Input value={key1} onChange={(e) => setKey1(e.target.value)} />
+                </div>
+                <div>
+                  <Label>Custom Attribute Value 1</Label>
+                  <Input value={value1} onChange={(e) => setValue1(e.target.value)} />
+                </div>
+                <div>
+                  <Label>Custom Attribute Key 2</Label>
+                  <Input value={key2} onChange={(e) => setKey2(e.target.value)} />
+                </div>
+                <div>
+                  <Label>Custom Attribute Value 2</Label>
+                  <Input value={value2} onChange={(e) => setValue2(e.target.value)} />
+                </div>
+                <div>
+                  <Label>Custom Attribute Key 3</Label>
+                  <Input value={key3} onChange={(e) => setKey3(e.target.value)} />
+                </div>
+                <div>
+                  <Label>Custom Attribute Value 3</Label>
+                  <Input value={value3} onChange={(e) => setValue3(e.target.value)} />
+                </div>
+              </div>
+
               {error && <p className="text-red-500 m-2">{error}</p>}
               {success && <p className="text-green-500 m-2">{success}</p>}
               <div className="w-full flex flex-col">
