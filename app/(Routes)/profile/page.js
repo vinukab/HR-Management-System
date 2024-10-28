@@ -75,7 +75,7 @@ const Profile = () => {
             {/* Right Column - Personal Information and Office Information */}
             <div className="flex-1 space-y-8">
               {/* Personal Information */}
-              <Card className="bg-white p-6 rounded-lg shadow-md">
+              <Card className="bg-white p-6 rounded-lg shadow-md ">
                 <CardHeader className="flex justify-between items-center">
                   <div className="flex items-center">
                     <CardTitle className="text-lg font-semibold">Personal Information</CardTitle>
