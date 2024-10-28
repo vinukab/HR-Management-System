@@ -8,7 +8,7 @@ export default function EmployeeToDOList() {
   return (
     <Card className="m-1 flex-grow h-full items-center justify-center" style={{ height: '500px' }}>
         <CardHeader>
-          <CardTitle>Personal Calander</CardTitle>
+          <CardTitle>Personal Calender</CardTitle>
           <CardDescription>Plan Your Work</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-row justify-center items-center">

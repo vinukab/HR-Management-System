@@ -49,31 +49,55 @@ const CreateLeaveRequest = () => {
     }
   });
 
-  const onSubmit = async(data) => {
-    const { start_date, end_date, leave_type, description } = data;
-    const formattedData = {
-      start_date: format(new Date(start_date), "yyyy-MM-dd"),
-      end_date: format(new Date(end_date), "yyyy-MM-dd"),
-      leave_type,
-      description
-    };
-    await axios.post('http://localhost:5000/leave/add', formattedData, { withCredentials: true })
-      .then(res => console.log(res))
-      .catch(err => console.error(err));
-    alert('Leave request submitted successfully');
-  };
-
   const [leaveTypes, setLeaveTypes] = useState([]);
+  const [leaveCount,setLeaveCount] = useState([]);
   const startDate = form.watch("start_date");
   const endDate = form.watch("end_date");
 
+
   useEffect(() => {
+    // Fetch leave types
     axios.get('http://localhost:5000/leave/types', { withCredentials: true })
       .then(res => {
         setLeaveTypes(res.data);
       })
       .catch(err => console.error(err));
   }, []);
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/leave/leave-count', { withCredentials: true })
+      .then(res => {
+        setLeaveCount(res.data);
+      })
+      .catch(err => console.error(err));
+    },[]);
+
+  const onSubmit = async(data) => {
+    const { start_date, end_date, leave_type, description } = data;
+    console.log(leave_type)
+    // Calculate the duration of the leave request
+    const duration = Math.ceil((new Date(end_date) - new Date(start_date)) / (1000 * 60 * 60 * 24)) + 1;
+
+    // Check if the remaining leaves are sufficient
+    if (leaveCount[leave_type] < duration) {
+      alert(`Insufficient leave balance. Remaining leaves: ${remainingLeaves[leave_type]}`);
+      return;
+    }
+
+    const formattedData = {
+      start_date: format(new Date(start_date), "yyyy-MM-dd"),
+      end_date: format(new Date(end_date), "yyyy-MM-dd"),
+      leave_type,
+      description
+    };
+
+    try {
+      await axios.post('http://localhost:5000/leave/add', formattedData, { withCredentials: true });
+      alert('Leave request submitted successfully');
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <Card className="m-1" style={{ height: '600px' }}>

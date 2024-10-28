@@ -52,6 +52,7 @@ export function RemLeaveCounts() {
         const response = await axios.get('http://localhost:5000/leave/leave-count',{withCredentials:true}); 
         const data = response.data
         console.log(data)
+        
         // Update chart data with dynamic API data
         const updatedChartData = [
           { leaveType: "Annual", remaining: data.annual_leave_count },

@@ -8,7 +8,8 @@ leaveRouter.post('/add', leaveController.addLeaveRequest);
 leaveRouter.get('/types', leaveController.getLeaveTypes);
 leaveRouter.get('/user', leaveController.getLeaveRequestOfUser);
 
-leaveRouter.get('/leave-count', leaveController.getLeaveCountDetails);               
+leaveRouter.get('/leave-count', leaveController.getLeaveCountDetails);
+               
 
 
 module.exports = {leaveRouter};

@@ -68,8 +68,12 @@ export default function EmployeeCreator({ onSuccess }) {
     try {
       const response = await axios.post(
         "http://localhost:5000/createEmployee",
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        formData,{ withCredentials: true },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       const employee_id = response.data.employee_id;
       setSuccess("Employee created successfully!");
