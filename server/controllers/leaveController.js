@@ -101,7 +101,7 @@ const leaveController = {
             const processedLeaves = leaveRequests.map(leave => {
                 const startDate = new Date(leave.start_date);
                 const endDate = new Date(leave.end_date);
-                const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+                const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)+1);
 
                 return {
                     leave_id: leave.leave_id,
