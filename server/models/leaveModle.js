@@ -25,6 +25,7 @@ const leaveModel = {
     },
 
     addLeaveRequest: async (employee_id, start_date, end_date, leave_type, description) => {
+        console.log(employee_id, start_date, end_date, leave_type, description);
         const query = "INSERT INTO leaverequest (leave_id, employee_id, start_date, end_date, leave_type_id, description,request_status) VALUES (UUID(), ?, ?, ?, ?, ?, ?);";
         await pool.query(query, [employee_id, start_date, end_date, leave_type, description,"Pending"]);
     },
