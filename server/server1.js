@@ -16,6 +16,9 @@ const {leaveRouter} = require('./routes/leaveRoutes')
 const {enumRouter} = require('./routes/enumRoutes');
 const reportRouter = require('./routes/reportRoutes');
 const { employeeRouter } = require('./routes/employeeRoutes');
+const organizationRouter = require('./routes/organizationRoutes'); 
+const branchRouter = require('./routes/branchRoutes');
+const payGradeRouter = require('./routes/payGradeRoutes'); 
 
 const app = express();
 const port = 5000;
@@ -203,6 +206,10 @@ app.use('/leave',leaveRouter)
 app.use('/enum',enumRouter)
 app.use('/report',reportRouter)
 app.use('/employee',employeeRouter)
+app.use('/organization',organizationRouter)
+app.use('/branch', branchRouter);
+console.log('Registering /paygrade route...');
+app.use('/paygrade', payGradeRouter);
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

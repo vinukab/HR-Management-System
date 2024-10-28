@@ -13,7 +13,13 @@ leaveRouter.get('/alltypes', (req, res, next) => {
 //leaveRouter.put('/alltypes', leaveController.editAllLeaveTypes);
 leaveRouter.get('/user', leaveController.getLeaveRequestOfUser);
 
-leaveRouter.get('/leave-count', leaveController.getLeaveCountDetails);               
+leaveRouter.get('/leave-count', leaveController.getLeaveCountDetails);    
+
+// Route to add a new leave type
+leaveRouter.post('/add', leaveController.addLeaveType);
+
+// Route to delete a leave type
+leaveRouter.delete('/delete/:leave_type_id', leaveController.deleteLeaveType);
 
 
 module.exports = {leaveRouter};

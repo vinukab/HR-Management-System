@@ -158,7 +158,31 @@ const leaveController = {
             console.error(err);
             res.status(400).json({ error: 'Error fetching leave count details' });
         }
+    },
+
+     // Controller to add a new leave type
+  addLeaveType: async (req, res) => {
+    const leaveType = req.body; // Get data from request body
+    try {
+      const result = await leaveModel.addLeaveType(leaveType);
+      res.status(200).json({ message: 'Leave type added successfully', result });
+    } catch (err) {
+      console.error('Controller: Error adding leave type:', err);
+      res.status(500).json({ error: 'Error adding leave type' });
     }
+  },
+
+  // Controller to delete a leave type
+  deleteLeaveType: async (req, res) => {
+    const { leave_type_id } = req.params; // Get leave_type_id from request parameters
+    try {
+      const result = await leaveModel.deleteLeaveType(leave_type_id);
+      res.status(200).json({ message: 'Leave type deleted successfully', result });
+    } catch (err) {
+      console.error('Controller: Error deleting leave type:', err);
+      res.status(500).json({ error: 'Error deleting leave type' });
+    }
+  }
 
     
     
