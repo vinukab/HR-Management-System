@@ -1,14 +1,15 @@
 const express = require('express');
 const leaveController = require('../controllers/leaveController');
 const leaveRouter = express.Router();
+const {grantPrivileges} = require('../middleware/authentification');
 
 leaveRouter.get('/', leaveController.getEmployeeLeaves);
-leaveRouter.put('/update', leaveController.updateLeaveStatus);
-leaveRouter.post('/add', leaveController.addLeaveRequest);
-leaveRouter.get('/types', leaveController.getLeaveTypes);
-leaveRouter.get('/user', leaveController.getLeaveRequestOfUser);
+leaveRouter.put('/update',grantPrivileges('Supervisor'),leaveController.updateLeaveStatus);
+leaveRouter.post('/add',grantPrivileges('Employee'),leaveController.addLeaveRequest);
+leaveRouter.get('/types',grantPrivileges('Employee'),leaveController.getLeaveTypes);
+leaveRouter.get('/user',grantPrivileges('Supervisor'),leaveController.getLeaveRequestOfUser);
 
-leaveRouter.get('/leave-count', leaveController.getLeaveCountDetails);               
+leaveRouter.get('/leave-count',grantPrivileges('Employee'), leaveController.getLeaveCountDetails);               
 
 
 module.exports = {leaveRouter};

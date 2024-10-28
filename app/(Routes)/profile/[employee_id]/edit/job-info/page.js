@@ -31,12 +31,12 @@ export default function JobDetailsUpdater({ params, onSuccess }) {
           branchesResponse,
           employeeResponse,
         ] = await Promise.all([
-          axios.get("http://localhost:5000/enum/job-titles"),
-          axios.get("http://localhost:5000/enum/pay-grades"),
-          axios.get("http://localhost:5000/enum/supervisors"),
-          axios.get("http://localhost:5000/enum/departments"),
-          axios.get("http://localhost:5000/enum/branches"),
-          axios.get(`http://localhost:5000/employee/${employee_id}/official`),
+          axios.get("http://localhost:5000/enum/job-titles",{withCredentials:true}),
+          axios.get("http://localhost:5000/enum/pay-grades",{withCredentials:true}),
+          axios.get("http://localhost:5000/enum/supervisors",{withCredentials:true}),
+          axios.get("http://localhost:5000/enum/departments",{withCredentials:true}),
+          axios.get("http://localhost:5000/enum/branches",{withCredentials:true}),
+          axios.get(`http://localhost:5000/employee/${employee_id}/official`,{withCredentials:true}),
         ]);
 
         setJobTitles(jobTitlesResponse.data);

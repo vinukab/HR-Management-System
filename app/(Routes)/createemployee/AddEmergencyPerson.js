@@ -39,7 +39,7 @@ const AddEmergencyPerson = ({ employee_id, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/addEmergencyPerson', {
+      const response = await axios.post('http://localhost:5000/employee/addEmergencyPerson', {
         ...EmergencyPerson,
         phone_numbers: phoneNumbers
       });

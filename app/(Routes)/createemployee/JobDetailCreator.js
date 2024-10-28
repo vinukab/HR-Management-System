@@ -26,11 +26,11 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
           departmentsResponse,
           branchesResponse,
         ] = await Promise.all([
-          axios.get("http://localhost:5000/enum/job-titles"),
-          axios.get("http://localhost:5000/enum/pay-grades"),
-          axios.get("http://localhost:5000/enum/supervisors"),
-          axios.get("http://localhost:5000/enum/departments"),
-          axios.get("http://localhost:5000/enum/branches"),
+          axios.get("http://localhost:5000/enum/job-titles",{withCredentials:true}),
+          axios.get("http://localhost:5000/enum/pay-grades",{withCredentials:true}),
+          axios.get("http://localhost:5000/enum/supervisors",{withCredentials:true}),
+          axios.get("http://localhost:5000/enum/departments",{withCredentials:true}),
+          axios.get("http://localhost:5000/enum/branches",{withCredentials:true}),
         ]);
 
         setJobTitles(jobTitlesResponse.data);
@@ -59,17 +59,17 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
     e.preventDefault();
 
     const updatedDetails = {
-      employeeId: employee_id.employeeId,
+      employeeId: employee_id,
       jobTitleId,
       payGradeId,
       supervisorId,
       departmentId,
       branchId,
     };
-
+    console.log(updatedDetails);
     try {
       const response = await axios.put(
-        "http://localhost:5000/updateJobDetails", // Adjust URL as needed
+        "http://localhost:5000/updateJobDetails", 
         updatedDetails
       );
       console.log("Job details updated successfully:", response.data);
