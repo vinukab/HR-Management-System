@@ -25,7 +25,7 @@ const Profile = ({ params }) => {
 
     const fetchPersonalInfo = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/personal`);
+            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/personal`,{withCredentials:true});
             setPersonalInfo(response.data);
         } catch (error) {
             console.error("Error fetching personal information:", error);
@@ -34,7 +34,7 @@ const Profile = ({ params }) => {
 
     const fetchOfficialInfo = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/official`);
+            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/official`,{withCredentials:true});
             setOfficialInfo(response.data);
         } catch (error) {
             console.error("Error fetching official information:", error);
@@ -43,7 +43,7 @@ const Profile = ({ params }) => {
 
     const fetchDependents = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/dependents`);
+            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/dependents`,{withCredentials:true});
             setDependents(response.data);
         } catch (error) {
             console.error("Error fetching dependents information:", error);
@@ -52,7 +52,7 @@ const Profile = ({ params }) => {
 
     const fetchEmergencyContact = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/emergency`);
+            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/emergency`,{withCredentials:true});
             setEmergencyContacts(response.data);
         } catch (error) {
             console.error("Error fetching emergency contact information:", error);

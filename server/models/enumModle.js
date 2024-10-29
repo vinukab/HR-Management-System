@@ -1,3 +1,4 @@
+
 const pool = require('../config/dbConfig');
 
 const enumModel = {

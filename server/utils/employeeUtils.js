@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
-const pool = require('./dbConfig.js'); 
+const pool = require('../config/dbConfig.js'); 
 
+// Function to insert a new employee
 const insertEmployee = async (employeeData) => {
   const sql = `
     INSERT INTO Employee (
@@ -20,6 +21,7 @@ const insertEmployee = async (employeeData) => {
   return employee_id;
 };
 
+// Function to insert phone numbers for the employee
 const insertPhoneNumbers = async (employee_id, phoneNumbers) => {
   const phoneSql = `
     INSERT INTO employeecontact(employee_id, phone_num) VALUES (?, ?);
@@ -30,6 +32,7 @@ const insertPhoneNumbers = async (employee_id, phoneNumbers) => {
   }
 };
 
+// Function to insert custom attributes for the employee
 const insertCustomAttributes = async (employee_id, customAttributes) => {
   const customSql = `
     INSERT INTO customattribute (
@@ -50,6 +53,7 @@ const insertCustomAttributes = async (employee_id, customAttributes) => {
   await pool.query(customSql, params);
 };
 
+// Function to create a new employee
 const createEmployee = async (req, res) => {
   try {
     const {
@@ -69,9 +73,8 @@ const createEmployee = async (req, res) => {
       value_3,
     } = req.body;
 
-    console.log(phoneNumbers)
     const profilePic = req.file ? `/uploads/${req.file.filename}` : null;
-    console.log(key_1, value_1, key_2, value_2, key_3, value_3);
+
     const newEmployee = {
       firstName,
       lastName,
@@ -107,12 +110,12 @@ const createEmployee = async (req, res) => {
   }
 };
 
+// Function to update employee details
 const updateEmployeeDetails = async (req, res) => {
-
   const { employeeId, jobTitleId, payGradeId, supervisorId, departmentId, branchId } = req.body;
-  console.log(employeeId, jobTitleId, payGradeId, supervisorId, departmentId, branchId);
+
   try {
-      const result = await pool.query(`
+      await pool.query(`
           UPDATE employee
           SET job_title_id = ?, pay_grade_id = ?, supervisor_id = ?, department_id = ?, branch_id = ?
           WHERE employee_id = ?
@@ -124,8 +127,61 @@ const updateEmployeeDetails = async (req, res) => {
       return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+const updateEmployeePersonalDetails = async (req, res) => {
+    const employeeId = req.params.employeeId;
+    const {
+        firstName,
+        lastName,
+        birthDate,
+        maritalStatus,
+        NIC,
+        address,
+        gender,
+    } = req.body;
+  
+    const profilePic = req.file ? `/uploads/${req.file.filename}` : null;
+  
+    const sqlUpdateQuery = `
+        UPDATE employee SET 
+            first_name = ?, 
+            last_name = ?, 
+            birth_date = ?, 
+            marital_status = ?, 
+            NIC_number = ?, 
+            address = ?, 
+            gender = ?,
+            profile_pic = COALESCE(?, profile_pic) -- Only update if a new file is uploaded
+        WHERE employee_id = ?;
+    `;
+  
+    try {
+        // Execute the update query
+        const result = await pool.query(sqlUpdateQuery, [
+            firstName,
+            lastName,
+            birthDate,
+            maritalStatus,
+            NIC,
+            address,
+            gender,
+            profilePic,
+            employeeId,
+        ]);
+  
+        if (result[0].affectedRows === 0) {
+            return res.status(404).json({ error: "Employee not found" });
+        }
+  
+        res.json({ message: "Employee details updated successfully" });
+    } catch (error) {
+        console.error("Error updating personal information:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+// Exporting the functions to be used in other modules
 module.exports = {
   createEmployee,
-  updateEmployeeDetails
-  
+  updateEmployeeDetails,
+  updateEmployeePersonalDetails
 };

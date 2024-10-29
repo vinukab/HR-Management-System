@@ -1,4 +1,5 @@
 const express = require('express');
+const {grantPrivileges} = require('../middleware/authentification');
 const {
   getJobTitles,
   getPayGrades,
@@ -9,10 +10,10 @@ const {
 
 const enumRouter = express.Router();
 
-enumRouter.get('/job-titles', getJobTitles);
-enumRouter.get('/pay-grades', getPayGrades);
-enumRouter.get('/supervisors', getSupervisors);
-enumRouter.get('/departments', getDepartments);
-enumRouter.get('/branches', getBranches);
+enumRouter.get('/job-titles',grantPrivileges('Employee'), getJobTitles);
+enumRouter.get('/pay-grades',grantPrivileges('Employee'), getPayGrades);
+enumRouter.get('/supervisors',grantPrivileges('Employee'), getSupervisors);
+enumRouter.get('/departments',grantPrivileges('Employee'), getDepartments);
+enumRouter.get('/branches',grantPrivileges('Employee'), getBranches);
 
 module.exports = {enumRouter};

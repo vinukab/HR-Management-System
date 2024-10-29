@@ -95,7 +95,7 @@ const CreateLeaveRequest = () => {
       await axios.post('http://localhost:5000/leave/add', formattedData, { withCredentials: true });
       alert('Leave request submitted successfully');
     } catch (err) {
-      console.error(err);
+      alert('Failed to submit leave request. Please check remaining leaves and try again.');
     }
   };
 
