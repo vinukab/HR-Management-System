@@ -17,7 +17,7 @@ const EmployeeDirectory = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/employee');
+        const response = await axios.get('http://localhost:5000/employee',{withCredentials: true});
         setEmployees(response.data);
         setFilteredEmployees(response.data.slice(0, 3)); 
       } catch (error) {

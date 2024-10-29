@@ -3,15 +3,15 @@ const employeeController = require('../controllers/employeeController');
 const employeeRouter = express.Router();
 const {grantPrivileges} = require('../middleware/authentification');
 
-employeeRouter.get('/', employeeController.getAllEmployees);
-employeeRouter.post('/addDependent', employeeController.addDependent);
-employeeRouter.post('/addEmergencyPerson', employeeController.addEmergencyPerson);
+employeeRouter.get('/',grantPrivileges('Supervisor'), employeeController.getAllEmployees);
+employeeRouter.post('/addDependent',grantPrivileges('HR Manager'), employeeController.addDependent);
+employeeRouter.post('/addEmergencyPerson',grantPrivileges('HR Manager'), employeeController.addEmergencyPerson);
 employeeRouter.post('/createUser',grantPrivileges('HR Manager'), employeeController.createUser);
-employeeRouter.get('/:employeeId', employeeController.getEmployee);
-employeeRouter.get('/:employeeId/personal',grantPrivileges('Admin'),employeeController.getEmployeePersonal);
-employeeRouter.get('/:employeeId/official', employeeController.getEmployeeOfficialInfo);
-employeeRouter.get('/:employeeId/dependents', employeeController.getEmployeeDependents);
-employeeRouter.get('/:employeeId/emergency', employeeController.getEmployeeEmergencyContacts);
+employeeRouter.get('/:employeeId',grantPrivileges('Employee'),employeeController.getEmployee);
+employeeRouter.get('/:employeeId/personal',grantPrivileges('Employee'),employeeController.getEmployeePersonal);
+employeeRouter.get('/:employeeId/official',grantPrivileges('Employee'), employeeController.getEmployeeOfficialInfo);
+employeeRouter.get('/:employeeId/dependents',grantPrivileges('Employee'), employeeController.getEmployeeDependents);
+employeeRouter.get('/:employeeId/emergency',grantPrivileges('Employee'),employeeController.getEmployeeEmergencyContacts);
 
 
 module.exports = {employeeRouter};

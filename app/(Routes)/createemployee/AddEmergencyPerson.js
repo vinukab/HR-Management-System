@@ -42,7 +42,7 @@ const AddEmergencyPerson = ({ employee_id, onSuccess }) => {
       const response = await axios.post('http://localhost:5000/employee/addEmergencyPerson', {
         ...EmergencyPerson,
         phone_numbers: phoneNumbers
-      });
+      },{withCredentials:true});
       onSuccess(employee_id, 5);
     } catch (error) {
       console.error('There was an error adding the emergency person!', error);

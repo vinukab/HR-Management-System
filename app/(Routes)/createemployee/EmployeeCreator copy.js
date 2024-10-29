@@ -101,7 +101,7 @@ export default function EmployeeCreator() {
     try {
       const response = await axios.post(
         "http://localhost:5000/createEmployee",
-        formData,{ withCredentials: true },
+        formData,{withCredentials: true },
         {
           headers: {
             "Content-Type": "multipart/form-data",

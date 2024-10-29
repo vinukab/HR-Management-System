@@ -3,7 +3,7 @@ const leaveController = require('../controllers/leaveController');
 const leaveRouter = express.Router();
 const {grantPrivileges} = require('../middleware/authentification');
 
-leaveRouter.get('/', leaveController.getEmployeeLeaves);
+leaveRouter.get('/', grantPrivileges('Employee'), leaveController.getEmployeeLeaves);
 leaveRouter.put('/update',grantPrivileges('Supervisor'),leaveController.updateLeaveStatus);
 leaveRouter.post('/add',grantPrivileges('Employee'),leaveController.addLeaveRequest);
 leaveRouter.get('/types',grantPrivileges('Employee'),leaveController.getLeaveTypes);

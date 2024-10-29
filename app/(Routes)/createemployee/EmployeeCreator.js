@@ -182,19 +182,35 @@ export default function EmployeeCreator({ onSuccess }) {
               {/* Phone Numbers */}
               <div className="m-2">
                 <Label>Phone Numbers</Label>
-                {phoneNumbers.map((phoneNumber, index) => (
-                  <div key={index} className="flex items-center mb-2">
-                    <Input
-                      value={phoneNumber}
-                      onChange={(e) => handlePhoneNumberChange(index, e.target.value)}
-                      placeholder={`Phone Number ${index + 1}`}
-                      className="mr-2"
-                      required
-                    />
-                    <Button type="button" onClick={() => removePhoneNumber(index)}>Remove</Button>
-                  </div>
-                ))}
-                <Button type="button" onClick={addPhoneNumber} className="mt-2">Add Phone Number</Button>
+                <div className="space-y-2">
+                  {phoneNumbers.map((phoneNumber, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <Input
+                        value={phoneNumber}
+                        onChange={(e) => handlePhoneNumberChange(index, e.target.value)}
+                        placeholder={`Phone Number ${index + 1}`}
+                        className="flex-grow" // Allow the input to grow within available space
+                        required
+                      />
+                      <Button
+                        type="button"
+                        onClick={() => removePhoneNumber(index)}
+                        className="bg-red-500 text-white w-10 h-10 flex justify-center items-center"
+                      >
+                        -
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-end">
+                  <Button
+                    type="button"
+                    onClick={addPhoneNumber}
+                    className="mt-2 bg-green-500 text-white w-10 h-10 flex justify-center items-center"
+                  >
+                    +
+                  </Button>
+                </div>
               </div>
 
               {/* Custom Attributes */}
@@ -228,7 +244,7 @@ export default function EmployeeCreator({ onSuccess }) {
               {error && <p className="text-red-500 m-2">{error}</p>}
               {success && <p className="text-green-500 m-2">{success}</p>}
               <div className="w-full flex flex-col">
-                <Button type="submit" className="m-4 ml-auto">Create Employee</Button>
+                <Button type="submit" className="m-4 ml-auto hover:bg-gray-700">Create Employee</Button>
               </div>
             </div>
           </form>

@@ -42,7 +42,7 @@ export function ToDoList() {
       setTasks((prevTasks) => prevTasks.filter((task) => task.todo_id !== todo_id))
       setTimeout(() => {
         setRemovedTask(null)
-        axios.delete('http://localhost:5000/todolist', {
+        axios.delete('http://localhost:5000/todolist/deletetodo', {
           data: { todo_id },
           withCredentials: true,
         }).catch(err => {
@@ -71,7 +71,7 @@ export function ToDoList() {
         ...prevTasks,
         newTaskdata
       ])
-      axios.post('http://localhost:5000/todolist', newTaskdata, { withCredentials: true })
+      axios.post('http://localhost:5000/todolist/addtodo', newTaskdata, { withCredentials: true })
       .catch(err => {
         console.error(err);
       });
