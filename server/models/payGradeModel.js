@@ -15,30 +15,25 @@ const payGradeModel = {
     }
   },
 
-  // Function to add a new pay grade
-  addPayGrade: async (grade) => {
-    const query = 'INSERT INTO hrms.paygrade (grade) VALUES (?)';
-    console.log('Executing query to add pay grade:', query, 'with grade:', grade); // Log query and data
+  addPayGrade: async (payGrade) => {
+    const query = 'INSERT INTO hrms.paygrade (pay_grade_id, grade) VALUES (?, ?)';
+    const params = [payGrade.pay_grade_id, payGrade.grade];
     try {
-      const [result] = await db.execute(query, [grade]);
-      console.log('Query result:', result); // Log the query result
-      return { pay_grade_id: result.insertId, grade };
-    } catch (err) {
-      console.error('Model Error adding pay grade:', err); // Detailed error logging
-      throw err; // Pass error up to the controller
-    }
-  },
-  
-
-  // Function to delete a pay grade by ID
-  deletePayGrade: async (payGradeId) => {
-    const query = 'DELETE FROM hrms.paygrade WHERE pay_grade_id = ?';
-    try {
-      const [result] = await db.execute(query, [payGradeId]);
-      console.log('Model: Pay grade deleted successfully');
+      const [result] = await db.execute(query, params);
       return result;
     } catch (err) {
-      console.error('Model: Error deleting pay grade:', err);
+      console.error('Error adding pay grade:', err);
+      throw err;
+    }
+  },
+
+  deletePayGrade: async (pay_grade_id) => {
+    const query = 'DELETE FROM hrms.paygrade WHERE pay_grade_id = ?';
+    try {
+      const [result] = await db.execute(query, [pay_grade_id]);
+      return result;
+    } catch (err) {
+      console.error('Error deleting pay grade:', err);
       throw err;
     }
   }
