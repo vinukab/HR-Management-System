@@ -6,7 +6,7 @@ import {ToDoList} from "./ToDoList";
 export default function EmployeeToDOList() {
   const [date, setDate] = useState(new Date()) 
   return (
-    <Card className="m-1 flex-grow h-full items-center justify-center" style={{ height: '500px' }}>
+    <Card className="m-1 flex-grow h-full items-center justify-center" style={{ height: '500px', backgroundColor: '#f1f5f9' }}>
         <CardHeader>
           <CardTitle>Personal Calender</CardTitle>
           <CardDescription>Plan Your Work</CardDescription>

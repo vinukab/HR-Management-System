@@ -64,7 +64,7 @@ export default function TotalLeavesByDepartment() {
   }, []);
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle style={{ textAlign: "center" }}>Total Leaves by Department</CardTitle>
         <CardDescription style={{ textAlign: "center" }}>

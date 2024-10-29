@@ -5,14 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import SideBar from "@/app/layouts/Sidebar";
 import Titlebar from "@/app/layouts/Titlebar";
 import Link from "next/link";
-import { FaUserEdit, FaPhone, FaEnvelope, FaBuilding, FaUserCircle, FaHeartbeat, FaBriefcase } from "react-icons/fa";
+import { FaUserEdit, FaPhone, FaBuilding, FaUserCircle, FaHeartbeat, FaBriefcase, FaTrash } from "react-icons/fa";
 
 const Profile = ({ params }) => {
     const employee_id = params.employee_id;
     const [personalInfo, setPersonalInfo] = useState(null);
     const [officialInfo, setOfficialInfo] = useState(null);
-    const [dependents, setDependents] = useState(null);
-    const [emergencyContacts, setEmergencyContacts] = useState(null);
+    const [dependents, setDependents] = useState([]);
+    const [emergencyContacts, setEmergencyContacts] = useState([]);
 
     useEffect(() => {
         if (employee_id) {
@@ -59,6 +59,24 @@ const Profile = ({ params }) => {
         }
     };
 
+    const deleteDependent = async (dependentId) => {
+        try {
+            await axios.delete(`http://localhost:5000/employee/${employee_id}/dependents/${dependentId}`, { withCredentials: true });
+            setDependents(dependents.filter(dependent => dependent.id !== dependentId));
+        } catch (error) {
+            console.error("Error deleting dependent:", error);
+        }
+    };
+
+    const deleteEmergencyContact = async (contactId) => {
+        try {
+            await axios.delete(`http://localhost:5000/employee/${employee_id}/emergency/${contactId}`, { withCredentials: true });
+            setEmergencyContacts(emergencyContacts.filter(contact => contact.id !== contactId));
+        } catch (error) {
+            console.error("Error deleting emergency contact:", error);
+        }
+    };
+
     if (!personalInfo || !officialInfo || !dependents || !emergencyContacts) {
         return <div className="text-center py-10 text-blue-400">Loading...</div>;
     }
@@ -67,19 +85,19 @@ const Profile = ({ params }) => {
         <div className="ml-56 bg-gray-700 text-white min-h-screen">
             <SideBar activePanel={2} />
             <div className="flex-1">
-                <div className="container mx-auto p-6 ">
+                <div className="container mx-auto p-6">
                     <Titlebar title="User Profile" />
                     <h1 className="text-4xl font-semibold my-6 text-center text-blue-400">User Profile</h1>
 
-                    <div className="flex flex-wrap lg:flex-nowrap gap-6 ">
+                    <div className="flex flex-wrap lg:flex-nowrap gap-5 ">
                         {/* Left Column - Profile Picture and General Information */}
-                        <div className="w-full lg:w-1/2  p-6 ">
-                            <Card className="h-full flex items-center justify-center">
+                        <div className="w-full lg:w-1/2">
+                            <Card className=" flex items-center justify-center bg-gray-800 h-full ">
                                 <CardContent>
                                     <div className="flex flex-col items-center">
                                         <img
                                             src={personalInfo.profile_pic || "/default-profile.png"}
-                                            className="rounded-full w-48 h-48 object-cover border-4 border-blue-400 shadow-md mb-4"
+                                            className="rounded-full w-48 h-48 object-cover border-4 border-blue-400  mb-4"
                                         />
                                         <CardTitle className="text-2xl font-bold text-center mb-2 text-blue-400">
                                             {`${personalInfo.first_name} ${personalInfo.last_name}`}
@@ -148,19 +166,27 @@ const Profile = ({ params }) => {
 
                     {/* Dependents and Emergency Contact Cards Side by Side */}
                     <div className="flex gap-4 mt-4">
+                        {/* Dependents Card */}
                         <Card className="bg-gray-800 p-6 rounded-lg shadow-lg w-full">
                             <CardHeader className="flex justify-between items-center mb-4 border-b border-gray-600 pb-2 bg-gray-700 rounded-t-lg">
                                 <CardTitle className="text-lg font-semibold text-blue-400"><FaHeartbeat className="inline mr-2"/>Dependents Information</CardTitle>
-                                <button className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded">Edit</button>
+                                <Link href={`/createemployee/adddependentdetails/${employee_id}`} className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded">
+                                        <FaUserEdit className="inline mr-1"/> Add
+                                    </Link>
                             </CardHeader>
                             <CardContent className="space-y-4 text-sm text-gray-300">
                                 {dependents.length > 0 ? (
-                                    dependents.map((dependent, index) => (
-                                        <div key={index} className="border-b border-gray-600 pb-2">
-                                            <p><strong>Name:</strong> {dependent.name}</p>
-                                            <p><strong>Relationship:</strong> {dependent.relationship}</p>
-                                            <p><strong>Gender:</strong> {dependent.gender}</p>
-                                            <p><strong>Covered by Insurance:</strong> {dependent.is_covered_by_insurance ? "Yes" : "No"}</p>
+                                    dependents.map((dependent) => (
+                                        <div key={dependent.id} className="border-b border-gray-600 pb-2 flex justify-between items-center">
+                                            <div>
+                                                <p><strong>Name:</strong> {dependent.name}</p>
+                                                <p><strong>Relationship:</strong> {dependent.relationship}</p>
+                                                <p><strong>Gender:</strong> {dependent.gender}</p>
+                                                <p><strong>Covered by Insurance:</strong> {dependent.is_covered_by_insurance ? "Yes" : "No"}</p>
+                                            </div>
+                                            <button onClick={() => deleteDependent(dependent.id)} className="text-red-500 hover:text-red-700">
+                                                <FaTrash />
+                                            </button>
                                         </div>
                                     ))
                                 ) : (
@@ -169,18 +195,26 @@ const Profile = ({ params }) => {
                             </CardContent>
                         </Card>
 
+                        {/* Emergency Contacts Card */}
                         <Card className="bg-gray-800 p-6 rounded-lg shadow-lg w-full">
                             <CardHeader className="flex justify-between items-center mb-4 border-b border-gray-600 pb-2 bg-gray-700 rounded-t-lg">
                                 <CardTitle className="text-lg font-semibold text-blue-400"><FaPhone className="inline mr-2"/>Emergency Contacts</CardTitle>
-                                <button className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded">Edit</button>
+                                <Link href={`createemployee/addemergencyperson/${employee_id}/edit/job-info`} className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded">
+                                        <FaUserEdit className="inline mr-1"/> Add
+                                    </Link>
                             </CardHeader>
                             <CardContent className="space-y-4 text-sm text-gray-300">
                                 {emergencyContacts.length > 0 ? (
-                                    emergencyContacts.map((contact, index) => (
-                                        <div key={index} className="border-b border-gray-600 pb-2">
-                                            <p><strong>Name:</strong> {contact.name}</p>
-                                            <p><strong>Relationship:</strong> {contact.relationship}</p>
-                                            <p><strong>Phone Number:</strong> {contact.phone_number}</p>
+                                    emergencyContacts.map((contact) => (
+                                        <div key={contact.id} className="border-b border-gray-600 pb-2 flex justify-between items-center">
+                                            <div>
+                                                <p><strong>Name:</strong> {contact.name}</p>
+                                                <p><strong>Relationship:</strong> {contact.relationship}</p>
+                                                <p><strong>Phone Number:</strong> {contact.phone_number}</p>
+                                            </div>
+                                            <button onClick={() => deleteEmergencyContact(contact.id)} className="text-red-500 hover:text-red-700">
+                                                <FaTrash />
+                                            </button>
                                         </div>
                                     ))
                                 ) : (

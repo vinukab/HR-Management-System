@@ -28,7 +28,7 @@ const chartConfig = {
 
 export default function EmployeeByDepartment() {
   const [chartData, setChartData] = useState([]);
-
+  
   // Fetch data from the backend
   useEffect(() => {
     const fetchData = async () => {
@@ -49,34 +49,32 @@ export default function EmployeeByDepartment() {
   }, []);
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle style={{ textAlign: 'center' }}>Employee by Department</CardTitle>
-        <CardDescription style={{ textAlign: 'center' }}>Employees grouped by their department</CardDescription>
+        <CardTitle style={{ textAlign: 'left' }}>Employee by Department</CardTitle>
+        <CardDescription style={{ textAlign: 'left' }}>Employees grouped by their department</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <div style={{ display: 'flex', justifyContent: 'center', margin: '0 auto' }}>
-            <div style={{ width: '60%', height: '600px' }}>
-              <ResponsiveContainer width="100%" height="90%">
-                <BarChart data={chartData}>
+          <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+            <div style={{ width: '60%', height: '14rem' }}> {/* Adjusted height to h-56 */}
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData} barSize={40} barCategoryGap="5%">
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
                     dataKey="department_name"
                     tickLine={false}
                     tickMargin={10}
-                    angle={-90}
                     axisLine={false}
-                    textAnchor="end"
-                    height={300}
+                    hide={true}
+                    tickFormatter={(value) => value.slice(0, 3)}
                   />
-                  <YAxis />
+                  <YAxis height={50} />
                   <ChartTooltip
                     cursor={false}
                     content={<ChartTooltipContent indicator="dashed" />}
-                    
                   />
-                  <Bar dataKey="employee_count" radius={4}>
+                  <Bar dataKey="employee_count" radius={10}>
                     {chartData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={['#243642', '#387478', '#629584', '#E2F1E7', '#ECDFCC'][index % 5]} />
                     ))}
