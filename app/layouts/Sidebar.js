@@ -112,7 +112,7 @@ const SideBar = ({ activePanel }) => {
             <div onClick={() => changePanel(6)} className={classNames("w-11/12 hover:bg-[#1e40af] h-10 ml-auto rounded-l-lg transition-all", { 'bg-gray-800': !(activePanel === 6), 'bg-blue-700': (activePanel === 6) })}>
                 <button className="w-full h-full text-gray-300 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                     <User2Icon className="mr-1" />
-                    Employee Directory
+                    Settings
                 </button>
             </div>
         </div>
