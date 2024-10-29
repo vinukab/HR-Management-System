@@ -73,13 +73,13 @@ const Profile = ({ params }) => {
 
                     <div className="flex flex-wrap lg:flex-nowrap gap-6 ">
                         {/* Left Column - Profile Picture and General Information */}
-                        <div className="w-full lg:w-1/2 bg-white p-6 ">
-                            <Card className="h-full flex items-center justify-center rounded-lg shadow-lg">
+                        <div className="w-full lg:w-1/2 bg-white p-6 rounded-lg ">
+                            <Card className="h-full flex items-center justify-center ">
                                 <CardContent>
                                     <div className="flex flex-col items-center">
                                         <img
                                             src={personalInfo.profile_pic || "/default-profile.png"}
-                                            className="rounded-full w-48 h-48 object-cover border-4 border-blue-400 shadow-md mb-4"
+                                            className="rounded-full w-48 h-48 object-cover border-4 border-blue-400  mb-4"
                                         />
                                         <CardTitle className="text-2xl font-bold text-center mb-2 text-blue-400">
                                             {`${personalInfo.first_name} ${personalInfo.last_name}`}
