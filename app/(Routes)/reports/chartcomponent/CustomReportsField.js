@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react"; 
 import {
   Card,
   CardContent,
@@ -9,136 +10,86 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-// Sample chart data with nationalities, blood groups, and hobbies
-const chartData = [
-  {
-    department: "HR",
-    A_Positive: 10,
-    A_Negative: 5,
-    B_Positive: 3,
-    B_Negative: 2,
-    O_Positive: 6,
-    O_Negative: 4,
-    Nationality_Indian: 8,
-    Nationality_SriLankan: 7,
-    Nationality_Bangladeshi: 5,
-    Hobbies_Sports: 6,
-    Hobbies_Reading: 4,
-    Hobbies_Traveling: 8,
-  },
-  {
-    department: "IT",
-    A_Positive: 12,
-    A_Negative: 7,
-    B_Positive: 4,
-    B_Negative: 1,
-    O_Positive: 3,
-    O_Negative: 2,
-    Nationality_Indian: 9,
-    Nationality_SriLankan: 5,
-    Nationality_Bangladeshi: 3,
-    Hobbies_Sports: 5,
-    Hobbies_Reading: 3,
-    Hobbies_Traveling: 4,
-  },
-  {
-    department: "Sales",
-    A_Positive: 5,
-    A_Negative: 3,
-    B_Positive: 2,
-    B_Negative: 1,
-    O_Positive: 4,
-    O_Negative: 2,
-    Nationality_Indian: 4,
-    Nationality_SriLankan: 3,
-    Nationality_Bangladeshi: 2,
-    Hobbies_Sports: 4,
-    Hobbies_Reading: 2,
-    Hobbies_Traveling: 3,
-  },
-  {
-    department: "Marketing",
-    A_Positive: 8,
-    A_Negative: 4,
-    B_Positive: 3,
-    B_Negative: 2,
-    O_Positive: 5,
-    O_Negative: 3,
-    Nationality_Indian: 7,
-    Nationality_SriLankan: 4,
-    Nationality_Bangladeshi: 3,
-    Hobbies_Sports: 7,
-    Hobbies_Reading: 5,
-    Hobbies_Traveling: 4,
-  },
-  {
-    department: "Finance",
-    A_Positive: 11,
-    A_Negative: 6,
-    B_Positive: 5,
-    B_Negative: 3,
-    O_Positive: 7,
-    O_Negative: 4,
-    Nationality_Indian: 8,
-    Nationality_SriLankan: 5,
-    Nationality_Bangladeshi: 2,
-    Hobbies_Sports: 9,
-    Hobbies_Reading: 4,
-    Hobbies_Traveling: 7,
-  },
-];
-
 export default function CustomReportsField() {
+  const [chartData, setChartData] = useState([]);
+
+  // Fetch data from the backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/report/emp-stats', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+        const data = await response.json();
+        console.log(data);
+        setChartData(data);
+      } catch (error) {
+        console.error('Error fetching chart data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Department-wise Details</CardTitle>
+        <CardTitle className="text-lg font-bold">Department-wise Details</CardTitle>
         <CardDescription>Details of nationalities, blood groups, and hobbies by department</CardDescription>
       </CardHeader>
       <CardContent>
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto border-separate border-spacing-0 text-left ">
+            <thead style={{ backgroundColor: '#C4DAD2' }}>
+              {/* Grouped Headers */}
               <tr>
-                <th>Department</th>
-                <th>A+</th>
-                <th>A-</th>
-                <th>B+</th>
-                <th>B-</th>
-                <th>O+</th>
-                <th>O-</th>
-                <th>Indian</th>
-                <th>Sri Lankan</th>
-                <th>Bangladeshi</th>
-                <th>Sports</th>
-                <th>Reading</th>
-                <th>Traveling</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r border-l border-t rounded-tl-md" rowSpan="2">Department</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r text-center border-t" colSpan="6">Blood Types</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r text-center border-t" colSpan="3">Nationalities</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r text-center border-t rounded-tr-md" colSpan="3">Hobbies</th>
+              </tr>
+              {/* Sub-Headers for Blood Types, Nationalities, and Hobbies */}
+              <tr style={{ backgroundColor: '#C4DAD2' }}>
+                <th className="px-4 py-2 border-b border-gray-400 border-r">A+</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r">A-</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r">B+</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r">B-</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r" >O+</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r">O-</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r">Pakistani</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r">Sri Lankan</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r">Bangladeshi</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r ">Sports</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r">Reading</th>
+                <th className="px-4 py-2 border-b border-gray-400 border-r">Traveling</th>
               </tr>
             </thead>
             <tbody>
               {chartData.map((row, index) => (
-                <tr key={index}>
-                  <td>{row.department}</td>
-                  <td>{row.A_Positive}</td>
-                  <td>{row.A_Negative}</td>
-                  <td>{row.B_Positive}</td>
-                  <td>{row.B_Negative}</td>
-                  <td>{row.O_Positive}</td>
-                  <td>{row.O_Negative}</td>
-                  <td>{row.Nationality_Indian}</td>
-                  <td>{row.Nationality_SriLankan}</td>
-                  <td>{row.Nationality_Bangladeshi}</td>
-                  <td>{row.Hobbies_Sports}</td>
-                  <td>{row.Hobbies_Reading}</td>
-                  <td>{row.Hobbies_Traveling}</td>
+                <tr key={index} className={`hover:bg-[#f1f7f4] ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+                  <td className="px-4 py-2 border-b border-gray-300 border-l border-r">{row.department}</td>
+                  <td className="px-4 py-2 border-b border-gray-300 text-center first-line: border-r">{row.A_Positive}</td>
+                  <td className="px-4 py-2 border-b border-gray-300 text-center border-r">{row.A_Negative}</td>
+                  <td className="px-4 py-2 border-b border-gray-300 text-center border-r">{row.B_Positive}</td>
+                  <td className="px-4 py-2 border-b border-gray-300 text-center border-r">{row.B_Negative}</td>
+                  <td className="px-4 py-2 border-b border-gray-300 text-center border-r">{row.O_Positive}</td>
+                  <td className="px-4 py-2 border-b border-gray-300 border-r text-center">{row.O_Negative}</td>
+                  <td className="px-4 py-2 border-b border-gray-300 text-center border-r">{row.Pakistani}</td>
+                  <td className="px-4 py-2 border-b border-gray-300 text-center border-r">{row.SriLankan}</td>
+                  <td className="px-4 py-2 border-b border-gray-300 border-r text-center">{row.Bangladeshi}</td>
+                  <td className="px-4 py-2 border-b border-gray-300 text-center border-r">{row.Hobbies_Sports}</td>
+                  <td className="px-4 py-2 border-b border-gray-300 text-center border-r">{row.Hobbies_Reading}</td>
+                  <td className="px-4 py-2 border-b border-gray-300 text-center border-r">{row.Hobbies_Traveling}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </CardContent>
-      <CardFooter>
-        {/* Additional footer content can go here if needed */}
+      <CardFooter className="text-sm text-gray-500">
+        {/* Optional footer content */}
       </CardFooter>
     </Card>
   );
