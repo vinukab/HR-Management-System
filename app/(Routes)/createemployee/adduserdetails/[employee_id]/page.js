@@ -1,8 +1,12 @@
+'use client';
 import { useState } from 'react';
 import axios from 'axios';
 import Title from "@/app/layouts/Titlebar"; // Ensure this path is correct
+import { useRouter } from 'next/navigation';
+import SideBar from '@/app/layouts/Sidebar';
 
-const CreateUser = ({ employee_id, onSuccess }) => {
+const CreateUser = ({ params }) => {
+  const employee_id = params.employee_id;
   const [user, setUser] = useState({
     username: '',
     password: '',
@@ -20,6 +24,7 @@ const CreateUser = ({ employee_id, onSuccess }) => {
       [name]: value
     });
   };
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +38,7 @@ const CreateUser = ({ employee_id, onSuccess }) => {
         role: 'Employee',
         employee_id: employee_id || ''
       });
-      onSuccess(employee_id, 4);
+      router.push(`/createemployee/addemergencyperson/${employee_id}`);
     } catch (error) {
       console.error('There was an error creating the user!', error);
       setError('Failed to create user.');
@@ -43,7 +48,10 @@ const CreateUser = ({ employee_id, onSuccess }) => {
   };
 
   return (
-    <div className="m-1 bg-white rounded-lg shadow-md">
+    <>
+    <SideBar/>
+    <div className="ml-56">
+         <div className="m-1 bg-white rounded-lg shadow-md">
       <Title title="Create User" />
 
       <div className="grid grid-cols-3 gap-4 p-5">
@@ -109,7 +117,7 @@ const CreateUser = ({ employee_id, onSuccess }) => {
               </button>
               <button
                 type="button"
-                onClick={() => onSuccess(employee_id, 4)}
+                onClick={ ()=>{router.push(`/createemployee/addemergencyperson/${employee_id}`);}}
                 className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700"
               >
                 Skip
@@ -119,6 +127,8 @@ const CreateUser = ({ employee_id, onSuccess }) => {
         </div>
       </div>
     </div>
+    </div>
+   </>
   );
 };
 
