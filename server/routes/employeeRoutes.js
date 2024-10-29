@@ -15,7 +15,7 @@ employeeRouter.get('/:employeeId/emergency',grantPrivileges('Employee'),employee
 
 employeeRouter.get('/', employeeController.getAllEmployees);
 
-//employeeRouter.get('/:id', employeeController.getEmployeeById);
+// employeeRouter.get('/:id', employeeController.getEmployeeById);
 
 /*employeeRouter.post('/create', employeeController.createEmployee);
 employeeRouter.put('/update', employeeController.updateEmployee);
