@@ -1,4 +1,7 @@
 const pool = require('../config/dbConfig');
+const db = require('../config/dbConfig');
+console.log('Database Connection Imported:', db); // Check if db is imported properly
+
 const jwt = require('jsonwebtoken');
 const secretKey = '1234';
 
@@ -39,6 +42,49 @@ const leaveModel = {
         WHERE is_allowed_leave_type(e.pay_grade_id, e.gender, lt.leave_type_id) = 1;`;
         const [leaveTypes] = await pool.query(query, [employee_id]);
         return leaveTypes;
+    },
+
+
+    getAllLeaveTypes: async () => {
+        // Corrected query to target the correct schema and table
+        const query = 'SELECT leave_type_id, type_name, default_days, pay_grade_id FROM hrms.leavetype';
+        try {
+          console.log('Model: Executing database query...'); // Debug before query
+    
+          // Use db.execute to perform the query
+          const [rows] = await db.execute(query); // Execute the SQL query
+          
+          console.log('Model: Query Result:', rows); // Debug query result
+          return rows;
+        } catch (err) {
+          console.error('Model: Database query error:', err);
+          throw err;
+        }
+    },
+
+    editAllLeaveTypes: async (leaveTypes) => {
+        try {
+          // Use a transaction to ensure atomic updates
+          const connection = await db.getConnection();
+          await connection.beginTransaction();
+    
+          for (const leaveType of leaveTypes) {
+            const { leave_type_id, type_name, default_days, pay_grade_id } = leaveType;
+            const query = `
+              UPDATE leave_types 
+              SET type_name = ?, default_days = ?, pay_grade_id = ? 
+              WHERE leave_type_id = ?
+            `;
+            await connection.execute(query, [type_name, default_days, pay_grade_id, leave_type_id]);
+          }
+    
+          await connection.commit(); // Commit the transaction if all queries are successful
+          connection.release();
+          return { message: 'All leave types updated successfully' };
+        } catch (err) {
+          console.error('Database update error:', err);
+          throw err; // Throw error to handle it in the controller
+        }
     },
 
     getLeaveRequestsByEmployeeId: async (employee_id) => {

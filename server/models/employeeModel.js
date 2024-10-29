@@ -1,9 +1,18 @@
 const db = require('../config/dbConfig');
 
 const employeeModel = {
-  getAllEmployees: async() => {
-    const [result] = await db.query('SELECT * FROM employee');
-    return result;
+  getAllEmployees: async () => {
+    const query = 'SELECT * FROM employee'; // Ensure the table name is correct
+    try {
+      // Execute the database query and return the result
+      const [rows] = await db.execute(query);
+      console.log('Employees data retrieved:', rows); // Log the returned rows for debugging
+      return rows; // Return the rows fetched from the database
+    } catch (err) {
+      console.error('Database query error:', err);
+      throw err; // Re-throw the error to handle it in the controller
+    }
+
   },
 
   getEmployeeById: async (employeeId) => {

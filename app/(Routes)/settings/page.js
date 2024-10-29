@@ -1,9 +1,75 @@
-const settings = () => {
-    return ( 
-        <div>
-            <h1>Settings Page</h1>
-        </div>    
-     );
-}
- 
-export default settings;
+'use client';
+import React, { useState } from 'react';
+import SideBar from '../../layouts/Sidebar';
+import Title from '../../layouts/Titlebar';
+import dynamic from 'next/dynamic';
+
+// Use dynamic imports to ensure client-side only rendering
+const LeaveTypeSettings = dynamic(() => import('./LeaveTypeSettings'), { ssr: false });
+const OrganizationDetails = dynamic(() => import('./OrganizationDetails'), { ssr: false });
+const BranchDetails = dynamic(() => import('./BranchDetails'), { ssr: false });
+const PayGradeSettings = dynamic(() => import('./PayGradeSettings'), { ssr: false });
+
+const SettingsPage = () => {
+  const [activeSetting, setActiveSetting] = useState('leaveType');
+
+  const renderActiveSetting = () => {
+    switch (activeSetting) {
+      case 'leaveType':
+        return <LeaveTypeSettings />;
+      case 'organizationDetails':
+        return <OrganizationDetails />;
+      case 'branchDetails':
+        return <BranchDetails />;
+      case 'payGrade':
+        return <PayGradeSettings />;
+      default:
+        return <p>Select a setting from the menu.</p>;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-8">
+      <SideBar activePanel={5} />
+      <div className="lg:ml-60">
+        <Title />
+        <div className="container mx-auto mt-8">
+          <div className="bg-white p-4 rounded-lg shadow-md mb-4">
+            <h1 className="text-3xl font-semibold mb-4">Settings</h1>
+            <div className="flex space-x-4 mb-8">
+              <button
+                className={`px-4 py-2 rounded-md ${activeSetting === 'leaveType' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                onClick={() => setActiveSetting('leaveType')}
+              >
+                Leave Type
+              </button>
+              <button
+                className={`px-4 py-2 rounded-md ${activeSetting === 'organizationDetails' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                onClick={() => setActiveSetting('organizationDetails')}
+              >
+                Organization Details
+              </button>
+              <button
+                className={`px-4 py-2 rounded-md ${activeSetting === 'branchDetails' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                onClick={() => setActiveSetting('branchDetails')}
+              >
+                Branch Details
+              </button>
+              <button
+                className={`px-4 py-2 rounded-md ${activeSetting === 'payGrade' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                onClick={() => setActiveSetting('payGrade')}
+              >
+                Pay Grade
+              </button>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              {renderActiveSetting()}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SettingsPage;
