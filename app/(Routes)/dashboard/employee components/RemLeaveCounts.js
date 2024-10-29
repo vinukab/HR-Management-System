@@ -31,7 +31,7 @@ const initialChartData = [
 const chartConfig = {
   remaining: {
     label: "Remaining Leave",
-    color: "hsl(var(--chart-1))",
+    color: "#2563eb ",
   },
   label: {
     color: "hsl(var(--background))",
