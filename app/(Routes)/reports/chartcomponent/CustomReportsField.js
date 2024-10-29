@@ -34,15 +34,15 @@ export default function CustomReportsField() {
   }, []);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg font-bold">Department-wise Details</CardTitle>
-        <CardDescription>Details of nationalities, blood groups, and hobbies by department</CardDescription>
+    <Card className=" bg-gray-800 ">
+      <CardHeader >
+        <CardTitle className="text-blue-400 text-left">Department-wise Details</CardTitle>
+        <CardDescription className="text-gray-300 text-left">Details of nationalities, blood groups, and hobbies by department</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
           <table className="min-w-full table-auto border-separate border-spacing-0 text-left ">
-            <thead style={{ backgroundColor: '#C4DAD2' }}>
+            <thead className="bg-gray-700 text-gray-300">
               {/* Grouped Headers */}
               <tr>
                 <th className="px-4 py-2 border-b border-gray-400 border-r border-l border-t rounded-tl-md" rowSpan="2">Department</th>
@@ -51,7 +51,7 @@ export default function CustomReportsField() {
                 <th className="px-4 py-2 border-b border-gray-400 border-r text-center border-t rounded-tr-md" colSpan="3">Hobbies</th>
               </tr>
               {/* Sub-Headers for Blood Types, Nationalities, and Hobbies */}
-              <tr style={{ backgroundColor: '#C4DAD2' }}>
+              <tr className="bg-gray-700">
                 <th className="px-4 py-2 border-b border-gray-400 border-r">A+</th>
                 <th className="px-4 py-2 border-b border-gray-400 border-r">A-</th>
                 <th className="px-4 py-2 border-b border-gray-400 border-r">B+</th>
@@ -68,7 +68,7 @@ export default function CustomReportsField() {
             </thead>
             <tbody>
               {chartData.map((row, index) => (
-                <tr key={index} className={`hover:bg-[#f1f7f4] ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+                <tr key={index} className={`hover:bg-gray-200 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-50'}`}>
                   <td className="px-4 py-2 border-b border-gray-300 border-l border-r">{row.department}</td>
                   <td className="px-4 py-2 border-b border-gray-300 text-center first-line: border-r">{row.A_Positive}</td>
                   <td className="px-4 py-2 border-b border-gray-300 text-center border-r">{row.A_Negative}</td>

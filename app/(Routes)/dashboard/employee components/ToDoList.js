@@ -86,19 +86,19 @@ export function ToDoList() {
           placeholder="Add new task..."
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
-          className="max-w-sm"
+          className="max-w-sm text-black"
         />
-        <Button variant="outline" className="ml-2" onClick={handleAddTask}>
+        <Button  className="ml-2 bg-[#1e40af] hover:bg-[#1d4ed8]" onClick={handleAddTask} >
           Add Task
         </Button>
       </div>
 
       <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+        <Table className="bg-gray-200 text-black">
+          <TableHeader >
             <TableRow>
-              <TableHead>Task</TableHead>
-              <TableHead>Complete</TableHead>
+              <TableHead className="text-black">Task</TableHead>
+              <TableHead className="text-black">Complete</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
