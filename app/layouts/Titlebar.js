@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from '@/components/ui/button';
 import User from '../models/userModel';
 
@@ -12,7 +11,8 @@ const Title = () => {
     const [username, setUsername] = useState('Loading...');
     const [role, setRole] = useState('Loading...');
     const [profilePic, setProfilePic] = useState('');
-    
+    const [showPopup, setShowPopup] = useState(false);
+
     const router = useRouter();
 
     const signOut = async () => {
@@ -65,15 +65,15 @@ const Title = () => {
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentDateTime(new Date());
-        }, 1000); // Update every second
+        }, 1000);
 
-        return () => clearInterval(timer); // Clean up on unmount
+        return () => clearInterval(timer);
     }, []);
 
     useEffect(() => {
         const fetchWeather = async () => {
             if (location.lat && location.lon) {
-                const apiKey = '11289ea409c1321f37191f21d7dc187e'; // Replace with your OpenWeatherMap API key
+                const apiKey = '11289ea409c1321f37191f21d7dc187e';
                 try {
                     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=${apiKey}&units=metric`);
 
@@ -112,10 +112,10 @@ const Title = () => {
         hour12: true,
     });
 
-    return ( 
-        <div className="bg-gradient-to-r from-yellow-600 to-red-600 flex flex-row h-24 rounded-lg m-1 p-4">
+    return (
+        <div className="bg-gray-900 flex flex-row h-24 rounded-lg m-1 p-4 shadow-lg">
             <div className="flex flex-col w-1/6 justify-center items-center m-2">
-                <div className="text-xs text-gray-700 pt-2">{weather.description}</div>
+                <div className="text-xs text-gray-400 pt-2">{weather.description}</div>
                 {weather.icon && (
                     <img
                         src={`https://openweathermap.org/img/wn/${weather.icon}.png`}
@@ -124,42 +124,46 @@ const Title = () => {
                     />
                 )}
             </div>
-            <div className="border-solid border-r-2 border-neutral-900"></div>
+            <div className="border-solid border-r-2 border-gray-700"></div>
             <div className="w-1/3 flex flex-col m-2 ml-4 justify-center">
-                <div className="text-sm text-gray-900">{formattedDate}</div>
-                <div className="text-2xl font-bold">{formattedTime}</div>
+                <div className="text-sm text-gray-400">{formattedDate}</div>
+                <div className="text-2xl font-bold text-blue-400">{formattedTime}</div>
             </div>
-            <div className="flex space-x-4 text-gray-600 ml-auto">
-                <Popover>
-                    <PopoverTrigger>
-                        <div className="flex flex-row items-center space-x-2">
-                            <Avatar>
-                                <AvatarImage src={profilePic} />
-                            </Avatar>
-                            <div className="flex flex-col text-xs">
-                                <div className="font-semibold">@{username}</div>
-                                <div className="text-xs">{role}</div>
-                            </div>
-                        </div>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-50 -ml-12">
-                        <div className="flex gap-2">
+            <div className="flex space-x-4 text-gray-300 ml-auto">
+                <div onClick={() => setShowPopup(true)} className="cursor-pointer flex flex-row items-center space-x-2">
+                    <Avatar>
+                        <AvatarImage src={profilePic} />
+                    </Avatar>
+                    <div className="flex flex-col text-xs">
+                        <div className="font-semibold text-gray-300">@{username}</div>
+                        <div className="text-xs text-gray-400">{role}</div>
+                    </div>
+                </div>
+            </div>
+
+            {showPopup && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-gray-300 max-w-sm w-full">
+                        <div className="flex gap-4">
                             <Avatar>
                                 <AvatarImage src={profilePic} />
                             </Avatar>
                             <div>
-                                <h4 className="text-sm font-semibold">@{username}</h4>
-                                <p className="text-sm">{role}</p>
-                                <div className="flex items-center pt-2">
-                                    <Button onClick={signOut}>
+                                <h4 className="text-lg font-semibold">@{username}</h4>
+                                <p className="text-sm text-gray-400">{role}</p>
+                                <div className="flex items-center pt-4">
+                                    <Button className="bg-blue-500 hover:bg-blue-400 text-white mr-2" onClick={signOut}>
                                         Logout
+                                    </Button>
+                                    <Button className="bg-red-500 hover:bg-red-400 text-white" onClick={() => setShowPopup(false)}>
+                                        Close
                                     </Button>
                                 </div>
                             </div>
                         </div>
-                    </PopoverContent>
-                </Popover>
-            </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
