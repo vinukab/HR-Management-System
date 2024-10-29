@@ -73,8 +73,8 @@ const Profile = ({ params }) => {
 
                     <div className="flex flex-wrap lg:flex-nowrap gap-6 ">
                         {/* Left Column - Profile Picture and General Information */}
-                        <div className="w-full lg:w-1/2 bg-white p-6 ">
-                            <Card className="h-full flex items-center justify-center rounded-lg shadow-lg">
+                        <div className="w-full lg:w-1/2  p-6 ">
+                            <Card className="h-full flex items-center justify-center">
                                 <CardContent>
                                     <div className="flex flex-col items-center">
                                         <img

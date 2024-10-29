@@ -21,7 +21,7 @@ export default function UpdatePersonalDetails({ params }) {
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/employee/${employeeId}/personal`);
+        const response = await axios.get(`http://localhost:5000/employee/${employeeId}/personal`,{withCredentials: true});
         const employee = response.data;
 
         setFirstName(employee.first_name);
