@@ -1,5 +1,5 @@
 const express = require('express');
-const employeeController = require('../controllers/employeeController');
+const employeeController = require('../controllers/employeeController')
 const employeeRouter = express.Router();
 const {grantPrivileges} = require('../middleware/authentification');
 
@@ -13,5 +13,12 @@ employeeRouter.get('/:employeeId/official',grantPrivileges('Employee'), employee
 employeeRouter.get('/:employeeId/dependents',grantPrivileges('Employee'), employeeController.getEmployeeDependents);
 employeeRouter.get('/:employeeId/emergency',grantPrivileges('Employee'),employeeController.getEmployeeEmergencyContacts);
 
+employeeRouter.get('/', employeeController.getAllEmployees);
+
+employeeRouter.get('/:id', employeeController.getEmployeeById);
+
+/*employeeRouter.post('/create', employeeController.createEmployee);
+employeeRouter.put('/update', employeeController.updateEmployee);
+employeeRouter.delete('/delete', employeeController.deleteEmployee);*/
 
 module.exports = {employeeRouter};

@@ -1,6 +1,7 @@
+"use client"
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card"; 
 
-const employeeprofile = () => {
+const Profile = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="container mx-auto">
@@ -90,4 +91,4 @@ const employeeprofile = () => {
   );
 }
 
-export default employeeprofile;
+export default Profile;

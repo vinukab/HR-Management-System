@@ -10,6 +10,12 @@ leaveRouter.get('/types',grantPrivileges('Employee'),leaveController.getLeaveTyp
 leaveRouter.get('/user',grantPrivileges('Supervisor'),leaveController.getLeaveRequestOfUser);
 
 leaveRouter.get('/leave-count',grantPrivileges('Employee'), leaveController.getLeaveCountDetails);               
+leaveRouter.get('/alltypes', (req, res, next) => {
+    console.log('Route /leave/alltypes was hit'); // Debugging log
+    next();
+  }, leaveController.getAllLeaveTypes);
+  
+leaveRouter.delete('/delete/:leave_type_id', leaveController.deleteLeaveType);
 
 
 module.exports = {leaveRouter};
