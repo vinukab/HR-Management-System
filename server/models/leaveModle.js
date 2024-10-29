@@ -87,6 +87,41 @@ const leaveModel = {
         }
     },
 
+    // Function to add a new leave type
+  addLeaveType: async (leaveType) => {
+    const query = `
+      INSERT INTO hrms.leavetype (leave_type_id, type_name, default_days, pay_grade_id)
+      VALUES (?, ?, ?, ?)`;
+    
+    const params = [
+      leaveType.leave_type_id,
+      leaveType.type_name,
+      leaveType.default_days,
+      leaveType.pay_grade_id
+    ];
+
+    try {
+      const [result] = await db.execute(query, params); // Execute the SQL insert query
+      return result;
+    } catch (err) {
+      console.error('Model: Error adding leave type:', err);
+      throw err;
+    }
+  },
+
+  // Function to delete a leave type
+  deleteLeaveType: async (leaveTypeId) => {
+    const query = 'DELETE FROM hrms.leavetype WHERE leave_type_id = ?';
+
+    try {
+      const [result] = await db.execute(query, [leaveTypeId]); // Execute the SQL delete query
+      return result;
+    } catch (err) {
+      console.error('Model: Error deleting leave type:', err);
+      throw err;
+    }
+  },
+
     getLeaveRequestsByEmployeeId: async (employee_id) => {
         const query = `SELECT * FROM leaverequest
         JOIN leavetype ON leavetype.leave_type_id = leaverequest.leave_type_id 
