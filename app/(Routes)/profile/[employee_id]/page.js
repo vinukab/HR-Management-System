@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import SideBar from "@/app/layouts/Sidebar";
 import Titlebar from "@/app/layouts/Titlebar";
 import Link from "next/link";
-import { FaUserEdit, FaPhone, FaEnvelope, FaBuilding, FaUserCircle, FaHeartbeat , FaBriefcase} from "react-icons/fa";
+import { FaUserEdit, FaPhone, FaEnvelope, FaBuilding, FaUserCircle, FaHeartbeat, FaBriefcase } from "react-icons/fa";
 
 const Profile = ({ params }) => {
     const employee_id = params.employee_id;
@@ -25,7 +25,7 @@ const Profile = ({ params }) => {
 
     const fetchPersonalInfo = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/personal`,{withCredentials:true});
+            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/personal`, { withCredentials: true });
             setPersonalInfo(response.data);
         } catch (error) {
             console.error("Error fetching personal information:", error);
@@ -34,7 +34,7 @@ const Profile = ({ params }) => {
 
     const fetchOfficialInfo = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/official`,{withCredentials:true});
+            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/official`, { withCredentials: true });
             setOfficialInfo(response.data);
         } catch (error) {
             console.error("Error fetching official information:", error);
@@ -43,7 +43,7 @@ const Profile = ({ params }) => {
 
     const fetchDependents = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/dependents`,{withCredentials:true});
+            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/dependents`, { withCredentials: true });
             setDependents(response.data);
         } catch (error) {
             console.error("Error fetching dependents information:", error);
@@ -52,7 +52,7 @@ const Profile = ({ params }) => {
 
     const fetchEmergencyContact = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/emergency`,{withCredentials:true});
+            const response = await axios.get(`http://localhost:5000/employee/${employee_id}/emergency`, { withCredentials: true });
             setEmergencyContacts(response.data);
         } catch (error) {
             console.error("Error fetching emergency contact information:", error);
@@ -60,37 +60,36 @@ const Profile = ({ params }) => {
     };
 
     if (!personalInfo || !officialInfo || !dependents || !emergencyContacts) {
-        return <div className="text-center py-10 text-blue-600">Loading...</div>;
+        return <div className="text-center py-10 text-blue-400">Loading...</div>;
     }
 
     return (
-        <div className="ml-56 bg-gradient-to-r from-blue-100 to-gray-100 min-h-screen flex-grow">
+        <div className="ml-56 bg-gray-700 text-white min-h-screen">
             <SideBar activePanel={2} />
             <div className="flex-1">
                 <div className="container mx-auto p-6">
                     <Titlebar title="User Profile" />
-                    <h1 className="text-4xl font-semibold my-6 text-center text-blue-800">User Profile</h1>
+                    <h1 className="text-4xl font-semibold my-6 text-center text-blue-400">User Profile</h1>
 
                     <div className="flex flex-wrap lg:flex-nowrap gap-6 h-full">
                         {/* Left Column - Profile Picture and General Information */}
-                        <div className="w-full lg:w-1/2">
-                            <Card className="bg-white p-6 rounded-lg shadow-lg">
+                        <div className="w-full lg:w-1/2 ">
+                            <Card className="flex h-full items-center justify-center bg-gray-800  rounded-lg shadow-lg">
                                 <CardContent>
                                     <div className="flex flex-col items-center">
                                         <img
                                             src={personalInfo.profile_pic || "/default-profile.png"}
-                                            //alt="User Profile"
-                                            className="rounded-full w-48 h-48 object-cover border-4 border-blue-800 shadow-md mb-4"
+                                            className="rounded-full w-48 h-48 object-cover border-4 border-blue-400 shadow-md mb-4"
                                         />
-                                        <CardTitle className="text-2xl font-bold text-center mb-2 text-blue-800">
+                                        <CardTitle className="text-2xl font-bold text-center mb-2 text-blue-400">
                                             {`${personalInfo.first_name} ${personalInfo.last_name}`}
                                         </CardTitle>
-                                        
-                                        <div className="space-y-2 text-sm text-gray-600 text-wrap">
-                                            <p><strong><FaBriefcase className="inline text-blue-800"/> Job tytle ID:</strong>{officialInfo.job_title_id}</p>
-                                            <p><strong><FaPhone className="inline text-blue-800" /> Mobile:</strong> {personalInfo.phone_numbers.join(", ")}</p>
-                                            <p><strong><FaBuilding className="inline text-blue-800" /> Department:</strong> {officialInfo.department_name}</p>
-                                            <p><strong><FaBuilding className="inline text-blue-800" /> Branch:</strong> {officialInfo.branch_name}</p>
+
+                                        <div className="space-y-2 text-sm text-gray-300">
+                                            <p><strong><FaBriefcase className="inline text-blue-400"/> Job Title ID:</strong> {officialInfo.job_title_id}</p>
+                                            <p><strong><FaPhone className="inline text-blue-400" /> Mobile:</strong> {personalInfo.phone_numbers.join(", ")}</p>
+                                            <p><strong><FaBuilding className="inline text-blue-400" /> Department:</strong> {officialInfo.department_name}</p>
+                                            <p><strong><FaBuilding className="inline text-blue-400" /> Branch:</strong> {officialInfo.branch_name}</p>
                                         </div>
                                     </div>
                                 </CardContent>
@@ -100,14 +99,14 @@ const Profile = ({ params }) => {
                         {/* Right Column - Detailed Information */}
                         <div className="flex-1 space-y-4">
                             {/* Personal Information Card */}
-                            <Card className="bg-white p-6 rounded-lg shadow-lg">
-                                <CardHeader className="flex justify-between items-center mb-4 border-b pb-2 bg-blue-200 rounded-t-lg">
-                                    <CardTitle className="text-lg font-semibold text-blue-800"><FaUserCircle className="inline mr-2"/>Personal Information</CardTitle>
-                                    <Link href={`${employee_id}/edit/personal-info`} className="bg-blue-800 hover:bg-blue-600 text-white px-3 py-1 rounded">
+                            <Card className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                                <CardHeader className="flex justify-between items-center mb-4 border-b border-gray-600 pb-2 bg-gray-700 rounded-t-lg">
+                                    <CardTitle className="text-lg font-semibold text-blue-400"><FaUserCircle className="inline mr-2"/>Personal Information</CardTitle>
+                                    <Link href={`${employee_id}/edit/personal-info`} className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded">
                                         <FaUserEdit className="inline mr-1"/> Edit
                                     </Link>
                                 </CardHeader>
-                                <CardContent className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                                <CardContent className="grid grid-cols-2 gap-4 text-sm text-gray-300">
                                     <div>
                                         <p><strong>NIC Number:</strong> {personalInfo.NIC_number}</p>
                                         <p><strong>Date of Birth:</strong> {personalInfo.birth_date}</p>
@@ -124,14 +123,14 @@ const Profile = ({ params }) => {
                             </Card>
 
                             {/* Office Information Card */}
-                            <Card className="bg-white p-6 rounded-lg shadow-lg">
-                                <CardHeader className="flex justify-between items-center mb-4 border-b pb-2 bg-blue-200 rounded-t-lg">
-                                    <CardTitle className="text-lg font-semibold text-blue-800"><FaBuilding className="inline mr-2"/>Office Information</CardTitle>
-                                    <Link href={`${employee_id}/edit/job-info`} className="bg-blue-800 hover:bg-blue-600 text-white px-3 py-1 rounded">
+                            <Card className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                                <CardHeader className="flex justify-between items-center mb-4 border-b border-gray-600 pb-2 bg-gray-700 rounded-t-lg">
+                                    <CardTitle className="text-lg font-semibold text-blue-400"><FaBuilding className="inline mr-2"/>Office Information</CardTitle>
+                                    <Link href={`${employee_id}/edit/job-info`} className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded">
                                         <FaUserEdit className="inline mr-1"/> Edit
                                     </Link>
                                 </CardHeader>
-                                <CardContent className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                                <CardContent className="grid grid-cols-2 gap-4 text-sm text-gray-300">
                                     <div>
                                         <p><strong>Job Title:</strong> {officialInfo.job_title_name}</p>
                                         <p><strong>Pay Grade:</strong> {officialInfo.pay_grade_name}</p>
@@ -149,15 +148,15 @@ const Profile = ({ params }) => {
 
                     {/* Dependents and Emergency Contact Cards Side by Side */}
                     <div className="flex gap-4 mt-4">
-                        <Card className="bg-white p-6 rounded-lg shadow-lg w-full">
-                            <CardHeader className="flex justify-between items-center mb-4 border-b pb-2 bg-blue-200 rounded-t-lg">
-                                <CardTitle className="text-lg font-semibold text-blue-800"><FaHeartbeat className="inline mr-2"/>Dependents Information</CardTitle>
-                                <button className="bg-blue-800 hover:bg-blue-600 text-white px-3 py-1 rounded">Edit</button>
+                        <Card className="bg-gray-800 p-6 rounded-lg shadow-lg w-full">
+                            <CardHeader className="flex justify-between items-center mb-4 border-b border-gray-600 pb-2 bg-gray-700 rounded-t-lg">
+                                <CardTitle className="text-lg font-semibold text-blue-400"><FaHeartbeat className="inline mr-2"/>Dependents Information</CardTitle>
+                                <button className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded">Edit</button>
                             </CardHeader>
-                            <CardContent className="space-y-4 text-sm text-gray-600">
+                            <CardContent className="space-y-4 text-sm text-gray-300">
                                 {dependents.length > 0 ? (
                                     dependents.map((dependent, index) => (
-                                        <div key={index} className="border-b pb-2">
+                                        <div key={index} className="border-b border-gray-600 pb-2">
                                             <p><strong>Name:</strong> {dependent.name}</p>
                                             <p><strong>Relationship:</strong> {dependent.relationship}</p>
                                             <p><strong>Gender:</strong> {dependent.gender}</p>
@@ -170,19 +169,18 @@ const Profile = ({ params }) => {
                             </CardContent>
                         </Card>
 
-                        <Card className="bg-white p-6 rounded-lg shadow-lg w-full">
-                            <CardHeader className="flex justify-between items-center mb-4 border-b pb-2 bg-blue-200 rounded-t-lg">
-                                <CardTitle className="text-lg font-semibold text-blue-800"><FaPhone className="inline mr-2"/>Emergency Contact</CardTitle>
-                                <button className="bg-blue-800 hover:bg-blue-00 text-white px-3 py-1 rounded">Edit</button>
+                        <Card className="bg-gray-800 p-6 rounded-lg shadow-lg w-full">
+                            <CardHeader className="flex justify-between items-center mb-4 border-b border-gray-600 pb-2 bg-gray-700 rounded-t-lg">
+                                <CardTitle className="text-lg font-semibold text-blue-400"><FaPhone className="inline mr-2"/>Emergency Contacts</CardTitle>
+                                <button className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded">Edit</button>
                             </CardHeader>
-                            <CardContent className="space-y-4 text-sm text-gray-600">
+                            <CardContent className="space-y-4 text-sm text-gray-300">
                                 {emergencyContacts.length > 0 ? (
                                     emergencyContacts.map((contact, index) => (
-                                        <div key={index} className="border-b pb-2">
+                                        <div key={index} className="border-b border-gray-600 pb-2">
                                             <p><strong>Name:</strong> {contact.name}</p>
                                             <p><strong>Relationship:</strong> {contact.relationship}</p>
-                                            <p><strong>Phone Number:</strong> {contact.phone_numbers.join(", ")}</p>
-                                            <p><strong>Address:</strong> {contact.address}</p>
+                                            <p><strong>Phone Number:</strong> {contact.phone_number}</p>
                                         </div>
                                     ))
                                 ) : (

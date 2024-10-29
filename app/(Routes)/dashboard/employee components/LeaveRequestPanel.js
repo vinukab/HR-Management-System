@@ -21,14 +21,14 @@ const LeaveRequestPanel = () => {
     }, []);
 
     return (
-        <Card className='m-1' style={{ height: '600px' }}>
-            <CardHeader >
-                <CardTitle>Employee Leave</CardTitle>
+        <Card className='m-1 bg-gray-900 text-gray-100' style={{ height: '600px' }}>
+            <CardHeader>
+                <CardTitle className="text-white">Employee Leave</CardTitle>
             </CardHeader>
             <CardContent>
-                <Table>
+                <Table className="text-gray-100">
                     <TableHeader>
-                        <TableRow className="text-left font-sans">
+                        <TableRow className="text-left font-sans text-gray-300">
                             <TableHead className="p-3 font-normal">Date of Application</TableHead>
                             <TableHead className="p-3 font-normal">Application Type</TableHead>
                             <TableHead className="p-3 font-normal">Duration</TableHead>
@@ -37,7 +37,7 @@ const LeaveRequestPanel = () => {
                     </TableHeader>
                     <TableBody>
                         {leaveData.map((leave) => (
-                            <TableRow key={leave.leave_id}>
+                            <TableRow key={leave.leave_id} className="text-gray-200">
                                 <TableCell className="p-3">
                                     {new Date(new Date(leave.start_date).setDate(new Date(leave.start_date).getDate() + 0)).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                                 </TableCell>
@@ -45,10 +45,10 @@ const LeaveRequestPanel = () => {
                                 <TableCell className="p-3">{leave.duration}</TableCell>
                                 <TableCell className="p-3">
                                     <span className={classNames({
-                                        "px-2 py-1 rounded-md text-xs": true,
-                                        "text-yellow-700 bg-yellow-400": leave.request_status === 'Pending',
-                                        "text-red-700 bg-red-400": leave.request_status === 'Rejected',
-                                        "text-blue-700 bg-blue-400": leave.request_status === 'Approved'
+                                        "px-2 py-1 rounded-md text-xs font-semibold": true,
+                                        "text-yellow-300 bg-yellow-600": leave.request_status === 'Pending',
+                                        "text-red-300 bg-red-600": leave.request_status === 'Rejected',
+                                        "text-blue-300 bg-blue-600": leave.request_status === 'Approved'
                                     })}>
                                         {leave.request_status}
                                     </span>
@@ -59,17 +59,17 @@ const LeaveRequestPanel = () => {
                 </Table>
             </CardContent>
             <CardFooter>
-                <div className="flex flex-row space-x-4 m-3 text-xs">
+                <div className="flex flex-row space-x-4 m-3 text-xs text-gray-300">
                     <div className="flex items-center">
-                        <div className="w-4 h-4 bg-blue-400 mr-2"></div>
+                        <div className="w-4 h-4 bg-blue-600 mr-2 rounded"></div>
                         <div>Approved</div>
                     </div>
                     <div className="flex items-center">
-                        <div className="w-4 h-4 bg-yellow-400 mr-2"></div>
+                        <div className="w-4 h-4 bg-yellow-600 mr-2 rounded"></div>
                         <div>Pending</div>
                     </div>
                     <div className="flex items-center">
-                        <div className="w-4 h-4 bg-red-400 mr-2"></div>
+                        <div className="w-4 h-4 bg-red-600 mr-2 rounded"></div>
                         <div>Rejected</div>
                     </div>
                 </div>

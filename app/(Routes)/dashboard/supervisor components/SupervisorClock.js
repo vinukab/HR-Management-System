@@ -25,18 +25,18 @@ const SupervisorClock = () => {
     });
 
     return ( 
-        <div className="bg-gradient-to-r from-green-700 to-gray-900 flex flex-row  h-24 rounded-lg m-1 p-4">
-            <div className="flex flex-col w-1/6 justify-center items-center m-2">
+        <div className="bg-gradient-to-r from-blue-900 via-gray-900 to-black flex flex-row h-24 rounded-lg m-1 p-4">
+            <div className="flex flex-col w-1/5 justify-center items-center m-2 ">
                 <Sun />
-                <div className="text-xs text-gray-900 pt-2">Partially cloudy</div>
+                <div className="text-xs text-white pt-2">Partially cloudy</div>
             </div>
             <div className="border-solid border-r-2 border-neutral-900"></div>
-            <div className="w-1/3 flex flex-col m-2 ml-4 justify-center">
-                <div className="text-sm text-gray-900">{formattedDate}</div>
+            <div className="w-1/3 flex flex-col m-2 ml-4 justify-center text-white">
+                <div className="text-sm ">{formattedDate}</div>
                 <div className="text-2xl font-bold">{formattedTime}</div>
             </div>
             <div className="flex flex-row ml-auto">
-                <div className="flex flex-row justify-between text-green-600 text-xs mt-1 gap-10">
+                <div className="flex flex-row justify-between text-white text-xs mt-1 gap-10">
                     <div className="flex flex-col items-end">
                         <div className="font-bold">On Time</div>
                         <div className="text-4xl font-bold">70</div>
