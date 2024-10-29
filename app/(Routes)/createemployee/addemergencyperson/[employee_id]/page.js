@@ -1,9 +1,12 @@
+'use client'
 import axios from 'axios';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { useState } from 'react';
-import Title from "@/app/layouts/Titlebar"; // Ensure this path is correct
+import Title from "@/app/layouts/Titlebar";
+import SideBar from '@/app/layouts/Sidebar';
 
-const AddEmergencyPerson = ({ employee_id, onSuccess }) => {
+const AddEmergencyPerson = ({params}) => {
+    const employee_id = params.employee_id;
   const [EmergencyPerson, setEmergencyPerson] = useState({
     person_name: '',
     relationship: '',
@@ -52,7 +55,10 @@ const AddEmergencyPerson = ({ employee_id, onSuccess }) => {
   };
 
   return (
-    <div className="m-1 bg-white rounded-lg shadow-md">
+    <>
+    <SideBar/>
+    <div className="ml-56">
+       <div className="m-1 bg-white rounded-lg shadow-md">
       <Title title="Add Emergency Person" />
 
       <div className="grid grid-cols-3 gap-4 p-5">
@@ -165,6 +171,8 @@ const AddEmergencyPerson = ({ employee_id, onSuccess }) => {
         </div>
       </div>
     </div>
+    </div>
+   </>
   );
 };
 

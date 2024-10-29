@@ -67,14 +67,14 @@ const Profile = ({ params }) => {
         <div className="ml-56 bg-gradient-to-r from-blue-100 to-gray-100 min-h-screen flex-grow">
             <SideBar activePanel={2} />
             <div className="flex-1">
-                <div className="container mx-auto p-6">
+                <div className="container mx-auto p-6 ">
                     <Titlebar title="User Profile" />
                     <h1 className="text-4xl font-semibold my-6 text-center text-blue-800">User Profile</h1>
 
-                    <div className="flex flex-wrap lg:flex-nowrap gap-6 h-full">
+                    <div className="flex flex-wrap lg:flex-nowrap gap-6 ">
                         {/* Left Column - Profile Picture and General Information */}
-                        <div className="w-full lg:w-1/2">
-                            <Card className="bg-white p-6 rounded-lg shadow-lg">
+                        <div className="w-full lg:w-1/2 bg-white p-6 ">
+                            <Card className="h-full flex items-center justify-center rounded-lg shadow-lg">
                                 <CardContent>
                                     <div className="flex flex-col items-center">
                                         <img

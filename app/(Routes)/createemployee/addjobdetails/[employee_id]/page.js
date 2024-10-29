@@ -1,8 +1,12 @@
+'use client';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Title from "@/app/layouts/Titlebar"; // Ensure this path is correct
+import { useRouter } from "next/navigation";
+import SideBar from "@/app/layouts/Sidebar";
 
-export default function JobDetailsUpdater({ onSuccess, employee_id }) {
+export default function JobDetailsUpdater({params}) {
+  const employee_id = params.employee_id;
   const [jobTitleId, setJobTitleId] = useState("");
   const [payGradeId, setPayGradeId] = useState("");
   const [supervisorId, setSupervisorId] = useState("");
@@ -16,7 +20,7 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
   const [supervisors, setSupervisors] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [branches, setBranches] = useState([]);
-
+  const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,7 +63,7 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
     e.preventDefault();
 
     const updatedDetails = {
-      employeeId: employee_id.employeeId,
+      employeeId: employee_id,
       jobTitleId,
       payGradeId,
       supervisorId,
@@ -73,7 +77,7 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
         updatedDetails,{ withCredentials: true }
       );
       console.log("Job details updated successfully:", response.data);
-      onSuccess(employee_id, 3);
+      router.push(`/createemployee/adduserdetails/${employee_id}`);
     } catch (error) {
       console.error("Error updating job details:", error.response?.data || error.message);
     }
@@ -83,7 +87,10 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="m-1 bg-white rounded-lg shadow-md">
+    <>
+     <SideBar/>
+     <div className="ml-56">
+      <div className="m-1 bg-white rounded-lg shadow-md">
       {/* Title Bar */}
       <Title title="Update Job Details" />
 
@@ -200,6 +207,8 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
           </form>
         </div>
       </div>
+     </div>
     </div>
+    </>
   );
 }
