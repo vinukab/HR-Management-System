@@ -64,10 +64,10 @@ export default function TotalLeavesByDepartment() {
   }, []);
 
   return (
-    <Card className="h-full">
+    <Card className="h-full bg-gray-800 ">
       <CardHeader>
-        <CardTitle style={{ textAlign: "center" }}>Total Leaves by Department</CardTitle>
-        <CardDescription style={{ textAlign: "center" }}>
+        <CardTitle className="text-blue-400 text-left">Total Leaves by Department</CardTitle>
+        <CardDescription className="text-gray-300 text-left">
           Total leaves taken by department over the last 6 months
         </CardDescription>
       </CardHeader>

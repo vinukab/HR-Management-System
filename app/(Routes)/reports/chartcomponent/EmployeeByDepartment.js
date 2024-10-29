@@ -49,10 +49,10 @@ export default function EmployeeByDepartment() {
   }, []);
 
   return (
-    <Card className="h-full">
+    <Card className="h-full bg-gray-800 ">
       <CardHeader>
-        <CardTitle style={{ textAlign: 'left' }}>Employee by Department</CardTitle>
-        <CardDescription style={{ textAlign: 'left' }}>Employees grouped by their department</CardDescription>
+        <CardTitle className="text-blue-400 text-left">Employee by Department</CardTitle>
+        <CardDescription className="text-gray-300 text-left">Employees grouped by their department</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -76,7 +76,7 @@ export default function EmployeeByDepartment() {
                   />
                   <Bar dataKey="employee_count" radius={10}>
                     {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={['#243642', '#387478', '#629584', '#E2F1E7', '#ECDFCC'][index % 5]} />
+                      <Cell key={`cell-${index}`} fill={['#60a5fa','#67e8f9' , '#93c5fd', '#22d3ee' , '#38bdf8'][index % 5]} />
                     ))}
                   </Bar>
                 </BarChart>

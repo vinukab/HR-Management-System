@@ -100,7 +100,7 @@ const CreateLeaveRequest = () => {
   };
 
   return (
-    <Card className="m-1" style={{ height: '600px' }}>
+    <Card className="m-1" style={{ height: '600px', backgroundColor: '#f8fafc' }}>
       <CardHeader>
         <CardTitle>Create Leave Request</CardTitle>
         <CardDescription>Fill the form to create a leave request</CardDescription>
@@ -213,7 +213,7 @@ const CreateLeaveRequest = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 py-2 px-4 rounded">Submit</Button>
+            <Button type="submit" className="bg-[#1e40af] hover:bg-[#1d4ed8] text-white rounded">Submit</Button>
           </form>
         </Form>
       </CardContent>
