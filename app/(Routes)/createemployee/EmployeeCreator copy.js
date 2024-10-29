@@ -41,11 +41,11 @@ export default function EmployeeCreator() {
           departmentsResponse,
           branchesResponse,
         ] = await Promise.all([
-          axios.get("http://localhost:5000/enum/job-titles"),
-          axios.get("http://localhost:5000/enum/pay-grades"),
-          axios.get("http://localhost:5000/enum/supervisors"),
-          axios.get("http://localhost:5000/enum/departments"),
-          axios.get("http://localhost:5000/enum/branches"),
+          axios.get("http://localhost:5000/enum/job-titles"),{ withCredentials: true },
+          axios.get("http://localhost:5000/enum/pay-grades"),{ withCredentials: true },
+          axios.get("http://localhost:5000/enum/supervisors"),{ withCredentials: true },
+          axios.get("http://localhost:5000/enum/departments"),{ withCredentials: true },
+          axios.get("http://localhost:5000/enum/branches"),{ withCredentials: true },
         ]);
 
         setJobTitles(jobTitlesResponse.data);
@@ -101,7 +101,7 @@ export default function EmployeeCreator() {
     try {
       const response = await axios.post(
         "http://localhost:5000/createEmployee",
-        formData,
+        formData,{ withCredentials: true },
         {
           headers: {
             "Content-Type": "multipart/form-data",

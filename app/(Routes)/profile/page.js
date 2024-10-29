@@ -15,7 +15,7 @@ const Profile = () => {
   const fetchEmployee = async () => {
     try {
       const employeeId = 'EMP001'; // Replace with the actual ID you want to fetch dynamically
-      const response = await axios.get(`http://localhost:5000/employee/${employeeId}`); // Replace with your actual API endpoint
+      const response = await axios.get(`http://localhost:5000/employee/${employeeId}`,{ withCredentials: true }); // Replace with your actual API endpoint
       console.log(response.data); // Log the full response data for debugging
       setEmployee(response.data); // Directly set the employee data
     } catch (error) {
@@ -75,7 +75,7 @@ const Profile = () => {
             {/* Right Column - Personal Information and Office Information */}
             <div className="flex-1 space-y-8">
               {/* Personal Information */}
-              <Card className="bg-white p-6 rounded-lg shadow-md">
+              <Card className="bg-white p-6 rounded-lg shadow-md ">
                 <CardHeader className="flex justify-between items-center">
                   <div className="flex items-center">
                     <CardTitle className="text-lg font-semibold">Personal Information</CardTitle>

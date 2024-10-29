@@ -24,7 +24,7 @@ const AddDependent = ({ employee_id, onSuccess }) => {
     try {
       const response = await axios.post('http://localhost:5000/addDependent', {
         ...dependent
-      });
+      }, { withCredentials: true });
       console.log('Dependent added successfully!', response.data);
       onSuccess(employee_id, 1);
     } catch (error) {

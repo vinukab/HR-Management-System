@@ -200,6 +200,243 @@ app.post('/createUser', async (req, res) => {
     });
     
 
+    app.get('/employee/:employeeId/personal', async (req, res) => {
+      const employeeId = req.params.employeeId;
+    
+      const sqlEmployeeQuery = `
+          SELECT employee_id, first_name, last_name, birth_date, marital_status, NIC_number, 
+                 address, gender, profile_pic
+          FROM employee 
+          WHERE employee_id = ?;
+      `;
+  
+      try {
+          // Fetch personal information
+          const [employeeRows] = await pool.query(sqlEmployeeQuery, [employeeId]);
+  
+          if (employeeRows.length === 0) {
+              return res.status(404).json({ error: "Employee not found" });
+          }
+  
+          const employee = {
+              employee_id: employeeRows[0].employee_id,
+              first_name: employeeRows[0].first_name,
+              last_name: employeeRows[0].last_name,
+              birth_date: employeeRows[0].birth_date,
+              marital_status: employeeRows[0].marital_status,
+              NIC_number: employeeRows[0].NIC_number,
+              address: employeeRows[0].address,
+              gender: employeeRows[0].gender,
+              profile_pic: `http://localhost:5000${employeeRows[0].profile_pic}`,
+              phone_numbers: [],
+              custom_attributes: {}
+          };
+  
+          // Fetch phone numbers
+          const sqlContactQuery = `SELECT phone_num FROM employeecontact WHERE employee_id = ?;`;
+          const [contactRows] = await pool.query(sqlContactQuery, [employeeId]);
+          employee.phone_numbers = contactRows.map(row => row.phone_num);
+  
+          // Fetch custom attributes
+          const sqlCustomAttributeQuery = `
+              SELECT key_1, value_1, key_2, value_2, key_3, value_3 
+              FROM customattribute 
+              WHERE employee_id = ?;
+          `;
+          const [customAttributeRows] = await pool.query(sqlCustomAttributeQuery, [employeeId]);
+  
+          if (customAttributeRows.length > 0) {
+              const attributes = customAttributeRows[0];
+              employee.custom_attributes = {
+                  ...(attributes.key_1 && { [attributes.key_1]: attributes.value_1 }),
+                  ...(attributes.key_2 && { [attributes.key_2]: attributes.value_2 }),
+                  ...(attributes.key_3 && { [attributes.key_3]: attributes.value_3 })
+              };
+          }
+  
+          res.json(employee);
+      } catch (error) {
+          console.error("Error fetching personal information:", error);
+          res.status(500).json({ error: "Internal Server Error" });
+      }
+  });
+    
+  app.get('/employee/:employeeId/official', async (req, res) => {
+    const employeeId = req.params.employeeId;
+    const sqlQuery = `
+        SELECT 
+            e.employee_id, 
+            jt.job_title_id,           -- Include job title ID
+            jt.job_title_name, 
+            pg.pay_grade_id,            -- Include pay grade ID
+            pg.grade AS pay_grade_name, 
+            e.status, 
+            sup.first_name AS supervisor_first_name,
+            sup.last_name AS supervisor_last_name,
+            d.department_id,            -- Include department ID
+            d.department_name, 
+            b.branch_id,                -- Include branch ID
+            b.branch_name
+        FROM 
+            employee e
+        LEFT JOIN 
+            jobtitle jt ON e.job_title_id = jt.job_title_id
+        LEFT JOIN 
+            paygrade pg ON e.pay_grade_id = pg.pay_grade_id
+        LEFT JOIN 
+            department d ON e.department_id = d.department_id
+        LEFT JOIN 
+            branch b ON e.branch_id = b.branch_id
+        LEFT JOIN 
+            employee sup ON e.supervisor_id = sup.employee_id
+        WHERE 
+            e.employee_id = ?;
+    `;
+
+    try {
+        const [rows] = await pool.query(sqlQuery, [employeeId]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Employee not found" });
+        }
+
+        // Construct response object with the added fields
+        const employeeInfo = {
+            employee_id: rows[0].employee_id,
+            job_title_id: rows[0].job_title_id,                // Added job title ID
+            job_title_name: rows[0].job_title_name,
+            pay_grade_id: rows[0].pay_grade_id,                // Added pay grade ID
+            pay_grade_name: rows[0].pay_grade_name,
+            status: rows[0].status,
+            supervisor_name: `${rows[0].supervisor_first_name} ${rows[0].supervisor_last_name}`,
+            department_id: rows[0].department_id,              // Added department ID
+            department_name: rows[0].department_name,
+            branch_id: rows[0].branch_id,                      // Added branch ID
+            branch_name: rows[0].branch_name
+        };
+
+        res.json(employeeInfo);
+    } catch (error) {
+        console.error("Error fetching official information:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
+app.get('/employee/:employeeId/dependents', async (req, res) => {
+  const employeeId = req.params.employeeId;
+  const sqlQuery = `
+      SELECT 
+          dependent_name AS name, relationship, gender, is_covered_by_insurance
+      FROM 
+          employeedependents 
+      WHERE 
+          employee_id = ?;
+  `;
+
+  try {
+      const [rows] = await pool.query(sqlQuery, [employeeId]);
+      res.json(rows); // Returning all dependents in an array
+  } catch (error) {
+      console.error("Error fetching dependents information:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get('/employee/:employeeId/emergency', async (req, res) => {
+  const employeeId = req.params.employeeId;
+  const sqlQuery = `
+      SELECT 
+          person_name AS name, relationship, address, phone_num AS phone_number
+      FROM 
+          emergencyperson 
+      JOIN 
+          emergencypersoncontact ON emergencyperson.person_id = emergencypersoncontact.person_id
+      WHERE 
+          employee_id = ?;
+  `;
+
+  try {
+      const [rows] = await pool.query(sqlQuery, [employeeId]);
+
+      // Group results by each person
+      const emergencyContacts = rows.reduce((acc, row) => {
+          let contact = acc.find(contact => contact.name === row.name && contact.relationship === row.relationship && contact.address === row.address);
+          
+          if (!contact) {
+              // Add new emergency contact if it doesn't exist
+              contact = {
+                  name: row.name,
+                  relationship: row.relationship,
+                  address: row.address,
+                  phone_numbers: []
+              };
+              acc.push(contact);
+          }
+
+          // Push phone number to the respective emergency contact's phone numbers array
+          contact.phone_numbers.push(row.phone_number);
+          return acc;
+      }, []);
+
+      res.json(emergencyContacts);
+  } catch (error) {
+      console.error("Error fetching emergency contact information:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.put('/employee/:employeeId/personal', upload.single('profilePic'), async (req, res) => {
+  const employeeId = req.params.employeeId;
+  const {
+      firstName,
+      lastName,
+      birthDate,
+      maritalStatus,
+      NIC,
+      address,
+      gender,
+  } = req.body;
+
+  const profilePic = req.file ? `/uploads/${req.file.filename}` : null;
+
+  const sqlUpdateQuery = `
+      UPDATE employee SET 
+          first_name = ?, 
+          last_name = ?, 
+          birth_date = ?, 
+          marital_status = ?, 
+          NIC_number = ?, 
+          address = ?, 
+          gender = ?,
+          profile_pic = COALESCE(?, profile_pic) -- Only update if a new file is uploaded
+      WHERE employee_id = ?;
+  `;
+
+  try {
+      // Execute the update query
+      const result = await pool.query(sqlUpdateQuery, [
+          firstName,
+          lastName,
+          birthDate,
+          maritalStatus,
+          NIC,
+          address,
+          gender,
+          profilePic,
+          employeeId,
+      ]);
+
+      if (result[0].affectedRows === 0) {
+          return res.status(404).json({ error: "Employee not found" });
+      }
+
+      res.json({ message: "Employee details updated successfully" });
+  } catch (error) {
+      console.error("Error updating personal information:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.use('/auth',userRouter)
 app.use('/todolist',toDoRouter)
 app.use('/leave',leaveRouter)
