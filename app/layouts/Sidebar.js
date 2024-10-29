@@ -36,7 +36,7 @@ const SideBar = ({ activePanel }) => {
 
     const changePanel = (panel) => {
         if (panel === 0) router.push('/dashboard');
-        else if (panel === 1) router.push('/createemployee');
+        else if (panel === 1) router.push('/createemployee/addpersonaldetails');
 
         else if (panel === 2) router.push('/profile/' + employee_id);
         else if (panel === 3) router.push('/manage');
