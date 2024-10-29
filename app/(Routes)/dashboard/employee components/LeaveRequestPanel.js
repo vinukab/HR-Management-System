@@ -38,7 +38,9 @@ const LeaveRequestPanel = () => {
                     <TableBody>
                         {leaveData.map((leave) => (
                             <TableRow key={leave.leave_id}>
-                                <TableCell className="p-3">{leave.start_date}</TableCell>
+                                <TableCell className="p-3">
+                                    {new Date(new Date(leave.start_date).setDate(new Date(leave.start_date).getDate() + 0)).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                </TableCell>
                                 <TableCell className="p-3">{leave.type_name}</TableCell>
                                 <TableCell className="p-3">{leave.duration}</TableCell>
                                 <TableCell className="p-3">

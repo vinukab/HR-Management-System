@@ -104,6 +104,7 @@ const EmployeeClock = () => {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
+        timeZone: 'UTC'
     });
 
     const formattedTime = currentDateTime.toLocaleTimeString('en-US', {

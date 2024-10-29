@@ -13,7 +13,8 @@ leaveRouter.get('/alltypes', (req, res, next) => {
 //leaveRouter.put('/alltypes', leaveController.editAllLeaveTypes);
 leaveRouter.get('/user', leaveController.getLeaveRequestOfUser);
 
-leaveRouter.get('/leave-count', leaveController.getLeaveCountDetails);               
+leaveRouter.get('/leave-count', leaveController.getLeaveCountDetails);
+               
 
 
 module.exports = {leaveRouter};

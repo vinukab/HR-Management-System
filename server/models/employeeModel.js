@@ -12,6 +12,7 @@ const employeeModel = {
       console.error('Database query error:', err);
       throw err; // Re-throw the error to handle it in the controller
     }
+
   },
 
   getEmployeeById: async (employeeId) => {

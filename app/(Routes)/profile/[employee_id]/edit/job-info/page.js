@@ -1,7 +1,9 @@
+'use client';
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function JobDetailsUpdater({ onSuccess, employee_id }) {
+export default function JobDetailsUpdater({ params, onSuccess }) {
+  const employee_id = params.employee_id; 
   const [jobTitleId, setJobTitleId] = useState("");
   const [payGradeId, setPayGradeId] = useState("");
   const [supervisorId, setSupervisorId] = useState("");
@@ -15,7 +17,9 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
   const [supervisors, setSupervisors] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [branches, setBranches] = useState([]);
+  const [updating, setUpdating] = useState(false); // New state for updating status
 
+  // Fetch all enums and employee job details
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,12 +29,14 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
           supervisorsResponse,
           departmentsResponse,
           branchesResponse,
+          employeeResponse,
         ] = await Promise.all([
-          axios.get("http://localhost:5000/enum/job-titles"),{ withCredentials: true },
-          axios.get("http://localhost:5000/enum/pay-grades"),{ withCredentials: true },
-          axios.get("http://localhost:5000/enum/supervisors"),{ withCredentials: true },
-          axios.get("http://localhost:5000/enum/departments"),{ withCredentials: true },
-          axios.get("http://localhost:5000/enum/branches"),{ withCredentials: true },
+          axios.get("http://localhost:5000/enum/job-titles"),
+          axios.get("http://localhost:5000/enum/pay-grades"),
+          axios.get("http://localhost:5000/enum/supervisors"),
+          axios.get("http://localhost:5000/enum/departments"),
+          axios.get("http://localhost:5000/enum/branches"),
+          axios.get(`http://localhost:5000/employee/${employee_id}/official`),
         ]);
 
         setJobTitles(jobTitlesResponse.data);
@@ -39,12 +45,12 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
         setDepartments(departmentsResponse.data);
         setBranches(branchesResponse.data);
 
-        // Set default values
-        setJobTitleId(jobTitlesResponse.data[0]?.job_title_id || "");
-        setPayGradeId(payGradesResponse.data[0]?.pay_grade_id || "");
-        setSupervisorId(supervisorsResponse.data[0]?.employee_id || "");
-        setDepartmentId(departmentsResponse.data[0]?.department_id || "");
-        setBranchId(branchesResponse.data[0]?.branch_id || "");
+        const employee = employeeResponse.data;
+        setJobTitleId(employee.job_title_id);
+        setPayGradeId(employee.pay_grade_id);
+        setSupervisorId(employee.supervisor_id);
+        setDepartmentId(employee.department_id);
+        setBranchId(employee.branch_id);
       } catch (err) {
         setError(err.response?.data?.message || "Network or server issue");
       } finally {
@@ -53,13 +59,13 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
     };
 
     fetchData();
-  }, []);
+  }, [employee_id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const updatedDetails = {
-      employeeId: employee_id.employeeId,
+      employeeId: employee_id,
       jobTitleId,
       payGradeId,
       supervisorId,
@@ -67,15 +73,22 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
       branchId,
     };
 
+    setUpdating(true); // Set updating to true
+
     try {
       const response = await axios.put(
-        "http://localhost:5000/updateJobDetails", // Adjust URL as needed
-        updatedDetails,{ withCredentials: true }
+        "http://localhost:5000/updateJobDetails",
+        updatedDetails
       );
       console.log("Job details updated successfully:", response.data);
-      onSuccess(employee_id, 3);
+      if (onSuccess) {
+        onSuccess(employee_id, 3); // Notify parent component of success
+      }
     } catch (error) {
+      setError(error.response?.data?.message || "Error updating job details.");
       console.error("Error updating job details:", error.response?.data || error.message);
+    } finally {
+      setUpdating(false); // Reset updating status
     }
   };
 
@@ -181,9 +194,10 @@ export default function JobDetailsUpdater({ onSuccess, employee_id }) {
         <div className="flex justify-center mt-6">
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 focus:outline-none"
+            className={`px-6 py-2 ${updating ? 'bg-gray-400' : 'bg-blue-600'} text-white rounded-md shadow hover:${updating ? '' : 'bg-blue-700'} focus:outline-none`}
+            disabled={updating} // Disable button while updating
           >
-            Update Job Details
+            {updating ? 'Updating...' : 'Update Job Details'}
           </button>
         </div>
       </form>

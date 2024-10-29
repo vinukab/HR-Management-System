@@ -22,6 +22,7 @@ const leaveModel = {
     },
 
     updateLeaveStatus: async (leave_id, status) => {
+        console.log(`Updating leave status for leave_id: ${leave_id} to status: ${status}`);
         const query = 'UPDATE leaverequest SET request_status = ? WHERE leave_id = ?';
         await pool.query(query, [status, leave_id]);
     },

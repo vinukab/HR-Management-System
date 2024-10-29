@@ -18,13 +18,15 @@ const SideBar = ({ activePanel }) => {
     */
 
     const [role, setRole] = useState('');
+    const [employee_id, setEmployeeId] = useState('');
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const tempRole = await User.getRole();
-                console.log(tempRole);
+                const tempEmployeeId = await User.getEmployeeId();
                 setRole(tempRole);
+                setEmployeeId(tempEmployeeId);
             } catch (err) {
                 console.error(err);
             }
@@ -35,11 +37,13 @@ const SideBar = ({ activePanel }) => {
     const changePanel = (panel) => {
         if (panel === 0) router.push('/dashboard');
         else if (panel === 1) router.push('/createemployee');
-        else if (panel === 2) router.push('/profile');
-        else if (panel === 3) router.push('/leave');
-        else if (panel === 4) router.push('/reports');
-        else if (panel === 5) router.push('/settings'); // New route for Settings
-        else if (panel === 6) router.push('/employeemanagement'); // Route for Employee Directory
+
+        else if (panel === 2) router.push('/profile/' + employee_id);
+        else if (panel === 3) router.push('/manage');
+        else if (panel === 4) router.push('/leave');
+        else if (panel === 5) router.push('/reports');
+        else if (panel === 6) router.push('/settings');
+
     }
 
     return (
@@ -63,18 +67,24 @@ const SideBar = ({ activePanel }) => {
                     </button>
                 </div>
             )}
-
-            {/* Attendance */}
+             {(role === "Admin" || role === "Supervisor" || role === "HR Manager") && (
             <div onClick={() => changePanel(2)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 2), 'bg-rose-700': (activePanel === 2) })}>
                 <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                     <Clock className="mr-1" />
                     Profile
                 </button>
             </div>
-
+            )}
+            
+            <div onClick={() => changePanel(3)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 3), 'bg-rose-700': (activePanel === 3) })}>
+                <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
+                    <Clock className="mr-1" />
+                    Manage Employee
+                </button>
+            </div>
             {/* Leave Management (Admin, Supervisor, HR Manager Only) */}
             {(role === "Admin" || role === "Supervisor" || role === "HR Manager") && (
-                <div onClick={() => changePanel(3)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 3), 'bg-rose-700': (activePanel === 3) })}>
+                <div onClick={() => changePanel(4)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 4), 'bg-rose-700': (activePanel === 4) })}>
                     <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                         <Leaf className="mr-1" />
                         Leave Management
@@ -84,7 +94,7 @@ const SideBar = ({ activePanel }) => {
 
             {/* Reports (Admin, Supervisor, HR Manager Only) */}
             {(role === "Admin" || role === "Supervisor" || role === "HR Manager") && (
-                <div onClick={() => changePanel(4)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 4), 'bg-rose-700': (activePanel === 4) })}>
+                <div onClick={() => changePanel(5)} className={classNames("w-11/12 hover:bg-rose-400 h-10 ml-auto rounded-l-lg transition-all", { 'bg-black': !(activePanel === 5), 'bg-rose-700': (activePanel === 5) })}>
                     <button className="w-full h-full text-gray-500 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                         <ClipboardMinus className="mr-1" />
                         Reports
