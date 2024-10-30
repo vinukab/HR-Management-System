@@ -25,13 +25,12 @@ const initialChartData = [
   { leaveType: "Casual", remaining: 0 },
   { leaveType: "No-pay", remaining: 0 },
   { leaveType: "Maternity", remaining: 0 },
-  
 ]
 
 const chartConfig = {
   remaining: {
     label: "Remaining Leave",
-    color: "#2563eb ",
+    color: "#2563eb",
   },
   label: {
     color: "hsl(var(--background))",
@@ -59,7 +58,6 @@ export function RemLeaveCounts() {
           { leaveType: "Casual", remaining: data.casual_leave_count },
           { leaveType: "No-pay", remaining: data.nopay_leave_count },
           { leaveType: "Maternity", remaining: data.maternity_leave_count },
-           
         ]
         setChartData(updatedChartData)
       } catch (err) {
@@ -76,10 +74,10 @@ export function RemLeaveCounts() {
   if (error) return <div>Error: {error}</div>                                          
 
   return (
-    <Card className="m-1 flex flex-col max-w-96 justify-center">
+    <Card className="m-1 flex flex-col max-w-96 justify-center bg-gray-800 text-blue-400">
       <CardHeader>
         <CardTitle>Leave Types - Remaining Balance</CardTitle>
-        <CardDescription>Current Leave Balances</CardDescription>
+        <CardDescription  children className="text-gray-300">Current Leave Balances</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -87,20 +85,23 @@ export function RemLeaveCounts() {
             data={chartData}
             layout="vertical"
             margin={{
+              top: 5,
               right: 30,
+              left: 0,
+              bottom: 5,
             }}
+            style={{ backgroundColor: "transparent" }} // Sets background to transparent to remove white border
           >
-            <CartesianGrid horizontal={false} />
+            <CartesianGrid horizontal={false} stroke="#4b5563" />
             <YAxis
               dataKey="leaveType"
               type="category"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value}
-              hide
+              className="text-gray-300" // Light gray for better contrast with dark theme
             />
-            <XAxis dataKey="remaining" type="number" hide />
+            <XAxis dataKey="remaining" type="number" tick={{ fill: "#0284c7" }} />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
@@ -108,21 +109,21 @@ export function RemLeaveCounts() {
             <Bar
               dataKey="remaining"
               layout="vertical"
-              fill="var(--color-remaining)"
+              fill="#1d4ed8"
               radius={4}
             >
               <LabelList
                 dataKey="leaveType"
                 position="insideLeft"
                 offset={8}
-                className="fill-[--color-label]"
+                className="fill-gray-200"
                 fontSize={12}
               />
               <LabelList
                 dataKey="remaining"
                 position="right"
                 offset={8}
-                className="fill-foreground"
+                className="fill-gray-100"
                 fontSize={12}
               />
             </Bar>
@@ -133,7 +134,7 @@ export function RemLeaveCounts() {
         <div className="flex gap-2 font-medium leading-none">
           Advice <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
+        <div className="leading-none  text-gray-300">
           Please be mindful of your leave balance and plan your leave accordingly.
         </div>
       </CardFooter>

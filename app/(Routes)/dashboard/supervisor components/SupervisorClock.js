@@ -25,7 +25,7 @@ const SupervisorClock = () => {
     });
 
     return ( 
-        <div className="bg-gradient-to-r from-blue-900 via-gray-900 to-black flex flex-row h-24 rounded-lg m-1 p-4">
+        <div className="bg-blue-900 flex flex-row h-24 rounded-lg m-1 p-4">
             <div className="flex flex-col w-1/5 justify-center items-center m-2 ">
                 <Sun />
                 <div className="text-xs text-white pt-2">Partially cloudy</div>

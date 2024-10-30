@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -50,37 +50,28 @@ const CreateLeaveRequest = () => {
   });
 
   const [leaveTypes, setLeaveTypes] = useState([]);
-  const [leaveCount,setLeaveCount] = useState([]);
+  const [leaveCount, setLeaveCount] = useState([]);
   const startDate = form.watch("start_date");
   const endDate = form.watch("end_date");
 
-
   useEffect(() => {
-    // Fetch leave types
     axios.get('http://localhost:5000/leave/types', { withCredentials: true })
-      .then(res => {
-        setLeaveTypes(res.data);
-      })
+      .then(res => setLeaveTypes(res.data))
       .catch(err => console.error(err));
   }, []);
 
   useEffect(() => {
     axios.get('http://localhost:5000/leave/leave-count', { withCredentials: true })
-      .then(res => {
-        setLeaveCount(res.data);
-      })
+      .then(res => setLeaveCount(res.data))
       .catch(err => console.error(err));
-    },[]);
+  }, []);
 
   const onSubmit = async(data) => {
     const { start_date, end_date, leave_type, description } = data;
-    console.log(leave_type)
-    // Calculate the duration of the leave request
     const duration = Math.ceil((new Date(end_date) - new Date(start_date)) / (1000 * 60 * 60 * 24)) + 1;
 
-    // Check if the remaining leaves are sufficient
     if (leaveCount[leave_type] < duration) {
-      alert(`Insufficient leave balance. Remaining leaves: ${remainingLeaves[leave_type]}`);
+      alert(`Insufficient leave balance. Remaining leaves: ${leaveCount[leave_type]}`);
       return;
     }
 
@@ -100,10 +91,10 @@ const CreateLeaveRequest = () => {
   };
 
   return (
-    <Card className="m-1" style={{ height: '600px', backgroundColor: '#f8fafc' }}>
+    <Card className="m-1 bg-gray-800 text-white" style={{ height: '600px' }}>
       <CardHeader>
-        <CardTitle>Create Leave Request</CardTitle>
-        <CardDescription>Fill the form to create a leave request</CardDescription>
+        <CardTitle className="text-blue-400">Create Leave Request</CardTitle>
+        <CardDescription className="text-gray-300">Fill the form to create a leave request</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -114,24 +105,25 @@ const CreateLeaveRequest = () => {
               name="start_date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Start date</FormLabel>
+                  <FormLabel className="text-gray-300 mr-3">Start date</FormLabel>
                   <FormControl>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
                           variant='outline'
-                          className={cn("w-[280px] justify-start text-left font-normal", !startDate && "text-muted-foreground")}
+                          className={cn("w-[280px] justify-start text-left font-normal bg-gray-800 text-gray-300", !startDate && "text-gray-300")}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {startDate ? format(new Date(startDate), "PPP") : <span>Pick a date</span>}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
+                      <PopoverContent className="w-auto p-0 bg-gray-800 text-white">
                         <Calendar
                           mode="single"
                           selected={startDate}
                           onSelect={(date) => form.setValue('start_date', date)}
                           initialFocus
+                          className="text-gray-300"
                         />
                       </PopoverContent>
                     </Popover>
@@ -146,24 +138,25 @@ const CreateLeaveRequest = () => {
               name="end_date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>End date</FormLabel>
+                  <FormLabel className="text-gray-300 mr-3">End date</FormLabel>
                   <FormControl>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
                           variant='outline'
-                          className={cn("w-[280px] justify-start text-left font-normal", !endDate && "text-muted-foreground")}
+                          className={cn("w-[280px] justify-start text-left font-normal bg-gray-800 text-gray-300", !endDate && "text-gray-300")}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {endDate ? format(new Date(endDate), "PPP") : <span>Pick a date</span>}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
+                      <PopoverContent className="w-auto p-0 bg-gray-800 text-white">
                         <Calendar
                           mode="single"
                           selected={endDate}
                           onSelect={(date) => form.setValue('end_date', date)}
                           initialFocus
+                          className="text-gray-300"
                         />
                       </PopoverContent>
                     </Popover>
@@ -178,13 +171,13 @@ const CreateLeaveRequest = () => {
               name="leave_type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Leave Type</FormLabel>
+                  <FormLabel className="text-gray-300">Leave Type</FormLabel>
                   <FormControl>
                     <Select onValueChange={(value) => form.setValue('leave_type', value)}>
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-gray-800 text-gray-300">
                         <SelectValue placeholder="Select a leave type" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-gray-800 text-gray-300">
                         <SelectGroup label="Leave types">
                           {leaveTypes.map(leaveType => (
                             <SelectItem key={leaveType.leave_type_id} value={leaveType.leave_type_id}>
@@ -204,16 +197,16 @@ const CreateLeaveRequest = () => {
               control={form.control}
               name="description"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
+                <FormItem className="text-gray-300">
+                  <FormLabel className="text-gray-300">Description</FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder="Describe your leave" className="w-full" />
+                    <Textarea {...field} placeholder="Describe your leave" className="w-full bg-gray-800 text-gray-300" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" className="bg-[#1e40af] hover:bg-[#1d4ed8] text-white rounded">Submit</Button>
+            <Button type="submit" className="bg-blue-700 hover:bg-blue-800 text-white rounded">Submit</Button>
           </form>
         </Form>
       </CardContent>
