@@ -60,6 +60,40 @@ app.use('/branch', branchRouter);
 console.log('Registering /paygrade route...');
 app.use('/paygrade', payGradeRouter);
 
+// Delete dependent endpoint
+app.delete('/employee/:employee_id/dependents/:dependent_id', async (req, res) => {
+  const { employee_id, dependent_id } = req.params;
+
+  const deleteQuery = 'DELETE FROM employeedependents WHERE dependent_id = ? AND employee_id = ?';
+  try {
+      const result = await pool.query(deleteQuery, [dependent_id, employee_id]);
+      if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Dependent not found' });
+      }
+      res.status(200).json({ message: 'Dependent deleted successfully' });
+  } catch (err) {
+      return res.status(500).json({ message: 'Error deleting dependent', error: err });
+  }
+});
+
+// Delete emergency person endpoint
+app.delete('/employee/:employee_id/emergency/:person_id', async (req, res) => {
+  const { employee_id, person_id } = req.params;
+  console.log('Deleting emergency person', employee_id, person_id);
+  const deleteQuery = 'DELETE FROM emergencyperson WHERE person_id = ? AND employee_id = ?';
+  try {
+      const result = await pool.query(deleteQuery, [person_id, employee_id]);
+      if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Emergency person not found' });
+      }
+      res.status(200).json({ message: 'Emergency person deleted successfully' });
+  } catch (err) {
+      return res.status(500).json({ message: 'Error deleting emergency person', error: err });
+  }
+});
+
+
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
