@@ -82,20 +82,21 @@ const AddEmergencyPerson = ({ params }) => {
       <div className="ml-56">
         <div className="m-1 bg-white rounded-lg shadow-md">
           <Title title="Add Emergency Person" />
-          <div className="grid grid-cols-3 gap-4 p-5">
-            <div className="col-span-1 flex justify-center items-center h-full">
-              <img src="Job_Details.png" className="max-w-full max-h-full" alt="Logo" />
+          <div className="grid grid-cols-3 gap-4 p-5 bg-gray-800">
+            <div className="col-span-1 flex justify-center items-center h-[36.9rem]">
+              <img src="https://img.freepik.com/free-photo/businessman-posing-with-float_1156-564.jpg?t=st=1730223931~exp=1730227531~hmac=c476a306427c87dfb6cc930946606781988298c591849389bf24831e748fb9de&w=740" className="max-w-full max-h-full" alt="Logo" />
             </div>
-
+            
             <div className="col-span-2">
+            
               <CardHeader>
-                <h2 className="text-xl font-semibold text-gray-800 text-center">Add Emergency Person</h2>
+                <h2 className="text-xl font-semibold text-white text-center">Add Emergency Person</h2>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Emergency Person Fields */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Person Name</label>
+                    <label className="text-white border-gray-700">Person Name</label>
                     <input
                       type="text"
                       name="person_name"
@@ -106,7 +107,7 @@ const AddEmergencyPerson = ({ params }) => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Relationship</label>
+                    <label className="text-white border-gray-700">Relationship</label>
                     <input
                       type="text"
                       name="relationship"
@@ -117,7 +118,7 @@ const AddEmergencyPerson = ({ params }) => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Address</label>
+                    <label className="text-white border-gray-700">Address</label>
                     <input
                       type="text"
                       name="address"
@@ -128,7 +129,7 @@ const AddEmergencyPerson = ({ params }) => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Employee ID</label>
+                    <label className="text-white border-gray-700">Employee ID</label>
                     <input
                       type="text"
                       name="employee_id"
@@ -141,7 +142,7 @@ const AddEmergencyPerson = ({ params }) => {
 
                   {/* Phone Numbers Section */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Phone Numbers</label>
+                    <label className="text-white border-gray-700">Phone Numbers</label>
                     {phoneNumbers.map((phoneNumber, index) => (
                       <div key={index} className="flex items-center mt-2">
                         <input
@@ -172,10 +173,10 @@ const AddEmergencyPerson = ({ params }) => {
                   </div>
 
                   <div className="flex justify-between mt-4">
-                    <button type="submit" className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700">
+                    <button type="submit" className="text-white px-4 py-2 rounded-md bg-[#1e40af] hover:bg-[#1d4ed8]">
                       Add Emergency Person
                     </button>
-                    <button type="button" onClick={haddleNext} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    <button type="button" onClick={haddleNext} className="text-white px-4 py-2 rounded-md bg-[#1e40af] hover:bg-[#1d4ed8]">
                       Next
                     </button>
                   </div>
@@ -183,7 +184,7 @@ const AddEmergencyPerson = ({ params }) => {
         
                 {/* Display Added Emergency Persons */}
                 <div className="mt-6">
-                  <h3 className="text-lg font-semibold">Added Emergency Persons</h3>
+                  
                   {addedPersons.map((person, index) => (
                     <div key={index} className="border-t border-gray-200 pt-4 mt-4">
                       <p><strong>Name:</strong> {person.person_name}</p>

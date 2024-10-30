@@ -20,11 +20,6 @@ const Leave = () => {
                         <SupervisorLeavePanel />
                         
                     </div>
-
-                    <div className="bg-white rounded-lg shadow-md p-4 w-1/3">
-                        
-                        {/*can add another component to add right above of the leave management page*/}
-                    </div>
                 </div>
             </div>
         </div>

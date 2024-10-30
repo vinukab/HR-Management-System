@@ -110,10 +110,10 @@ export default function EmployeeCreator() {
     <SideBar/>
     <div className="ml-56">
      <Title />
-      <Card className="m-1 shadow-md">
+      <Card className="m-1 shadow-md bg-gray-800 text-gray-200 border border-gray-700">
         <CardHeader>
-          <CardTitle>Create Employee</CardTitle>
-          <CardDescription>Fill out the form to create a new employee.</CardDescription>
+          <CardTitle className="text-gray-50">Create Employee</CardTitle>
+          <CardDescription className="text-gray-250">Fill out the form to create a new employee.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="flex">
@@ -137,20 +137,20 @@ export default function EmployeeCreator() {
             <div className="flex-grow">
               <div className="m-2">
                 <Label>First Name</Label>
-                <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+                <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} required className="bg-white text-black border-gray-700"/>
               </div>
               <div className="m-2">
                 <Label>Last Name</Label>
-                <Input value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+                <Input value={lastName} onChange={(e) => setLastName(e.target.value)} required className="bg-white text-black border-gray-700"/>
               </div>
               <div className="m-2">
                 <Label>Birth Date</Label>
-                <Input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} required />
+                <Input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} required className="bg-white text-black border-gray-700"/>
               </div>
               <div className="m-2">
                 <Label>Marital Status</Label>
                 <Select onValueChange={setMaritalStatus} defaultValue={maritalStatus}>
-                  <SelectTrigger className="flex items-center">
+                  <SelectTrigger className="flex items-center text-gray-500">
                     <span className="mr-auto">{maritalStatus}</span>
                     <span className="ml-2">▼</span>
                   </SelectTrigger>
@@ -164,12 +164,12 @@ export default function EmployeeCreator() {
               </div>
               <div className="m-2">
                 <Label>NIC Number</Label>
-                <Input value={NIC} onChange={(e) => setNIC(e.target.value)} required />
+                <Input value={NIC} onChange={(e) => setNIC(e.target.value)} required className="bg-white text-black border-gray-700"/>
               </div>
               <div className="m-2">
                 <Label>Gender</Label>
                 <Select onValueChange={setGender} defaultValue={gender}>
-                  <SelectTrigger className="flex items-center">
+                  <SelectTrigger className="flex items-center text-gray-500">
                     <span className="mr-auto">{gender}</span>
                     <span className="ml-2">▼</span>
                   </SelectTrigger>
@@ -181,7 +181,7 @@ export default function EmployeeCreator() {
               </div>
               <div className="col-span-2 m-2">
                 <Label>Address</Label>
-                <Textarea value={address} onChange={(e) => setAddress(e.target.value)} required />
+                <Textarea value={address} onChange={(e) => setAddress(e.target.value)} required className="bg-white text-black border-gray-700"/>
               </div>
 
               {/* Phone Numbers */}
@@ -194,8 +194,8 @@ export default function EmployeeCreator() {
                         value={phoneNumber}
                         onChange={(e) => handlePhoneNumberChange(index, e.target.value)}
                         placeholder={`Phone Number ${index + 1}`}
-                        className="flex-grow" // Allow the input to grow within available space
-                        required
+                        className="flex-grow bg-white text-black border-gray-700" // Allow the input to grow within available space
+                        required 
                       />
                       <Button
                         type="button"
@@ -222,34 +222,34 @@ export default function EmployeeCreator() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
                   <Label>Custom Attribute Key 1</Label>
-                  <Input value={key1} onChange={(e) => setKey1(e.target.value)} />
+                  <Input value={key1} onChange={(e) => setKey1(e.target.value)} className="bg-white text-black border-gray-700"/>
                 </div>
                 <div>
                   <Label>Custom Attribute Value 1</Label>
-                  <Input value={value1} onChange={(e) => setValue1(e.target.value)} />
+                  <Input value={value1} onChange={(e) => setValue1(e.target.value)} className="bg-white text-black border-gray-700"/>
                 </div>
                 <div>
                   <Label>Custom Attribute Key 2</Label>
-                  <Input value={key2} onChange={(e) => setKey2(e.target.value)} />
+                  <Input value={key2} onChange={(e) => setKey2(e.target.value)} className="bg-white text-black border-gray-700"/>
                 </div>
                 <div>
                   <Label>Custom Attribute Value 2</Label>
-                  <Input value={value2} onChange={(e) => setValue2(e.target.value)} />
+                  <Input value={value2} onChange={(e) => setValue2(e.target.value)} className="bg-white text-black border-gray-700"/>
                 </div>
                 <div>
                   <Label>Custom Attribute Key 3</Label>
-                  <Input value={key3} onChange={(e) => setKey3(e.target.value)} />
+                  <Input value={key3} onChange={(e) => setKey3(e.target.value)} className="bg-white text-black border-gray-700"/>
                 </div>
                 <div>
                   <Label>Custom Attribute Value 3</Label>
-                  <Input value={value3} onChange={(e) => setValue3(e.target.value)} />
+                  <Input value={value3} onChange={(e) => setValue3(e.target.value)} className="bg-white text-black border-gray-700"/>
                 </div>
               </div>
 
               {error && <p className="text-red-500 m-2">{error}</p>}
               {success && <p className="text-green-500 m-2">{success}</p>}
               <div className="w-full flex flex-col">
-                <Button type="submit" className="m-4 ml-auto hover:bg-gray-700">Create Employee</Button>
+                <Button type="submit" className="m-4 ml-auto bg-[#1e40af] hover:bg-[#1d4ed8]">Create Employee</Button>
               </div>
             </div>
           </form>

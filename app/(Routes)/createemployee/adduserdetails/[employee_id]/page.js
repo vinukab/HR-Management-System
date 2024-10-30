@@ -50,14 +50,15 @@ const CreateUser = ({ params }) => {
   return (
     <>
     <SideBar/>
+    
     <div className="ml-56">
          <div className="m-1 bg-white rounded-lg shadow-md">
       <Title title="Create User" />
-
-      <div className="grid grid-cols-3 gap-4 p-5">
+        
+      <div className="grid grid-cols-3 gap-4 p-5 bg-gray-800">
         {/* Left Side - Image */}
-        <div className="col-span-1 flex justify-center items-center h-full">
-          <img src="Job_Details.png" className="max-w-full max-h-full" alt="Logo" />
+        <div className="col-span-1 flex justify-center items-center h-[36.9rem]">
+          <img src="https://img.freepik.com/free-photo/rag-doll-blue-with-arms-two_1156-238.jpg?t=st=1730223852~exp=1730227452~hmac=4076edc7ac50ad6d60c088623bfacbf4473ce803b864854b00e73ea5a4341660&w=740" className="max-w-full max-h-full" alt="Logo" />
         </div>
 
         {/* Right Side - Form */}
@@ -67,7 +68,9 @@ const CreateUser = ({ params }) => {
 
           <form onSubmit={handleSubmit} className="p-5 w-full space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Username</label>
+            <div>
+            <h2 className="text-2xl font-semibold text-white text-center">Create User</h2>
+              <label className="text-white border-gray-700">Username</label>
               <input
                 type="text"
                 name="username"
@@ -78,9 +81,10 @@ const CreateUser = ({ params }) => {
                 required
               />
             </div>
+            </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <label className="text-white border-gray-700">Password</label>
               <input
                 type="password"
                 name="password"
@@ -93,7 +97,7 @@ const CreateUser = ({ params }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Role</label>
+              <label className="text-white border-gray-700">Role</label>
               <select
                 name="role"
                 value={user.role}
@@ -111,14 +115,14 @@ const CreateUser = ({ params }) => {
             <div className="flex justify-between mt-4">
               <button
                 type="submit"
-                className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700"
+                className="text-white px-4 py-2 rounded-md bg-[#1e40af] hover:bg-[#1d4ed8]"
               >
                 Create User
               </button>
               <button
                 type="button"
                 onClick={ ()=>{router.push(`/createemployee/addemergencyperson/${employee_id}`);}}
-                className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700"
+                className="text-white px-4 py-2 rounded-md bg-[#1e40af] hover:bg-[#1d4ed8]"
               >
                 Skip
               </button>
