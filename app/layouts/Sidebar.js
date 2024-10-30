@@ -74,15 +74,17 @@ const SideBar = ({ activePanel }) => {
                     </button>
                 </div>
             )}
-            
+             {(role === "Admin" || role === "Supervisor" || role === "HR Manager") && (
             <div onClick={() => changePanel(3)} className={classNames("w-11/12 hover:bg-[#1e40af] h-10 ml-auto rounded-l-lg transition-all", { 'bg-gray-800': !(activePanel === 3), 'bg-blue-700': (activePanel === 3) })}>
                 <button className="w-full h-full text-gray-300 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                     <Clock className="mr-1" />
                     Manage Employee
                 </button>
             </div>
+            )}
+
             {/* Leave Management (Admin, Supervisor, HR Manager Only) */}
-            {(role === "Admin" || role === "Supervisor" || role === "HR Manager") && (
+            {(role === "Admin" || role === "Supervisor") && (
                 <div onClick={() => changePanel(4)} className={classNames("w-11/12 hover:bg-[#1e40af] h-10 ml-auto rounded-l-lg transition-all", { 'bg-gray-800': !(activePanel === 4), 'bg-blue-700': (activePanel === 4) })}>
                     <button className="w-full h-full text-gray-300 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                         <Leaf className="mr-1" />
@@ -102,20 +104,14 @@ const SideBar = ({ activePanel }) => {
             )}
 
             {/* Settings Panel (New Panel) */}
-            <div onClick={() => changePanel(5)} className={classNames("w-11/12 hover:bg-[#1e40af] h-10 ml-auto rounded-l-lg transition-all", { 'bg-gray-800': !(activePanel === 5), 'bg-blue-700': (activePanel === 5) })}>
+            {(role === "Admin" || role === "HR Manager") && (
+            <div onClick={() => changePanel(6)} className={classNames("w-11/12 hover:bg-[#1e40af] h-10 ml-auto rounded-l-lg transition-all", { 'bg-gray-800': !(activePanel === 6), 'bg-blue-700': (activePanel === 6) })}>
                 <button className="w-full h-full text-gray-300 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                     <Settings className="mr-1" />
                     Settings
                 </button>
             </div>
-
-            {/* Employee Directory (New Panel) */}
-            <div onClick={() => changePanel(6)} className={classNames("w-11/12 hover:bg-[#1e40af] h-10 ml-auto rounded-l-lg transition-all", { 'bg-gray-800': !(activePanel === 6), 'bg-blue-700': (activePanel === 6) })}>
-                <button className="w-full h-full text-gray-300 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
-                    <User2Icon className="mr-1" />
-                    Settings
-                </button>
-            </div>
+            )}
         </div>
     );
 }
