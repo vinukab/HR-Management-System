@@ -8,7 +8,6 @@ const ToDoList = {
     },
 
     async addTodo(todo_id, user_id, task, due_date, status) {  
-        console.log(todo_id, user_id, task, due_date, status)
         const query = "INSERT INTO todolist (todo_id, user_id, task, due_date, status) VALUES (?,?,?,?,?);";
         const result = await pool.query(query, [todo_id, user_id, task, due_date, status]);
         return result.affectedRows > 0;

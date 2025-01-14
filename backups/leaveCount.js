@@ -13,7 +13,7 @@ const createLeaveCount = async (req, res) => {
       res.status(201).json({ message: 'Leave count created' });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'Creation failed' });
   }
 };
@@ -59,7 +59,7 @@ const updateLeaveCount = async (req, res) => {
       res.status(200).json({ message: 'Leave count updated' });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'Update failed' });
   }
 };
@@ -73,7 +73,7 @@ const deleteLeaveCount = async (req, res) => {
       res.status(200).json({ message: 'Leave count deleted' });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'Deletion failed' });
   }
 };

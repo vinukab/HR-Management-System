@@ -9,21 +9,9 @@ const AdminDashboard = () => {
     return ( 
         <div className="h-full bg-gray-700 text-gray-900">
             <Title />
-            <div className="flex flex-row">
+            <div className="flex flex-row h-screen p-4">
                 <div className="flex-grow bg-gray-800 p-4 rounded-lg shadow-md">
-                    <SupervisorClock />
                     <EmployeeToDOList />
-                </div>
-                <div className="ml-4 bg-gray-800 p-4 rounded-lg shadow-md">
-                    <CreateLeaveRequest />
-                </div>
-            </div>
-            <div className="flex flex-row w-full mt-4">
-                <div className="flex-grow bg-gray-800 p-4 rounded-lg shadow-md">
-                    <SupervisorLeavePanel />
-                </div>
-                <div className="ml-4 bg-gray-800 p-4 rounded-lg shadow-md">
-                    <RemLeaveCounts />
                 </div>
             </div>
         </div>

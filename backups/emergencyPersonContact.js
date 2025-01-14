@@ -11,7 +11,7 @@ const createEmergencyPersonContact= async (req, res) => {
         res.status(201).json({ message: 'Emergency person contact created' });
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ error: 'creating Emergency person contact failed' });
     }
 };
@@ -38,7 +38,7 @@ const deleteEmergencyPerson = async (req, res) => {
       res.status(200).json({ message: 'emergency person contact deleted' });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'deleting query failed' });
   }
 };
@@ -53,7 +53,7 @@ const updateEmergencyPerson = async (req, res) => {
       res.status(200).json({ message: 'Emergency person contact details updated' });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'Updating failed' });
   }
 };

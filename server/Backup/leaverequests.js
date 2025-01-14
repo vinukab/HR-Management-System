@@ -136,7 +136,6 @@ const getLeaveRequestofUser = async (req,res) => {
                 duration: `${duration} days`
             };
         });
-        console.log(processedLeaves);
         res.status(200).json(processedLeaves);
     }catch(err){
         console.error(err);

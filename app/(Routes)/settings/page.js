@@ -9,6 +9,8 @@ const LeaveTypeSettings = dynamic(() => import('./LeaveTypeSettings'), { ssr: fa
 const OrganizationDetails = dynamic(() => import('./OrganizationDetails'), { ssr: false });
 const BranchDetails = dynamic(() => import('./BranchDetails'), { ssr: false });
 const PayGradeSettings = dynamic(() => import('./PayGradeSettings'), { ssr: false });
+const JobTitleSettings = dynamic(() => import('./JobTitleSettings'), { ssr: false });
+const DepartmentsSettings = dynamic(() => import('./DepartmentsSettings'), { ssr: false });
 
 const SettingsPage = () => {
   const [activeSetting, setActiveSetting] = useState('leaveType');
@@ -23,6 +25,10 @@ const SettingsPage = () => {
         return <BranchDetails />;
       case 'payGrade':
         return <PayGradeSettings />;
+      case 'jobTitle':
+        return <JobTitleSettings />;
+      case 'departments':
+        return <DepartmentsSettings />;
       default:
         return <p>Select a setting from the menu.</p>;
     }
@@ -60,6 +66,18 @@ const SettingsPage = () => {
                 onClick={() => setActiveSetting('payGrade')}
               >
                 Pay Grade
+              </button>
+              <button
+                className={`px-4 py-2 rounded-md ${activeSetting === 'jobTitle' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                onClick={() => setActiveSetting('jobTitle')}
+              >
+                Job Title
+              </button>
+              <button
+                className={`px-4 py-2 rounded-md ${activeSetting === 'departments' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                onClick={() => setActiveSetting('departments')}
+              >
+                Departments
               </button>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-lg">

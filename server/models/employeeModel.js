@@ -1,5 +1,6 @@
 const pool = require('../config/dbConfig');
 const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcrypt');
 
 const employeeModel = {
 
@@ -15,6 +16,7 @@ const employeeModel = {
     const [result] = await pool.query(query, values);
     return result;
  },
+
  addEmergencyPerson: async function(personData, phoneNumbers) {
   const person_id = uuidv4();
 
@@ -40,10 +42,12 @@ const employeeModel = {
       throw error; // Propagate the error to the controller
   }
 },
+
 createUser: async function(userData) {
   const user_id = uuidv4();
+  const hashed_password = await bcrypt.hash(userData.password, 10);
   const query = `INSERT INTO user (user_id, username, password_hash, role, employee_id) VALUES (?, ?, ?, ?, ?)`;
-  const values = [user_id, userData.username, userData.password, userData.role, userData.employee_id];
+  const values = [user_id, userData.username, hashed_password, userData.role, userData.employee_id];
 
   try {
       await pool.query(query, values);
@@ -52,6 +56,7 @@ createUser: async function(userData) {
       throw error; // Propagate the error to the controller
   }
 },
+
 getEmployeeById: async function(employeeId) {
   const sqlQuery = `
       SELECT 
@@ -96,6 +101,7 @@ getEmployeeById: async function(employeeId) {
   const [rows] = await pool.query(sqlQuery, [employeeId]);
   return rows;
 },
+
 getEmployeePersonalInfo: async function(employeeId) {
   const sqlEmployeeQuery = `
       SELECT employee_id, first_name, last_name, birth_date, marital_status, NIC_number, 
@@ -150,7 +156,7 @@ async getDependents(employeeId) {
   return rows;
 },async getEmergencyContacts(employeeId) {
   const sqlQuery = `
-      SELECT person_name AS name, relationship, address, phone_num AS phone_number
+      SELECT emergencyperson.person_id, person_name AS name, relationship, address, phone_num AS phone_number
       FROM emergencyperson 
       JOIN emergencypersoncontact ON emergencyperson.person_id = emergencypersoncontact.person_id
       WHERE employee_id = ?;

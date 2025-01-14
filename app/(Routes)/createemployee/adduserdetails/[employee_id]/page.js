@@ -1,9 +1,9 @@
 'use client';
 import { useState } from 'react';
 import axios from 'axios';
-import Title from "@/app/layouts/Titlebar"; // Ensure this path is correct
+import Title from "@/app/layouts/Titlebar";
 import { useRouter } from 'next/navigation';
-import SideBar from '@/app/layouts/Sidebar';
+import SideBar from '../../../../layouts/Sidebar';
 
 const CreateUser = ({ params }) => {
   const employee_id = params.employee_id;
@@ -38,7 +38,7 @@ const CreateUser = ({ params }) => {
         role: 'Employee',
         employee_id: employee_id || ''
       });
-      router.push(`/createemployee/addemergencyperson/${employee_id}`);
+      router.push(`/profile/${employee_id}`);
     } catch (error) {
       console.error('There was an error creating the user!', error);
       setError('Failed to create user.');
@@ -49,7 +49,7 @@ const CreateUser = ({ params }) => {
 
   return (
     <>
-    <SideBar/>
+    <SideBar activePanel = {1}/>
     
     <div className="ml-56">
          <div className="m-1 bg-white rounded-lg shadow-md">
@@ -121,7 +121,7 @@ const CreateUser = ({ params }) => {
               </button>
               <button
                 type="button"
-                onClick={ ()=>{router.push(`/createemployee/addemergencyperson/${employee_id}`);}}
+                onClick={ ()=>{router.push(`/profile/${employee_id}`);}}
                 className="text-white px-4 py-2 rounded-md bg-[#1e40af] hover:bg-[#1d4ed8]"
               >
                 Skip

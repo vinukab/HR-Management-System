@@ -19,7 +19,6 @@ export default function EmployeeDepartmentTable() {
       try {
         const response = await fetch("http://localhost:5000/report/employees-grouped");
         const result = await response.json();
-        console.log(result);
         setData(result);
       } catch (error) {
         console.error("Error fetching data:", error);

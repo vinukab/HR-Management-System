@@ -11,7 +11,7 @@ const createPerson= async (req, res) => {
         res.status(201).json({ message: ' person  created' });
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ error: ' failed' });
     }
 };
@@ -38,7 +38,7 @@ const deletePerson = async (req, res) => {
       res.status(200).json({ message: ' person deleted' });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'deleting query failed' });
   }
 };
@@ -55,7 +55,7 @@ const updatePerson = async (req, res) => {
       res.status(200).json({ message: 'Details updated' });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'Updating failed' });
   }
 };

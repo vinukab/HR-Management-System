@@ -1,19 +1,19 @@
 const  User = require('../models/userModel');
 const secretKey = '1234';
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const login = async (req, res) => {
     try {
         const { username, password } = req.body;
         const user = await User.login(username, password);
-            
         if (!user){
             res.status(500).json({ message: 'Invalid Username or Password', error }); 
         }
         res.cookie('user', user, {httpOnly: true, secure: true, sameSite: 'none'});
         res.send('Log in successful');
     } catch (error) {
-        console.log(error);
+     
         res.status(500).json({ message: 'Error in login', error });
     }
 };

@@ -18,14 +18,12 @@ const getTodoList = async (req, res) => {
 }
 
 const deleteTodo = async (req, res) => {
-    console.log('running deleteTodo');
     try{
         const token = req.cookies['user'];
         if (!token)return res.status(401).json({error: 'No token fonud'});
         jwt.verify(token,secretKey);
 
         const {todo_id} = req.body;
-        console.log(todo_id);
         const query = "delete from todolist where todo_id = ?";
         await pool.query(query,[todo_id]);
         res.status(200).json({message:'delete succsessful'});
@@ -39,7 +37,6 @@ const addTodo = async (req, res) => {
         if (!token)return res.status(401).json({error: 'No token fonud'});
         jwt.verify(token,secretKey);
         const todo = req.body;
-        console.log(todo);
         const query = "insert into todolist (todo_id,user_id,task,due_date,status) values (?,?,?,?,?);";
         await pool.query(query,[todo.todo_id,todo.user_id,todo.task,todo.due_date,todo.status]);
         res.status(200).json({message:'add succsessful'});

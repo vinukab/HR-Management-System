@@ -17,7 +17,7 @@ const createPayGrade = async (req, res) => {
             res.status(201).json({ message: 'New paygrade created' });
         });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Creating new paygrade failed' });
     }
   };
@@ -28,13 +28,12 @@ const getAllPayGrades = async (req, res) => {
         const [rows] = await pool.query('SELECT * FROM paygrade');
         res.status(200).json(rows);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Fetching pay grades failed' });
     }
 };
 
 const getPayGradeById = async (req, res) => {
-    console.log('Entered to get paygrade by id', req.params.id);
     const {id} = req.params;
     try {
         const [rows] = await pool.query('SELECT grade_name FROM paygrade WHERE pay_grade_id = (?)', [id]);
@@ -45,13 +44,12 @@ const getPayGradeById = async (req, res) => {
 
     res.status(200).json(rows[0]);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Fetching pay grade failed' });
     }
 };
 
 const updatePayGrade = async (req, res) => {
-    console.log('Entered to update paygrade by id', req.params.id);
     const {id } = req.params;
     const {name} = req.body;
 
@@ -67,13 +65,12 @@ const updatePayGrade = async (req, res) => {
 
         res.status(200).json({ message: 'Pay grade updated' });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Updating pay grade failed' });
     }
 };
 
 const deletePayGrade = async (req, res) => {
-    console.log('Entered to delete paygrade by id', req.params.id);
     const {id} = req.params;
 
     try {
@@ -88,7 +85,7 @@ const deletePayGrade = async (req, res) => {
 
         res.status(200).json({ message: 'Pay grade deleted' });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Deleting pay grade failed' });
     }
 };

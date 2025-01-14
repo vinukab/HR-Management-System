@@ -200,6 +200,7 @@ async getEmployeeEmergencyContacts(req, res) {
             
             if (!contact) {
                 contact = {
+                    person_id: row.person_id,
                     name: row.name,
                     relationship: row.relationship,
                     address: row.address,
@@ -210,7 +211,7 @@ async getEmployeeEmergencyContacts(req, res) {
             contact.phone_numbers.push(row.phone_number);
             return acc;
         }, []);
-
+        console.log(emergencyContacts);
         res.json(emergencyContacts);
     } catch (error) {
         console.error("Error fetching emergency contact information:", error);

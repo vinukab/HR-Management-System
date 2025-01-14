@@ -1,7 +1,10 @@
 // leaveController.js
 const jwt = require('jsonwebtoken');
 const leaveModel = require('../models/leaveModle');
-const secretKey = '1234';
+const { start } = require('repl');
+const { v4: uuidv4 } = require('uuid');
+const secretKey = process.env.JWT_SECRET;
+
 
 const leaveController = {
     getEmployeeLeaves: async (req, res) => {
@@ -12,11 +15,10 @@ const leaveController = {
             const verified = jwt.verify(token, secretKey);
             if (!verified) return res.status(403).json({ message: "Invalid token" });
 
-            const employeeLeaves = await leaveModel.getAllEmployeeLeaves();
+            const employee_id = verified.employee_id;
 
-            if (!employeeLeaves || employeeLeaves.length === 0) {
-                return res.status(404).json({ message: 'No leave records found' });
-            }
+            const employeeLeaves = await leaveModel.getAllEmployeeLeaves(employee_id);
+
             const processedLeaves = employeeLeaves.map(leave => {
                 const startDate = new Date(leave.start_date);
                 const endDate = new Date(leave.end_date);
@@ -65,15 +67,29 @@ const leaveController = {
             if (!token) return res.status(401).json({ message: 'No token found' });
 
             const verified = jwt.verify(token, secretKey);
-            const { start_date, end_date, leave_type, description } = req.body;
+            const { start_date, end_date, leave_type, description,duration,type_name,request_status} = req.body;
+            const formatted_start_date = start_date.split('T')[0];
+            const formatted_end_date = end_date.split('T')[0];
             const employee_id = verified.employee_id;
+            const leave_id = uuidv4();
+            
+            await leaveModel.addLeaveRequest(leave_id,employee_id,formatted_start_date,formatted_end_date, leave_type, description);
 
-            await leaveModel.addLeaveRequest(employee_id, start_date, end_date, leave_type, description);
-
-            res.status(201).json({ message: 'Leave request added successfully' });
+            res.status(201).json({leave_id,start_date,end_date, leave_type, description,duration,type_name,request_status});
         } catch (err) {
             console.error(err);
             res.status(400).json({ error: 'Invalid token or error adding leave request' });
+        }
+    },
+
+    deleteLeaveRequest: async (req, res) => {
+        try {
+            const { leaveId } = req.params;
+            await leaveModel.deleteLeaveRequest(leaveId);
+            res.status(200).json({ message: 'Leave request deleted successfully' });
+        } catch (err) {
+            console.error(err);
+            res.status(400).json({ error: 'Invalid token or error deleting leave request' });
         }
     },
 
@@ -89,10 +105,8 @@ const leaveController = {
     },
 
     getAllLeaveTypes: async (req, res) => {
-        console.log('Controller: getAllLeaveTypes called'); // Debug log
         try {
           const leaveTypes = await leaveModel.getAllLeaveTypes();
-          console.log('Controller: Leave Types fetched:', leaveTypes); // Log fetched data
           res.status(200).json(leaveTypes);
         } catch (err) {
           console.error('Controller: Error fetching leave types:', err);
@@ -182,9 +196,29 @@ const leaveController = {
       console.error('Controller: Error deleting leave type:', err);
       res.status(500).json({ error: 'Error deleting leave type' });
     }
-  }
+  },
 
-    
+    incrementLeaveTypeLeaveCount: async (req, res) => {
+        const { leave_type_id } = req.params;
+        try {
+            await leaveModel.incrementLeaveTypeLeaveCount(leave_type_id);
+            res.status(200).json({ message: 'Leave type leave count incremented successfully' });
+        } catch (err) {
+            console.error('Controller: Error incrementing leave type leave count:', err);
+            res.status(500).json({ error: 'Error incrementing leave type leave count' });
+        }
+    },
+
+    decrementLeaveTypeLeaveCount: async (req, res) => {
+        const { leave_type_id } = req.params;
+        try {
+            await leaveModel.decrementLeaveTypeLeaveCount(leave_type_id);
+            res.status(200).json({ message: 'Leave type leave count decremented successfully' });
+        } catch (err) {
+            console.error('Controller: Error decrementing leave type leave count:', err);
+            res.status(500).json({ error: 'Error decrementing leave type leave count' });
+        }
+    }
     
 
 };

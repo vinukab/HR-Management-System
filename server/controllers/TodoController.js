@@ -34,24 +34,16 @@ const addTodo = async(req, res)=> {
     }
 
 const deleteTodo = async(req, res)=> {
-        try {
-            const token = req.cookies['user'];
-            if (!token) return res.status(401).json({ error: 'No token found' });
-
-            jwt.verify(token, secretKey);
-            const { todo_id } = req.body;
-            
-            const isSuccessfull = await ToDoList.deleteTodo(todo_id);
-
-            if(!isSuccessfull){
-                throw 'Faild to deleteTodo'
-            }
-
-        } catch (err) {
-            console.error(err);
-            return res.status(400).json({ error: err });
-        }
+    try {
+        const { id } = req.params;
+        console.log(id);
+        await ToDoList.deleteTodo(id);
+        return res.status(200).json({ message: 'Todo deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        return res.status(400).json({ error: err });
     }
+}
 
 
 module.exports = {

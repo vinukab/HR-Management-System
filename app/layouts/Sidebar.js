@@ -47,7 +47,7 @@ const SideBar = ({ activePanel }) => {
 
     return (
         <div className="flex-col h-screen fixed left-0 bg-gray-900 w-56 items-center gap-4  hidden lg:flex shadow-lg">
-            <img src="logo.png" className="w-full p-5 pt-5" alt="Logo" />
+            <img src="/logo.png" className="w-full p-5 pt-5" alt="Logo" />
             
             {/* Dashboard */}
             <div className={classNames("w-11/12 hover:bg-[#1e40af] h-10 ml-auto rounded-l-lg transition-all", { 'bg-gray-800': !(activePanel === 0), 'bg-[#172554]': (activePanel === 0) })}>

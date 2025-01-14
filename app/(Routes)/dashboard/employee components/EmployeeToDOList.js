@@ -7,7 +7,7 @@ export default function EmployeeToDOList() {
   const [date, setDate] = useState(new Date());
 
   return (
-    <Card className="m-1 flex-grow h-full items-center justify-center" style={{ height: '500px', backgroundColor: '#1f2937' }}>
+    <Card className="m-1 flex-grow h-full items-center justify-center" style={{backgroundColor: '#1f2937' }}>
       <CardHeader>
         <CardTitle className="text-blue-400">Personal Calendar</CardTitle>
         <CardDescription className="text-gray-300">Plan Your Work</CardDescription>

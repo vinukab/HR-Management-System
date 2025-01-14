@@ -26,7 +26,6 @@ async function fetchEmployeeCountByDepartment(req, res) {
 async function fetchEmployeeStats(req, res) {
   try {
     const [results] = await reportModel.getEmployeeStats();
-    console.log("Employee Stats Data:", results);
     res.json(results);
   } catch (error) {
     console.error("Error fetching employee stats:", error);
@@ -48,7 +47,6 @@ async function fetchDepartmentLeaves(req, res) {
 // Controller to fetch the dependants and emergency person details related to an employee
 async function fetchEmpEmergencyPersonDetails(req, res) {
   const empId = req.params.empId; 
-  console.log(empId);
 
   if (!empId) {
       return res.status(400).json({ error: "Employee ID is required" });

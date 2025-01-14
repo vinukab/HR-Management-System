@@ -14,6 +14,7 @@ const grantPrivileges = (requiredRole) => {
         if (!token) {
             return res.status(401).json({ message: "Unauthorized" });
         }
+       
         const verified = jwt.verify(token, process.env.JWT_SECRET);
         const role = verified.role;
 

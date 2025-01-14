@@ -9,7 +9,7 @@ const auth = async(req, res) => {
         req.user = verified;
         res.status(200).json({ auth: true});
     } catch (err) {
-        console.log(err);
+        console.error(err);
         res.status(200).json({ auth: false});
     }
 };

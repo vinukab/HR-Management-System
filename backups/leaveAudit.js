@@ -14,7 +14,7 @@ const createLeaveAudit = async (req, res) => {
         res.status(201).json({ message: 'Leave audit created' });
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ error: 'Creation failed' });
     }
   };
@@ -42,7 +42,7 @@ const createLeaveAudit = async (req, res) => {
         res.status(200).json({ message: 'Leave audit deleted' });
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ error: 'Deletion failed' });
     }
   };
@@ -60,7 +60,7 @@ const createLeaveAudit = async (req, res) => {
         res.status(200).json({ message: 'Leave audit updated' });
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ error: 'Update failed' });
     }
   };

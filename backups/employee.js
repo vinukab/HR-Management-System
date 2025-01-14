@@ -11,7 +11,7 @@ const createEmployee = async (req, res) => {
       res.status(201).json({ message: 'Employee created' });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'Database query failed' });
   }
 };
@@ -36,7 +36,7 @@ const deleteEmployee = async (req, res) => {
       res.status(200).json({ message: 'User deleted' });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'Database query failed' });
   }
 };
@@ -50,7 +50,7 @@ const updateEmployee = async (req, res) => {
         res.status(200).json({ message: 'User updated' });
       })
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Database query failed' });
     }
 };

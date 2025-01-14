@@ -11,7 +11,7 @@ const createjobtitle= async (req, res) => {
         res.status(201).json({ message: 'new job created' });
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ error: 'creating new job failed' });
     }
 };
@@ -38,7 +38,7 @@ const deletejob = async (req, res) => {
       res.status(200).json({ message: 'job:'+job_title_id+' deleted' });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'deleting query failed' });
   }
 };
@@ -52,7 +52,7 @@ const updatejobdetails = async (req, res) => {
       res.status(200).json({ message: 'Job details updated' });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'Updating job details failed' });
   }
 };

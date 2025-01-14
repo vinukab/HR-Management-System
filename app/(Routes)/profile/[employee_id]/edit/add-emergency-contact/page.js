@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 const AddEmergencyPerson = ({ params }) => {
   const router = useRouter();
   const employee_id = params.employee_id;
+
+  // State for Emergency Person data
   const [EmergencyPerson, setEmergencyPerson] = useState({
     person_name: '',
     relationship: '',
@@ -16,9 +18,10 @@ const AddEmergencyPerson = ({ params }) => {
     employee_id: employee_id || ''
   });
 
+  // State for phone numbers
   const [phoneNumbers, setPhoneNumbers] = useState(['']);
-  const [addedPersons, setAddedPersons] = useState([]); // Store added emergency persons
 
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEmergencyPerson({
@@ -27,53 +30,45 @@ const AddEmergencyPerson = ({ params }) => {
     });
   };
 
+  // Handle phone number changes
   const handlePhoneNumberChange = (index, e) => {
     const newPhoneNumbers = [...phoneNumbers];
     newPhoneNumbers[index] = e.target.value;
     setPhoneNumbers(newPhoneNumbers);
   };
 
+  // Add a new phone number input field
   const addPhoneNumberField = () => {
     setPhoneNumbers([...phoneNumbers, '']);
   };
 
+  // Remove a phone number input field
   const removePhoneNumberField = (index) => {
     const newPhoneNumbers = [...phoneNumbers];
     newPhoneNumbers.splice(index, 1);
     setPhoneNumbers(newPhoneNumbers);
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/employee/addEmergencyPerson', {
+      // Send data to the backend
+      await axios.post('http://localhost:5000/employee/addEmergencyPerson', {
         ...EmergencyPerson,
         phone_numbers: phoneNumbers
       }, { withCredentials: true });
-      
-      setAddedPersons([...addedPersons, { ...EmergencyPerson, phone_numbers: phoneNumbers }]); // Add to the list
-      
-      // Clear form fields for next entry
+
+      // Clear the form fields after successful submission
       setEmergencyPerson({ person_name: '', relationship: '', address: '', employee_id });
       setPhoneNumbers(['']);
+
+      // Redirect to the next step or employee profile page
+      router.push(`/profile/${employee_id}`);
     } catch (error) {
       console.error('There was an error adding the emergency person!', error);
       alert('Failed to add emergency person.');
     }
-  };
-
-  const haddleNext = async () => {
-    try {
-      const promises = addedPersons.map(person => axios.post('http://localhost:5000/employee/addDependent', {person}, { withCredentials: true }));
-      await Promise.all(promises);
-      router.push(`/createemployee/adddependentdetails/${employee_id}`);
-    } catch (error) {
-      console.error('There was an error submitting the emergency persons!', error);
-      alert('Failed to submit emergency persons.');
-    }
-  };
-  const removeAddedPerson = (index) => {
-    setAddedPersons(addedPersons.filter((_, i) => i !== index));
   };
 
   return (
@@ -88,7 +83,6 @@ const AddEmergencyPerson = ({ params }) => {
             </div>
             
             <div className="col-span-2">
-            
               <CardHeader>
                 <h2 className="text-xl font-semibold text-white text-center">Add Emergency Person</h2>
               </CardHeader>
@@ -128,17 +122,6 @@ const AddEmergencyPerson = ({ params }) => {
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
-                  <div>
-                    <label className="text-white border-gray-700">Employee ID</label>
-                    <input
-                      type="text"
-                      name="employee_id"
-                      value={EmergencyPerson.employee_id}
-                      placeholder="Employee ID"
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                      disabled
-                    />
-                  </div>
 
                   {/* Phone Numbers Section */}
                   <div>
@@ -176,31 +159,8 @@ const AddEmergencyPerson = ({ params }) => {
                     <button type="submit" className="text-white px-4 py-2 rounded-md bg-[#1e40af] hover:bg-[#1d4ed8]">
                       Add Emergency Person
                     </button>
-                    <button type="button" onClick={haddleNext} className="text-white px-4 py-2 rounded-md bg-[#1e40af] hover:bg-[#1d4ed8]">
-                      Next
-                    </button>
                   </div>
                 </form>
-        
-                {/* Display Added Emergency Persons */}
-                <div className="mt-6">
-                  
-                  {addedPersons.map((person, index) => (
-                    <div key={index} className="border-t border-gray-200 pt-4 mt-4">
-                      <p><strong>Name:</strong> {person.person_name}</p>
-                      <p><strong>Relationship:</strong> {person.relationship}</p>
-                      <p><strong>Address:</strong> {person.address}</p>
-                      <p><strong>Phone Numbers:</strong> {person.phone_numbers.join(', ')}</p>
-                      <button
-                        type="button"
-                        onClick={() => removeAddedPerson(index)}
-                        className="mt-2 text-red-600"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
-                </div>
               </CardContent>
             </div>
           </div>

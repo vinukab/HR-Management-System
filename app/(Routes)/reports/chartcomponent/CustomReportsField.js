@@ -24,7 +24,6 @@ export default function CustomReportsField() {
           },
         });
         const data = await response.json();
-        console.log(data);
         setChartData(data);
       } catch (error) {
         console.error('Error fetching chart data:', error);

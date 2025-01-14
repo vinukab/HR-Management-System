@@ -16,7 +16,7 @@ const createEmployeeContact = async (req, res) => {
         );
         res.status(201).json({ message: 'Employee contact created' });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Failed to create employee contact' });
     }
 };
@@ -26,13 +26,12 @@ const getAllEmployeeContacts = async (req, res) => {
         const [rows] = await pool.query('SELECT * FROM employeecontact');
         res.status(200).json(rows);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Failed to fetch employee contacts' });
     }
 };
 
 const getEmployeeContactById = async (req, res) => {
-    console.log('Entered to get employee contact by employee ID', req.params.id); 
     const {id} = req.params; 
     try {
         const [rows] = await pool.query('SELECT * FROM employeecontact WHERE employee_id = ?', [id]); 
@@ -43,14 +42,13 @@ const getEmployeeContactById = async (req, res) => {
 
         res.status(200).json(rows[0]);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Failed to fetch employee contact' });
     }
 };
 
 
 const updateEmployeeContact = async (req, res) => {
-    console.log('Entered to update employee contact by employee ID', req.params.id); 
     const {id } = req.params;
     const {num} = req.body;
 
@@ -66,7 +64,7 @@ const updateEmployeeContact = async (req, res) => {
 
         res.status(200).json({ message: 'Employee contact updated' });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Failed to update employee contact' });
     }
 };
@@ -83,7 +81,7 @@ const deleteEmployeeContact = async (req, res) => {
 
         res.status(200).json({ message: 'Employee contact deleted' });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Failed to delete employee contact' });
     }
 };

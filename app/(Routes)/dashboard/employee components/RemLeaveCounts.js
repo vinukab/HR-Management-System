@@ -50,14 +50,13 @@ export function RemLeaveCounts() {
         setLoading(true)
         const response = await axios.get('http://localhost:5000/leave/leave-count',{withCredentials:true}); 
         const data = response.data
-        console.log(data)
-        
+
         // Update chart data with dynamic API data
         const updatedChartData = [
           { leaveType: "Annual", remaining: data.annual_leave_count },
           { leaveType: "Casual", remaining: data.casual_leave_count },
           { leaveType: "No-pay", remaining: data.nopay_leave_count },
-          { leaveType: "Maternity", remaining: data.maternity_leave_count },
+          { leaveType: "Maternity", remaining: data.maternity_leave_count},
         ]
         setChartData(updatedChartData)
       } catch (err) {

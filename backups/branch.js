@@ -18,7 +18,7 @@ const createBranch = async (req, res) => {
           res.status(201).json({ message: 'New branch created' });
       });
   } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ error: 'Creating new branch failed' });
   }
 };

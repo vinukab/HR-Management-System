@@ -16,7 +16,6 @@ const AddDependent = ({ params }) => {
     is_covered_by_insurance: false,
     employee_id: employee_id || ''
   });
-  const [dependentsList, setDependentsList] = useState([]); // State to store all dependents
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -26,34 +25,25 @@ const AddDependent = ({ params }) => {
     });
   };
 
-  const handleAddDependent = () => {
-    setDependentsList([...dependentsList, dependent]); // Add the current dependent to the list
-    setDependent({ // Reset the input fields
-      dependent_name: '',
-      relationship: '',
-      gender: '',
-      is_covered_by_insurance: false,
-      employee_id: employee_id || ''
-    });
-  };
-
-  const handleRemoveDependent = (indexToRemove) => {
-    setDependentsList(dependentsList.filter((_, index) => index !== indexToRemove));
-  };
-
   const handleSubmit = async () => {
     try {
-      // Make a POST request for each dependent in dependentsList
-      await Promise.all(
-        dependentsList.map(dep => 
-          axios.post('http://localhost:5000/employee/addDependent', dep, { withCredentials: true })
-        )
-      );
-      console.log('All dependents added successfully!');
-      router.push(`/createemployee/addpersonaldetails`);
+      // Make a POST request to add the dependent
+      await axios.post('http://localhost:5000/employee/addDependent', dependent, { withCredentials: true });
+      
+      // Clear the dependent form
+      setDependent({
+        dependent_name: '',
+        relationship: '',
+        gender: '',
+        is_covered_by_insurance: false,
+        employee_id: employee_id || ''
+      });
+      
+      // Redirect to the profile route
+      router.push(`/profile/${employee_id}`);
     } catch (error) {
-      console.error('There was an error adding the dependents!', error);
-      alert('Failed to add dependents.');
+      console.error('There was an error adding the dependent!', error);
+      alert('Failed to add dependent.');
     }
   };
 
@@ -125,55 +115,22 @@ const AddDependent = ({ params }) => {
                       <label className="text-white border-gray-700">Covered by Insurance</label>
                     </div>
 
-                    {/* Add Dependent Button */}
+                    {/* Submit Button */}
                     <div className="flex justify-between mt-6">
                       <button
                         type="button"
-                        onClick={handleAddDependent}
-                        className="text-white px-4 py-2 rounded-md bg-[#1e40af] hover:bg-[#1d4ed8]"
-                      >
-                        Add Dependent
-                      </button>
-                      <button type="button"
                         onClick={handleSubmit}
                         className="text-white px-4 py-2 rounded-md bg-[#1e40af] hover:bg-[#1d4ed8]"
                       >
-                Next
-              </button>
+                        Next
+                      </button>
                     </div>
                   </form>
-
-                  {/* Display the list of dependents */}
-                  {dependentsList.length > 0 && (
-                    <div className="mt-6">
-                      <h3 className="text-lg font-semibold text-gray-500">Dependents Added:</h3>
-                      <ul className="space-y-2 mt-2">
-                        {dependentsList.map((dep, index) => (
-                          <li key={index} className="p-2 border border-gray-300 rounded-md flex justify-between items-center">
-                            <div>
-                              <p><strong>Name:</strong> {dep.dependent_name}</p>
-                              <p><strong>Relationship:</strong> {dep.relationship}</p>
-                              <p><strong>Gender:</strong> {dep.gender}</p>
-                              <p><strong>Insurance:</strong> {dep.is_covered_by_insurance ? 'Yes' : 'No'}</p>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveDependent(index)}
-                              className="bg-red-600 text-white px-2 py-1 rounded-md hover:bg-red-800"
-                            >
-                              Remove
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
                 </CardContent>
               </div>
             </div>
             <CardFooter className="flex justify-end mt-6">
-              {/* Next Button */}
-              
+              {/* Empty footer */}
             </CardFooter>
           </Card>
         </div>

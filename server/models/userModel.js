@@ -1,6 +1,7 @@
 const pool = require('../config/dbConfig');
-const secretKey = '1234';
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const { env } = require('process');
 
 const Role = {
     Admin: "Admin",
@@ -29,8 +30,9 @@ const User = {
             }
 
             const userData = rows[0];
+            const passwordMatch = await bcrypt.compare(password, userData.password_hash);
 
-            if (password !== userData.password_hash) {
+            if (!passwordMatch) {
                 throw 'Invalid username or password';
             }
 
@@ -41,7 +43,7 @@ const User = {
                     role: userData.role,
                     employee_id: userData.employee_id
                 },
-                secretKey,
+                process.env.JWT_SECRET,
                 { expiresIn: '10h' }
             );
             
@@ -53,7 +55,7 @@ const User = {
     },
 
     async getUserDetails(token) {
-        const verified = jwt.verify(token, secretKey);
+        const verified = jwt.verify(token, process.env.JWT_SECRET);
         return {username: verified.username, role: verified.role, employee_id: verified.employee_id};
     },
 

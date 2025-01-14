@@ -38,7 +38,7 @@ const formSchema = z.object({
   message: "End date must be after start date",
 });
 
-const CreateLeaveRequest = () => {
+const CreateLeaveRequest = ({leaveData,setLeaveData}) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -76,17 +76,22 @@ const CreateLeaveRequest = () => {
     }
 
     const formattedData = {
-      start_date: format(new Date(start_date), "yyyy-MM-dd"),
-      end_date: format(new Date(end_date), "yyyy-MM-dd"),
+      start_date: new Date(start_date),
+      end_date: new Date(end_date),
+      duration: `${duration} days`,
       leave_type,
-      description
+      type_name: leaveTypes.find(type => type.leave_type_id === leave_type).type_name,
+      description,
+      request_status: 'Pending'
     };
 
     try {
-      await axios.post('http://localhost:5000/leave/add', formattedData, { withCredentials: true });
-      alert('Leave request submitted successfully');
+      const result = await axios.post('http://localhost:5000/leave/add', formattedData, { withCredentials: true });
+      alert('Leave request added successfully');
+      setLeaveData([...leaveData, result.data]);
     } catch (err) {
-      alert('Failed to submit leave request. Please check remaining leaves and try again.');
+      console.error(err);
+      alert('Failed to add leave request. Please try');
     }
   };
 

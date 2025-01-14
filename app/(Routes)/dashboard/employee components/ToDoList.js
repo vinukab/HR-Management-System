@@ -21,15 +21,12 @@ export function ToDoList() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("")
   const [removedTask, setRemovedTask] = useState(null)
-  const [user_id, setUser_id] = useState(null)
 
 
   useEffect(() => {
     axios.get('http://localhost:5000/todolist', {withCredentials: true}).then(response => {
       const {todolist} = response.data
       setTasks(todolist)
-      setUser_id(todolist[0].user_id)
-      console.log(todolist)
     }).catch(err => {
       console.error(err)
     })
@@ -42,8 +39,7 @@ export function ToDoList() {
       setTasks((prevTasks) => prevTasks.filter((task) => task.todo_id !== todo_id))
       setTimeout(() => {
         setRemovedTask(null)
-        axios.delete('http://localhost:5000/todolist/deletetodo', {
-          data: { todo_id },
+        axios.delete(`http://localhost:5000/todolist/${todo_id}`, {
           withCredentials: true,
         }).catch(err => {
           console.error(err)
@@ -62,7 +58,6 @@ export function ToDoList() {
   const handleAddTask = () => {
     if (newTask.trim() !== "") {
       const newTaskdata = { todo_id: uuidv4(), 
-        user_id: user_id,
         task: newTask,
         due_date: "2024-09-19",
         status: false

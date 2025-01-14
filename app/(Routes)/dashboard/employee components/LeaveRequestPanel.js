@@ -5,20 +5,27 @@ import classNames from "classnames";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const LeaveRequestPanel = () => {
-    const [leaveData, setLeaveData] = useState([]);
-
+const LeaveRequestPanel = ({ leaveData, setLeaveData }) => {
     useEffect(() => {
         axios.get('http://localhost:5000/leave/user', { withCredentials: true })
             .then(response => {
                 const leaverequests = response.data;
-                console.log(leaverequests);
                 setLeaveData(leaverequests);
             })
             .catch(err => {
                 console.error(err);
             });
     }, []);
+
+    const handleDelete = (leaveId) => {
+        axios.delete(`http://localhost:5000/leave/${leaveId}`, { withCredentials: true })
+            .then(response => {
+                setLeaveData(prevData => prevData.filter(leave => leave.leave_id !== leaveId));
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    };
 
     return (
         <Card className='m-1 bg-gray-900 text-gray-100' style={{ height: '600px' }}>
@@ -33,6 +40,7 @@ const LeaveRequestPanel = () => {
                             <TableHead className="p-3 font-normal">Application Type</TableHead>
                             <TableHead className="p-3 font-normal">Duration</TableHead>
                             <TableHead className="p-3 font-normal">Status</TableHead>
+                            <TableHead className="p-3 font-normal">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -52,6 +60,19 @@ const LeaveRequestPanel = () => {
                                     })}>
                                         {leave.request_status}
                                     </span>
+                                </TableCell>
+                                <TableCell className="p-3">
+                                    {leave.request_status === 'Pending' && (
+                                        <button
+                                            className="px-2 py-1 bg-red-600 text-white rounded-md text-xs flex items-center"
+                                            onClick={() => handleDelete(leave.leave_id)}
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M10 3h4a1 1 0 011 1v1H9V4a1 1 0 011-1z" />
+                                            </svg>
+                                            Delete
+                                        </button>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}

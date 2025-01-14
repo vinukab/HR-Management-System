@@ -16,7 +16,7 @@ const login = async (req, res) => {
       res.send('Token set in cookie');
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'Database query failed' });
   }
 }
@@ -45,7 +45,7 @@ const signup = async (req, res) => {
     login(req, res);
 
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'Database query failed' });
   }
 };
@@ -58,11 +58,8 @@ const deleteUser = async (req, res) => {
   const { user_id,deleteEmployeeWithUser} = req.body;
   try {
     auth.authenticateToken(req,res,['HR Manager','Admin'],async()=>{
-      console.log(deleteEmployeeWithUser);
-      console.log(user_id);
       const [data] = await pool.query('SELECT employee_id FROM user WHERE user_id = ?', [user_id]); 
       const employee_id = data[0].employee_id;
-      console.log(employee_id);
       await pool.query('DELETE FROM user WHERE user_id  = ?', [user_id ]);
       if(deleteEmployeeWithUser){
         await pool.query('DELETE FROM employee WHERE employee_id = ?', [employee_id]);
@@ -70,7 +67,7 @@ const deleteUser = async (req, res) => {
       res.status(200).json({ message: 'User deleted' });
     });
   }catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'Database query failed' });
   }
 };

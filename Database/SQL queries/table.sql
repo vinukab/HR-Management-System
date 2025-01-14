@@ -13,7 +13,7 @@ CREATE TABLE organization (
 
 CREATE TABLE paygrade (
     pay_grade_id VARCHAR(50) PRIMARY KEY,
-    grade ENUM('Level1', 'Level2', 'Level3', 'Level4')
+    grade VARCHAR(50)
 );
 
 CREATE TABLE jobtitle (
@@ -30,9 +30,8 @@ CREATE TABLE branch (
 CREATE TABLE department (
     department_id VARCHAR(50) PRIMARY KEY,
     department_name VARCHAR(50),
-    organization_id VARCHAR(50),
-    FOREIGN KEY (organization_id) REFERENCES organization(organization_id)
-);
+    branch_id VARCHAR(50),
+    FOREIGN KEY (branch_id) REFERENCES branch(branch_id)
 
 
 CREATE TABLE employee (

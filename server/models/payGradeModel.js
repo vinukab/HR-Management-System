@@ -5,13 +5,11 @@ const payGradeModel = {
   getAllPayGrades: async () => {
     const query = 'SELECT pay_grade_id, grade FROM hrms.paygrade';
     try {
-      console.log('Model: Executing database query to fetch pay grades...');
-      const [rows] = await db.execute(query); // Execute the query
-      console.log('Model: Query Result:', rows); // Log the fetched data
-      return rows; // Ensure the rows are returned
+      const [rows] = await db.execute(query); 
+      return rows;
     } catch (err) {
       console.error('Model: Error fetching pay grades from the database:', err);
-      throw err; // Pass the error back to the controller
+      throw err;
     }
   },
 

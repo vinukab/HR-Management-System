@@ -69,9 +69,7 @@ const createEmployee = async (req, res) => {
       value_3,
     } = req.body;
 
-    console.log(phoneNumbers)
     const profilePic = req.file ? `/uploads/${req.file.filename}` : null;
-    console.log(key_1, value_1, key_2, value_2, key_3, value_3);
     const newEmployee = {
       firstName,
       lastName,
@@ -110,7 +108,7 @@ const createEmployee = async (req, res) => {
 const updateEmployeeDetails = async (req, res) => {
 
   const { employeeId, jobTitleId, payGradeId, supervisorId, departmentId, branchId } = req.body;
-  console.log(employeeId, jobTitleId, payGradeId, supervisorId, departmentId, branchId);
+  console.error(employeeId, jobTitleId, payGradeId, supervisorId, departmentId, branchId);
   try {
       const result = await pool.query(`
           UPDATE employee

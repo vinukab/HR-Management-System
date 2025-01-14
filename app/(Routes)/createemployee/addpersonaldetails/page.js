@@ -82,9 +82,9 @@ export default function EmployeeCreator() {
       const employee_id = response.data.employee_id;
       setSuccess("Employee created successfully!");
       setError("");
-      router.push(`/createemployee/addjobdetails/${employee_id}`);
+      router.push(`/createemployee/adduserdetails/${employee_id}`);
     } catch (error) {
-      console.log("Error creating employee!", error);
+      console.error("Error creating employee!", error);
     }
   };
 
@@ -107,7 +107,7 @@ export default function EmployeeCreator() {
 
   return (
     <>
-    <SideBar/>
+    <SideBar activePanel={1}/>
     <div className="ml-56">
      <Title />
       <Card className="m-1 shadow-md bg-gray-800 text-gray-200 border border-gray-700">

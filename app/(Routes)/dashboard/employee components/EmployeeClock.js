@@ -18,7 +18,6 @@ const EmployeeClock = () => {
     const signOut = async () => {
         try {
             await User.logout();
-            console.log('Signed out successfully');
             router.push('/');
         } catch (error) {
             console.error('Error during sign out:', error);

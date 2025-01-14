@@ -52,7 +52,6 @@ const EmployeeDirectory = () => {
   const signOut = async () => {
     try {
       User.logout();
-      console.log('Signed out successfully');
       router.push('/');
     } catch (error) {
       console.error('Error during sign out:', error);
