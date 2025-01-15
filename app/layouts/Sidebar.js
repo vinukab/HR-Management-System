@@ -46,11 +46,11 @@ const SideBar = ({ activePanel }) => {
     }
 
     return (
-        <div className="flex-col h-screen fixed left-0 bg-gray-900 w-56 items-center gap-4  hidden lg:flex shadow-lg">
+        <div className="flex-col h-screen fixed left-0 bg-gray-900 w-56 items-center gap-4  hidden lg:flex shadow-lg rounded-md">
             <img src="/logo.png" className="w-full p-5 pt-5" alt="Logo" />
             
             {/* Dashboard */}
-            <div className={classNames("w-11/12 hover:bg-[#1e40af] h-10 ml-auto rounded-l-lg transition-all", { 'bg-gray-800': !(activePanel === 0), 'bg-[#172554]': (activePanel === 0) })}>
+            <div className={classNames("w-11/12 hover:bg-[#1e40af] h-10 ml-auto rounded-l-lg transition-all", { 'bg-gray-800': !(activePanel === 0), 'bg-blue-700': (activePanel === 0) })}>
                 <button onClick={() => changePanel(0)} className="w-full h-full text-gray-300 hover:text-white font-serif text-sm text-left ml-4 flex items-center">
                     <LayoutDashboard className="mr-1" />
                     Dashboard

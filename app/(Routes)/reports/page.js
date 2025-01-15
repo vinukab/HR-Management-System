@@ -47,7 +47,7 @@ const ReportPage = () => {
         
 
         <div className="space-y-5 ">
-          <div className="flex h-96  space-x-2">
+          <div className="flex h-96  space-x-2 ">
             <section
               id="employee-by-department"
               className="p-1.5 rounded-lg flex-grow h-full "
