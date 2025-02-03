@@ -58,7 +58,7 @@ const LeaveTypeSettings = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-4">Leave Type Settings</h2>
+      <h2 className="text-2xl font-semibold mb-4 ">Leave Type Settings</h2>
       {payGrades.map((payGrade) => (
         <div key={payGrade.pay_grade_id} className="mb-6">
           <h3 className="text-xl font-semibold mb-2">{payGrade.grade}</h3>

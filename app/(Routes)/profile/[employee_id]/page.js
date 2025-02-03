@@ -93,7 +93,7 @@ const Profile = ({ params }) => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-4">
 
                     {/* Left Column - Profile Picture and General Information */}
-                    <Card className="flex items-center justify-center bg-gray-800 h-full">
+                    <Card className="flex items-center justify-center bg-gray-800 h-full border-gray-700">
                         <CardContent>
                             <div className="flex flex-col items-center">
                                 <img
@@ -116,7 +116,7 @@ const Profile = ({ params }) => {
                     {/* Right Column - Detailed Information */}
                     <div className="space-y-4">
                         {/* Personal Information Card */}
-                        <Card className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <Card className="bg-gray-800 p-6 rounded-lg shadow-lg border-gray-700">
                             <CardHeader className="flex justify-between items-center mb-4 border-b border-gray-600 pb-2 bg-gray-700 rounded-t-lg">
                                 <CardTitle className="text-lg font-semibold text-blue-400"><FaUserCircle className="inline mr-2" />Personal Information</CardTitle>
                                 <Link href={`${employee_id}/edit/personal-info`} className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded">
@@ -140,7 +140,7 @@ const Profile = ({ params }) => {
                         </Card>
 
                         {/* Office Information Card */}
-                        <Card className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <Card className="bg-gray-800 p-6 rounded-lg shadow-lg border-gray-700">
                             <CardHeader className="flex justify-between items-center mb-4 border-b border-gray-600 pb-2 bg-gray-700 rounded-t-lg">
                                 <CardTitle className="text-lg font-semibold text-blue-400"><FaBuilding className="inline mr-2" />Office Information</CardTitle>
                                 <Link href={`${employee_id}/edit/job-info`} className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded">
@@ -162,7 +162,7 @@ const Profile = ({ params }) => {
                         </Card>
                     </div>
                     {/* Dependents Card */}
-                    <Card className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <Card className="bg-gray-800 p-6 rounded-lg shadow-lg border-gray-700">
                         <CardHeader className="flex justify-between items-center mb-4 border-b border-gray-600 pb-2 bg-gray-700 rounded-t-lg">
                             <CardTitle className="text-lg font-semibold text-blue-400"><FaHeartbeat className="inline mr-2" />Dependents Information</CardTitle>
                             <Link href={`${employee_id}/edit/add-dependent`} className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded">
@@ -190,7 +190,7 @@ const Profile = ({ params }) => {
                         </CardContent>
                     </Card>
                     {/* Emergency Contacts Card */}
-                    <Card className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <Card className="bg-gray-800 p-6 rounded-lg shadow-lg border-gray-700">
                         <CardHeader className="flex justify-between items-center mb-4 border-b border-gray-600 pb-2 bg-gray-700 rounded-t-lg">
                             <CardTitle className="text-lg font-semibold text-blue-400"><FaPhone className="inline mr-2" />Emergency Contacts</CardTitle>
                             <Link href={`${employee_id}/edit/add-emergency-contact`} className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded">

@@ -108,9 +108,9 @@ export default function EmployeeCreator() {
   return (
     <>
     <SideBar activePanel={1}/>
-    <div className="ml-56">
+    <div className="ml-56 bg-gray-700">
      <Title />
-      <Card className="m-1 shadow-md bg-gray-800 text-gray-200 border border-gray-700">
+      <Card className="m-1 shadow-md bg-gray-800 text-gray-200 border border-gray-800">
         <CardHeader>
           <CardTitle className="text-gray-50">Create Employee</CardTitle>
           <CardDescription className="text-gray-250">Fill out the form to create a new employee.</CardDescription>

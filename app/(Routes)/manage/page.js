@@ -36,7 +36,7 @@ const EmployeeDirectory = () => {
   }, [searchTerm, employees]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-700 p-8">
       <SideBar activePanel={3} role={'Admin'} />
 
       <div className="lg:ml-60">
@@ -56,7 +56,7 @@ const EmployeeDirectory = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredEmployees.length > 0 ? (
               filteredEmployees.map((employee) => (
-                <Card key={employee.employee_id} className="bg-gradient-to-r from-blue-800 via-blue-600 to-black text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                <Card key={employee.employee_id} className="bg-gradient-to-r from-gray-900 via-gray-900 to-gray-800 text-blue-400 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 border-gray-700">
                   <CardContent className="flex items-center space-x-4">
                     <img
                       src={`http://localhost:5000${employee.profile_pic || '/default-profile.jpg'}`}
@@ -64,7 +64,7 @@ const EmployeeDirectory = () => {
                       className="rounded-full w-16 h-16 object-cover border-2 border-white shadow-md"
                     />
                     <div className="flex-1">
-                      <CardTitle className="text-xl font-semibold text-gray-100">
+                      <CardTitle className="text-xl font-semibold ">
                         {`${employee.first_name} ${employee.last_name}`}
                       </CardTitle>
                       <CardDescription className="text-sm text-gray-300">{employee.job_title}</CardDescription>
